@@ -1,7 +1,12 @@
 import React from 'react';
+import SectionList from './components/SectionList';
 
 function App() {
-  return <div>hello, CV</div>;
+  return (
+    <div>
+      <SectionList />
+    </div>
+  );
 }
 
 export default App;
