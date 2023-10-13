@@ -8,7 +8,7 @@ export default function Projects() {
       <ul>
         {p.projects.map((p, i) => {
           return (
-            <>
+            <div key={i}>
               <div>
                 <h4 className="fu-regular text-xs">
                   {p.title} {p.from}-{p.to}
@@ -19,7 +19,7 @@ export default function Projects() {
                   <h5 className="text-s">{p.description}</h5>
                 </li>
               </ul>
-            </>
+            </div>
           );
         })}
       </ul>

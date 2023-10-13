@@ -8,7 +8,7 @@ export default function Languages() {
       <div className="grid grid-cols-2 gap-4">
         {p.languages.map((l, i) => {
           return (
-            <div>
+            <div key={i}>
               <h4 className="fu-regular text-xs">{l.title}</h4>
               <h5 className="text-gray-500 text-xs italic">{l.level}</h5>
             </div>

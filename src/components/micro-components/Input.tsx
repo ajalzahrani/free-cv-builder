@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
-type props = {
+export type inputType = {
   id: number;
   title: string;
   status?: boolean; // true is completed
+  updateText: (text: string) => void;
 };
 
-export default function Input(TextObject: props) {
-  const [editing, setEditing] = useState(TextObject.title === '' ? true : false);
+export default function Input(textObject: inputType) {
+  const [editing, setEditing] = useState(textObject.title === '' ? true : false);
+
   const onUpdateDone = () => {
     setEditing(false);
   };
@@ -25,28 +27,22 @@ export default function Input(TextObject: props) {
   return (
     <>
       <div onDoubleClick={handleEditing} style={editing ? { display: 'none' } : { display: '' }}>
-        <button onClick={() => deleteTextObject(TextObject.id)}>Delete</button>
         <button onClick={handleEditing}>Edit</button>
 
-        <input
-          type="checkbox"
-          className="checkbox"
-          checked={TextObject.status}
-          onChange={() => toggleTextObject(TextObject.id)}
-        />
-
-        <span style={TextObject.status ? completedStyle : undefined}>{TextObject.title}</span>
+        <span style={textObject.status ? completedStyle : undefined}>{textObject.title}</span>
       </div>
       <input
         type="text"
-        value={TextObject.title}
+        value={textObject.title}
         style={editing ? { display: '' } : { display: 'none' }}
         className="textInput"
         onChange={(e) => {
-          updateTextObject(TextObject.id, e.currentTarget.value);
+          textObject.updateText(e.target.value.toString());
         }}
-        // onKeyDown={(e) => onUpdateDone(e)}
       />
+      <button onClick={() => onUpdateDone()} style={editing ? { display: '' } : { display: 'none' }}>
+        Done
+      </button>
     </>
   );
 }

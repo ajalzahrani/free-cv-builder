@@ -9,10 +9,12 @@ import Certificates from './Sections/Certificates';
 import Education from './Sections/Education';
 import Languages from './Sections/Languages';
 import Intersets from './Sections/Intersets';
+import SectionBuilder from './SectionBuilder';
 
 function Builder() {
   return (
     <div className="fu-light container">
+      <SectionBuilder />
       {/* Header section */}
       <Header />
 

@@ -8,7 +8,7 @@ export default function Intersets() {
       <div className="grid grid-cols-2 gap-4">
         {p.interests.map((i) => {
           return (
-            <div>
+            <div key={i}>
               <h4 className="fu-regular text-xs">{i}</h4>
             </div>
           );
