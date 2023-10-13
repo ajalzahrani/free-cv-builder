@@ -15,6 +15,7 @@ function SectionList() {
   const [sectionTitle, setSectionTitle] = useState<string>('');
   const sections = useStore((s) => s.sections);
   const addSection = useStore((s) => s.addSection);
+  const [isEdiable, setIsEdiable] = useState<boolean>(false);
 
   const submit = () => {
     const newSection: SectionType = {
@@ -28,12 +29,12 @@ function SectionList() {
 
   return (
     <div className="App">
-      <input
+      {/* <input
         type="text"
         // onKeyDown={(e) => onKeyDownHandler(e)}
         onChange={(e: React.FormEvent<HTMLInputElement>) => setSectionTitle(e.currentTarget.value)}
         className="input"
-      />
+      /> */}
       <button onClick={submit}>submit</button>
       <div className="custom-list">
         <ul>

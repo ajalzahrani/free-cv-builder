@@ -12,7 +12,7 @@ type PropsType = {
 };
 
 const Section = ({ Section }: PropsType) => {
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(Section.title === '' ? true : false);
 
   const updateSection = useStore((s) => s.updateSection);
   const deleteSection = useStore((s) => s.deleteSection);
@@ -61,6 +61,9 @@ const Section = ({ Section }: PropsType) => {
         />
         <button onClick={() => onUpdateDone()} style={editing ? { display: '' } : { display: 'none' }}>
           Done
+        </button>
+        <button onClick={() => deleteSection(Section.id)} style={editing ? { display: '' } : { display: 'none' }}>
+          Cancel
         </button>
       </li>
     </div>
