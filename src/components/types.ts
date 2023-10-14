@@ -29,7 +29,8 @@ type contactType = {
   };
 };
 
-type experienceType = {
+export type experienceType = {
+  [x: string]: any;
   title: string;
   company: string;
   location: string;
