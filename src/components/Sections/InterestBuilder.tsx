@@ -74,6 +74,7 @@ export default function InterestBuilder() {
           interest={{ id: UUID(), title: '', description: '' }}
           onUpdateInterest={(newInterest: interestType) => handleSaveInterest(newInterest)}
           onCancel={() => setIsAddingInterest(false)}
+          onDeleteInterest={(id: string) => handleDeleteInterest(id)}
         />,
       );
     }

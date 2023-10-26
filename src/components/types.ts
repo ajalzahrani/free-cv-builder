@@ -49,6 +49,7 @@ export type experienceType = {
   from: string;
   to: string;
   description: string;
+  tasks: string[];
 };
 
 export type educationType = {

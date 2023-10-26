@@ -13,6 +13,8 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
 
   const [updatedExperience, setUpdatedExperience] = React.useState<experienceType>(experience);
 
+  const [tasks, setTasks] = React.useState<string[]>(updatedExperience.tasks);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
     setUpdatedExperience((prevExperience: any) => ({
@@ -21,7 +23,21 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
     }));
   };
 
+  const handleAddTask = () => {
+    setUpdatedExperience((prevExperience) => ({
+      ...prevExperience,
+      tasks: tasks,
+    }));
+  };
+
   const handleUpdateExperience = () => {
+    // setUpdatedExperience((prev) => {
+    //   return {
+    //     ...prev,
+    //     tasks: tasks,
+    //   };
+    // });
+    handleAddTask();
     onUpdateExperience(updatedExperience);
     setIsEditing(false);
   };
@@ -111,6 +127,35 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          <div className="mb-4">
+            <label className="block text-gray-700 font-bold mb-2 mt-2">Task</label>
+            {tasks.map((item, index) => (
+              <div key={index} className="flex items-center mb-2">
+                <input
+                  className="border rounded-lg py-2 px-3 w-full mr-2"
+                  type="text"
+                  placeholder="Task"
+                  value={item}
+                  onChange={(e) => {
+                    const newTask = [...tasks];
+                    newTask[index] = e.target.value;
+                    setTasks(newTask);
+                  }}
+                />
+              </div>
+            ))}
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => {
+                const newTask = [...tasks];
+                newTask.push('');
+                setTasks(newTask);
+              }}
+            >
+              Add Task
+            </button>
+          </div>
+
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
@@ -139,6 +184,11 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
             {experience.from} - {experience.to}
           </p>
           <p className="text-gray-700">{experience.description}</p>
+          {tasks.map((task, index) => (
+            <div key={index} className="flex items-center mb-2">
+              <div className="bg-gray-200 rounded-lg py-2 px-3 w-full mr-2">{task}</div>
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -14,7 +14,11 @@ const experience: experienceType = {
   location: 'San Francisco, CA',
   from: 'January 2019',
   to: 'Present',
-  description: 'Developed and maintained web applications using React and Node.js.',
+  description: '',
+  tasks: [
+    'Developed and maintained web applications using React and Node.js.',
+    'Developed and maintained web applications using C# and SQL.',
+  ],
 };
 
 export default function ExperienceBuilder(section: section) {
@@ -80,7 +84,16 @@ export default function ExperienceBuilder(section: section) {
       rows.push(
         <InputExperience
           key="new"
-          experience={{ id: UUID(), title: '', company: '', location: '', from: '', to: '', description: '' }}
+          experience={{
+            id: UUID(),
+            title: '',
+            company: '',
+            location: '',
+            from: '',
+            to: '',
+            description: '',
+            tasks: [],
+          }}
           onUpdateExperience={(newExperience: experienceType) => handleSaveExperience(newExperience)}
           onCancel={handleCancelExperience}
           onDeleteExperience={(id: string) => handleDeleteExperience(id)}

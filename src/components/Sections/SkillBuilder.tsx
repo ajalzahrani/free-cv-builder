@@ -73,6 +73,7 @@ export default function SkillBuilder({ section }: { section: sectionType }) {
           skill={{ id: UUID(), title: '' }}
           onUpdateSkill={(newSkill: skillType) => handleSaveSkill(newSkill)}
           onCancel={() => setIsAddingSkill(false)}
+          onDeleteSkill={(id: string) => handleDeleteSkill(id)}
         />,
       );
     }
