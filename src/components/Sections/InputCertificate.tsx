@@ -48,9 +48,6 @@ export default function InputCertificate({
       </div>
       {isEditing ? (
         <div className="mt-2">
-          <label className="block font-bold mt-2 mb-2" htmlFor="to">
-            <p className="text-red-700">{certificate.id}</p>
-          </label>
           <label className="block font-bold mt-2 mb-2" htmlFor="description">
             Title
           </label>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { experienceType, sectionDataType, sectionType } from '~/components/types';
+import { experienceType } from '~/components/types';
 import { produce } from 'immer';
 import InputExperience from './InputExperience';
 import { section } from '~/components/types';
@@ -51,9 +51,9 @@ export default function ExperienceBuilder(section: section) {
     setIsAddingExperience(false);
   };
 
-  const handleCancelAddExperience = () => {
-    setIsAddingExperience(false);
-  };
+  // const handleCancelAddExperience = () => {
+  //   setIsAddingExperience(false);
+  // };
 
   const handleDeleteExperience = (id: string) => {
     const newData = produce(exp, (draft) => {
@@ -75,7 +75,7 @@ export default function ExperienceBuilder(section: section) {
           key={i}
           experience={exp[i]}
           onUpdateExperience={(updatedExperience: experienceType) => updateExperience(updatedExperience)}
-          onCancel={handleCancelAddExperience}
+          onCancel={handleCancelExperience}
           onDeleteExperience={(id: string) => handleDeleteExperience(id)}
         />,
       );

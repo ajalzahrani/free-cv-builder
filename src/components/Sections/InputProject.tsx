@@ -88,7 +88,7 @@ export default function InputProject({ project, onUpdateProject, onCancel, onDel
             >
               Delete
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelProject}>
+            <button className="text-gray-500 hover:text-gray-700" onClick={handleCancelProject}>
               Cancel
             </button>
           </div>

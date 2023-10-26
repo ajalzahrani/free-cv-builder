@@ -117,7 +117,7 @@ export default function InputEducation({
             >
               Delete
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelEducation}>
+            <button className="text-gray-500 hover:text-gray-700" onClick={handleCancelEducation}>
               Cancel
             </button>
           </div>

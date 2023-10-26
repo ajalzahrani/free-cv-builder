@@ -66,7 +66,7 @@ export default function EducationBuilder(section: section) {
           key={i}
           education={edu[i]}
           onUpdateEducation={(updatedEducation: educationType) => updateEducation(updatedEducation)}
-          onCancel={() => handleCancelEducation()}
+          onCancel={handleCancelEducation}
           onDeleteEducation={(id: string) => handleDeleteEducation(id)}
         />,
       );
@@ -77,7 +77,7 @@ export default function EducationBuilder(section: section) {
           key="new"
           education={{ id: UUID(), institution: '', degree: '', location: '', from: '', to: '', description: '' }}
           onUpdateEducation={(newEducation: educationType) => handleSaveEducation(newEducation)}
-          onCancel={() => handleCancelEducation()}
+          onCancel={handleCancelEducation}
           onDeleteEducation={(id: string) => handleDeleteEducation(id)}
         />,
       );
