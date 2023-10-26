@@ -1,7 +1,6 @@
 import React from 'react';
-import { educationType, sectionDataType, sectionType } from '~/components/types';
+import { educationType, section } from '~/components/types';
 import { produce } from 'immer';
-import { section } from '~/components/types';
 import UUID from '../micro-components/UUID';
 import InputEducation from './InputEducation';
 
@@ -51,6 +50,14 @@ export default function EducationBuilder(section: section) {
     setIsAddingEducation(false);
   };
 
+  const handleDeleteEducation = (id: string) => {
+    const newData = produce(edu, (draft) => {
+      const index = draft.findIndex((edu) => edu.id === id);
+      draft.splice(index, 1);
+    });
+    setEdu(newData);
+  };
+
   const renderEducation = () => {
     const rows = [];
     for (let i = 0; i < edu.length; i++) {
@@ -59,6 +66,8 @@ export default function EducationBuilder(section: section) {
           key={i}
           education={edu[i]}
           onUpdateEducation={(updatedEducation: educationType) => updateEducation(updatedEducation)}
+          onCancel={() => handleCancelEducation()}
+          onDeleteEducation={(id: string) => handleDeleteEducation(id)}
         />,
       );
     }
@@ -68,6 +77,8 @@ export default function EducationBuilder(section: section) {
           key="new"
           education={{ id: UUID(), institution: '', degree: '', location: '', from: '', to: '', description: '' }}
           onUpdateEducation={(newEducation: educationType) => handleSaveEducation(newEducation)}
+          onCancel={() => handleCancelEducation()}
+          onDeleteEducation={(id: string) => handleDeleteEducation(id)}
         />,
       );
     }

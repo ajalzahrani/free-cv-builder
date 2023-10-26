@@ -4,9 +4,16 @@ import { certificateType } from '~/components/types';
 type InputCertificationProps = {
   certificate: certificateType;
   onUpdateCertificate: (updatedCertificate: certificateType) => void;
+  onCancel: () => void;
+  onDeleteCertificate: (id: string) => void;
 };
 
-export default function InputCertificate({ certificate, onUpdateCertificate }: InputCertificationProps) {
+export default function InputCertificate({
+  certificate,
+  onUpdateCertificate,
+  onCancel,
+  onDeleteCertificate,
+}: InputCertificationProps) {
   const [isEditing, setIsEditing] = React.useState<boolean>(certificate.title.length === 0 ? true : false);
 
   const [updatedCertificate, setupdatedCertificate] = React.useState<certificateType>(certificate);
@@ -24,11 +31,13 @@ export default function InputCertificate({ certificate, onUpdateCertificate }: I
     setIsEditing(false);
   };
 
-  // old 67
-  // new 37
+  const handleCancelCertificate = () => {
+    setIsEditing(false);
+    onCancel();
+  };
 
   return (
-    <div className="mt-4 mb-4">
+    <div className="border rounded-lg mt-4 p-4 mb-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{certificate.title}</h3>
         {!isEditing && (
@@ -115,7 +124,13 @@ export default function InputCertificate({ certificate, onUpdateCertificate }: I
             >
               Save
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => setIsEditing(false)}>
+            <button
+              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={() => onDeleteCertificate(certificate.id)}
+            >
+              Delete
+            </button>
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelCertificate()}>
               Cancel
             </button>
           </div>

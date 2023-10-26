@@ -5,7 +5,7 @@ type InputInterestProps = {
   interest: interestType;
   onUpdateInterest: (updatedInterest: interestType) => void;
   onCancel: () => void;
-  onDeleteInterest?: (id: string) => void;
+  onDeleteInterest: (id: string) => void;
 };
 
 export default function InputInterest({ interest, onUpdateInterest, onCancel, onDeleteInterest }: InputInterestProps) {
@@ -26,10 +26,9 @@ export default function InputInterest({ interest, onUpdateInterest, onCancel, on
     setIsEditing(false);
   };
 
-  const handleDeleteInterest = () => {
-    if (onDeleteInterest) {
-      onDeleteInterest(interest.id);
-    }
+  const handleCancelInterest = () => {
+    setIsEditing(false);
+    onCancel();
   };
 
   return (
@@ -72,7 +71,13 @@ export default function InputInterest({ interest, onUpdateInterest, onCancel, on
             >
               Save
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => onCancel()}>
+            <button
+              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={() => onDeleteInterest(interest.id)}
+            >
+              Delete
+            </button>
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelInterest()}>
               Cancel
             </button>
           </div>
@@ -81,11 +86,6 @@ export default function InputInterest({ interest, onUpdateInterest, onCancel, on
         <div className="mt-2">
           {/* <p className="text-red-700">ENTRY ID: {interest.id}</p> */}
           <p className="text-gray-700">{interest.description}</p>
-          {onDeleteInterest && (
-            <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteInterest()}>
-              Delete
-            </button>
-          )}
         </div>
       )}
     </div>

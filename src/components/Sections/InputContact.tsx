@@ -5,7 +5,7 @@ type InputContactProps = {
   contact: contactType;
   onUpdateContact: (updatedContact: contactType) => void;
   onCancel: () => void;
-  onDeleteContact?: (id: string) => void;
+  onDeleteContact: (id: string) => void;
 };
 
 const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, onCancel, onDeleteContact }) => {
@@ -26,10 +26,15 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
     setIsEditing(false);
   };
 
-  const handleDeleteContact = () => {
-    if (onDeleteContact) {
-      onDeleteContact(contact.id);
-    }
+  // const handleDeleteContact = () => {
+  //   if (onDeleteContact) {
+  //     onDeleteContact(contact.id);
+  //   }
+  // };
+
+  const handleCancelContact = () => {
+    setIsEditing(false);
+    onCancel();
   };
 
   return (
@@ -108,23 +113,25 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
             </button>
             <button
               className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={() => handleDeleteContact()}
+              onClick={() => onDeleteContact(contact.id)}
             >
               Delete
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => onCancel()}>
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelContact()}>
               Cancel
             </button>
           </div>
         </div>
       ) : (
         <div className="mt-2">
+          {/* <p className="text-red-700">ENTERY ID: {experience.id}</p> */}
+
           {/* <p className="text-gray-700">{contact.name}</p> */}
-          {onDeleteContact && (
-            <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteContact()}>
-              Delete
-            </button>
-          )}
+          <p className="text-gray-700">{contact.email}</p>
+          <p className="text-gray-700">
+            {contact.phone} - {contact.website}
+          </p>
+          <p className="text-gray-700">{contact.address}</p>
         </div>
       )}
     </div>

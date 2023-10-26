@@ -5,7 +5,7 @@ type InputSkillProps = {
   skill: skillType;
   onUpdateSkill: (updatedSkill: skillType) => void;
   onCancel: () => void;
-  onDeleteSkill?: (id: string) => void;
+  onDeleteSkill: (id: string) => void;
 };
 
 export default function InputSkill({ skill, onUpdateSkill, onCancel, onDeleteSkill }: InputSkillProps) {
@@ -26,10 +26,9 @@ export default function InputSkill({ skill, onUpdateSkill, onCancel, onDeleteSki
     setIsEditing(false);
   };
 
-  const handleDeleteSkill = () => {
-    if (onDeleteSkill) {
-      onDeleteSkill(skill.id);
-    }
+  const handleCancelSkill = () => {
+    setIsEditing(false);
+    onCancel();
   };
 
   return (
@@ -62,6 +61,12 @@ export default function InputSkill({ skill, onUpdateSkill, onCancel, onDeleteSki
             >
               Save
             </button>
+            <button
+              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={() => onDeleteSkill(skill.id)}
+            >
+              Delete
+            </button>
             <button className="text-gray-500 hover:text-gray-700" onClick={() => onCancel()}>
               Cancel
             </button>
@@ -70,12 +75,7 @@ export default function InputSkill({ skill, onUpdateSkill, onCancel, onDeleteSki
       ) : (
         <div className="mt-2">
           {/* <p className="text-red-700">ENTRY ID: {skill.id}</p> */}
-          <p className="text-gray-700">{skill.title}</p>
-          {onDeleteSkill && (
-            <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteSkill()}>
-              Delete
-            </button>
-          )}
+          {/* <p className="text-gray-700">{skill.title}</p> */}
         </div>
       )}
     </div>

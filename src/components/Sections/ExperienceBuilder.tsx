@@ -52,8 +52,8 @@ export default function ExperienceBuilder(section: section) {
   };
 
   const handleDeleteExperience = (id: string) => {
-    const newData: experienceType = produce(experience, (draft) => {
-      const index = draft.findIndex((ex) => ex.id === id);
+    const newData = produce(exp, (draft) => {
+      const index = draft.findIndex((exp) => exp.id === id);
       draft.splice(index, 1);
     });
     setExp(newData);

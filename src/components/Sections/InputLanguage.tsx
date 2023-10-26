@@ -5,7 +5,7 @@ type InputLanguageProps = {
   language: languageType;
   onUpdateLanguage: (updatedLanguage: languageType) => void;
   onCancel: () => void;
-  onDeleteLanguage?: (id: string) => void;
+  onDeleteLanguage: (id: string) => void;
 };
 
 export default function InputLanguage({ language, onUpdateLanguage, onCancel, onDeleteLanguage }: InputLanguageProps) {
@@ -26,10 +26,9 @@ export default function InputLanguage({ language, onUpdateLanguage, onCancel, on
     setIsEditing(false);
   };
 
-  const handleDeleteLanguage = () => {
-    if (onDeleteLanguage) {
-      onDeleteLanguage(language.id);
-    }
+  const handleCancelLanguage = () => {
+    setIsEditing(false);
+    onCancel();
   };
 
   return (
@@ -72,7 +71,13 @@ export default function InputLanguage({ language, onUpdateLanguage, onCancel, on
             >
               Save
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => onCancel()}>
+            <button
+              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={() => onDeleteLanguage(language.id)}
+            >
+              Delete
+            </button>
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelLanguage()}>
               Cancel
             </button>
           </div>
@@ -81,11 +86,6 @@ export default function InputLanguage({ language, onUpdateLanguage, onCancel, on
         <div className="mt-2">
           {/* <p className="text-red-700">ENTRY ID: {language.id}</p> */}
           <p className="text-gray-700">{language.description}</p>
-          {onDeleteLanguage && (
-            <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteLanguage()}>
-              Delete
-            </button>
-          )}
         </div>
       )}
     </div>

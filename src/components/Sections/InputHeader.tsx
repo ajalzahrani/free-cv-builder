@@ -32,6 +32,11 @@ export default function InputHeader({ header, onUpdateHeader, onCancel, onDelete
     }
   };
 
+  const handleCancelHeader = () => {
+    setIsEditing(false);
+    onCancel();
+  };
+
   return (
     <div className="mt-4 mb-4">
       <div className="flex justify-between items-center">
@@ -84,14 +89,15 @@ export default function InputHeader({ header, onUpdateHeader, onCancel, onDelete
             >
               Save
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => onCancel()}>
+            <button
+              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={() => handleDeleteSkill()}
+            >
+              Delete
+            </button>
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelHeader()}>
               Cancel
             </button>
-            {onDeleteHeader && (
-              <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteSkill()}>
-                Delete
-              </button>
-            )}
           </div>
         </div>
       ) : (

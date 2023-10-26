@@ -4,9 +4,16 @@ import { educationType } from '~/components/types';
 type InputEducationProps = {
   education: educationType;
   onUpdateEducation: (updatedEducation: educationType) => void;
+  onCancel: () => void;
+  onDeleteEducation: (id: string) => void;
 };
 
-export default function InputEducation({ education, onUpdateEducation }: InputEducationProps) {
+export default function InputEducation({
+  education,
+  onUpdateEducation,
+  onCancel,
+  onDeleteEducation,
+}: InputEducationProps) {
   const [isEditing, setIsEditing] = React.useState<boolean>(education.institution.length === 0 ? true : false);
 
   const [updatedEducation, setUpdatedEducation] = React.useState<educationType>(education);
@@ -22,6 +29,11 @@ export default function InputEducation({ education, onUpdateEducation }: InputEd
   const handleUpdateEducation = () => {
     onUpdateEducation(updatedEducation);
     setIsEditing(false);
+  };
+
+  const handleCancelEducation = () => {
+    setIsEditing(false);
+    onCancel();
   };
 
   return (
@@ -99,7 +111,13 @@ export default function InputEducation({ education, onUpdateEducation }: InputEd
             >
               Save
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => setIsEditing(false)}>
+            <button
+              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={() => onDeleteEducation(education.id)}
+            >
+              Delete
+            </button>
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelEducation}>
               Cancel
             </button>
           </div>

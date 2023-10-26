@@ -52,6 +52,14 @@ export default function CertificateBuilder(section: section) {
     setIsAddingCertificate(false);
   };
 
+  const handleDeleteCertificate = (id: string) => {
+    const newData = produce(cert, (draft) => {
+      const index = draft.findIndex((cert) => cert.id === id);
+      draft.splice(index, 1);
+    });
+    setCert(newData);
+  };
+
   const renderCertificate = () => {
     const rows = [];
     for (let i = 0; i < cert.length; i++) {
@@ -60,6 +68,8 @@ export default function CertificateBuilder(section: section) {
           key={i}
           certificate={cert[i]}
           onUpdateCertificate={(updatedCertificate: certificateType) => updateCertificate(updatedCertificate)}
+          onDeleteCertificate={(id: string) => handleDeleteCertificate(id)}
+          onCancel={() => handleCancelCertificate()}
         />,
       );
     }
@@ -78,6 +88,8 @@ export default function CertificateBuilder(section: section) {
             link: '',
           }}
           onUpdateCertificate={(newCertificate: certificateType) => handleSaveCertificate(newCertificate)}
+          onDeleteCertificate={(id: string) => handleDeleteCertificate(id)}
+          onCancel={() => handleCancelCertificate()}
         />,
       );
     }

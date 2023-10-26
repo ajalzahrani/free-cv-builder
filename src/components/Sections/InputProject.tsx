@@ -5,9 +5,10 @@ type InputProjectProps = {
   project: projectType;
   onUpdateProject: (updatedProject: projectType) => void;
   onCancel: () => void;
+  onDeleteProject: (id: string) => void;
 };
 
-export default function InputProject({ project, onUpdateProject, onCancel }: InputProjectProps) {
+export default function InputProject({ project, onUpdateProject, onCancel, onDeleteProject }: InputProjectProps) {
   const [isEditing, setIsEditing] = React.useState<boolean>(project.title.length === 0 ? true : false);
 
   const [updatedProject, setUpdatedProject] = React.useState<projectType>(project);
@@ -23,6 +24,11 @@ export default function InputProject({ project, onUpdateProject, onCancel }: Inp
   const handleUpdateProject = () => {
     onUpdateProject(updatedProject);
     setIsEditing(false);
+  };
+
+  const handleCancelProject = () => {
+    setIsEditing(false);
+    onCancel();
   };
 
   return (
@@ -76,7 +82,13 @@ export default function InputProject({ project, onUpdateProject, onCancel }: Inp
             >
               Save
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => onCancel()}>
+            <button
+              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={() => onDeleteProject(project.id)}
+            >
+              Delete
+            </button>
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelProject}>
               Cancel
             </button>
           </div>

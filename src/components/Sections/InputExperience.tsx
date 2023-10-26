@@ -26,6 +26,11 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
     setIsEditing(false);
   };
 
+  const handleCancelExperience = () => {
+    setIsEditing(false);
+    onCancel();
+  };
+
   return (
     <div className="border rounded-lg mt-4 p-4 mb-4">
       <div className="flex justify-between items-center">
@@ -114,12 +119,12 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
               Save
             </button>
             <button
-              className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
               onClick={() => onDeleteExperience(experience.id)}
             >
               Delete
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => setIsEditing(false)}>
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelExperience()}>
               Cancel
             </button>
           </div>

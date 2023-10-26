@@ -63,7 +63,8 @@ export default function ProjectBuilder({ section }: { section: sectionType }) {
           key={i}
           project={projects[i]}
           onUpdateProject={(updatedProject: projectType) => updateProject(updatedProject)}
-          onCancel={() => handleCancelProject()}
+          onCancel={handleCancelProject}
+          onDeleteProject={(id: string) => handleDeleteProject(id)}
         />,
       );
     }
@@ -73,7 +74,8 @@ export default function ProjectBuilder({ section }: { section: sectionType }) {
           key="new"
           project={{ id: UUID(), title: '', description: '', link: '' }}
           onUpdateProject={(newProject: projectType) => handleSaveProject(newProject)}
-          onCancel={() => setIsAddingProject(false)}
+          onCancel={handleCancelProject}
+          onDeleteProject={(id: string) => handleDeleteProject(id)}
         />,
       );
     }
