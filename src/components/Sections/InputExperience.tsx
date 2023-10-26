@@ -4,9 +4,11 @@ import { experienceType } from '~/components/types';
 type ExperienceProps = {
   experience: experienceType;
   onUpdateExperience: (updatedExperience: experienceType) => void;
+  onCancel: () => void;
+  onDeleteExperience: (id: string) => void;
 };
 
-export default function Experience({ experience, onUpdateExperience }: ExperienceProps) {
+export default function Experience({ experience, onUpdateExperience, onDeleteExperience, onCancel }: ExperienceProps) {
   const [isEditing, setIsEditing] = React.useState<boolean>(experience.title.length === 0 ? true : false);
 
   const [updatedExperience, setUpdatedExperience] = React.useState<experienceType>(experience);
@@ -25,7 +27,7 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
   };
 
   return (
-    <div className="mb-4">
+    <div className="border rounded-lg mt-4 p-4 mb-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{experience.title}</h3>
         {!isEditing && (
@@ -111,6 +113,12 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
             >
               Save
             </button>
+            <button
+              className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+              onClick={() => onDeleteExperience(experience.id)}
+            >
+              Delete
+            </button>
             <button className="text-gray-500 hover:text-gray-700" onClick={() => setIsEditing(false)}>
               Cancel
             </button>
@@ -118,7 +126,8 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
         </div>
       ) : (
         <div className="mt-2">
-          <p className="text-red-700">ENTERY ID: {experience.id}</p>
+          {/* <p className="text-red-700">ENTERY ID: {experience.id}</p> */}
+
           <p className="text-gray-700">{experience.company}</p>
           <p className="text-gray-700">{experience.location}</p>
           <p className="text-gray-700">

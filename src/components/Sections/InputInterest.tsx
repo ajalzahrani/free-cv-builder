@@ -1,34 +1,41 @@
 import React from 'react';
-import { projectType } from '~/components/types';
+import { interestType } from '~/components/types';
 
-type InputProjectProps = {
-  project: projectType;
-  onUpdateProject: (updatedProject: projectType) => void;
+type InputInterestProps = {
+  interest: interestType;
+  onUpdateInterest: (updatedInterest: interestType) => void;
   onCancel: () => void;
+  onDeleteInterest?: (id: string) => void;
 };
 
-export default function InputProject({ project, onUpdateProject, onCancel }: InputProjectProps) {
-  const [isEditing, setIsEditing] = React.useState<boolean>(project.title.length === 0 ? true : false);
+export default function InputInterest({ interest, onUpdateInterest, onCancel, onDeleteInterest }: InputInterestProps) {
+  const [isEditing, setIsEditing] = React.useState<boolean>(interest.title.length === 0 ? true : false);
 
-  const [updatedProject, setUpdatedProject] = React.useState<projectType>(project);
+  const [updatedInterest, setUpdatedInterest] = React.useState<interestType>(interest);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
-    setUpdatedProject((prevProject: any) => ({
-      ...prevProject,
+    setUpdatedInterest((prevInterest: any) => ({
+      ...prevInterest,
       [name]: value,
     }));
   };
 
-  const handleUpdateProject = () => {
-    onUpdateProject(updatedProject);
+  const handleUpdateInterest = () => {
+    onUpdateInterest(updatedInterest);
     setIsEditing(false);
+  };
+
+  const handleDeleteInterest = () => {
+    if (onDeleteInterest) {
+      onDeleteInterest(interest.id);
+    }
   };
 
   return (
     <div className="mt-4 mb-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-bold">{project.title}</h3>
+        <h3 className="text-lg font-bold">{interest.title}</h3>
         {!isEditing && (
           <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
             Edit
@@ -44,7 +51,7 @@ export default function InputProject({ project, onUpdateProject, onCancel }: Inp
             type="text"
             id="title"
             name="title"
-            value={updatedProject.title}
+            value={updatedInterest.title}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -54,25 +61,14 @@ export default function InputProject({ project, onUpdateProject, onCancel }: Inp
           <textarea
             id="description"
             name="description"
-            value={updatedProject.description}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <label className="block font-bold mt-2 mb-2" htmlFor="link">
-            Link
-          </label>
-          <input
-            type="text"
-            id="link"
-            name="link"
-            value={updatedProject.link}
+            value={updatedInterest.description}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateProject}
+              onClick={handleUpdateInterest}
             >
               Save
             </button>
@@ -83,9 +79,13 @@ export default function InputProject({ project, onUpdateProject, onCancel }: Inp
         </div>
       ) : (
         <div className="mt-2">
-          {/* <p className="text-red-700">ENTRY ID: {project.id}</p> */}
-          <p className="text-gray-700">{project.description}</p>
-          <p className="text-gray-700">{project.link}</p>
+          {/* <p className="text-red-700">ENTRY ID: {interest.id}</p> */}
+          <p className="text-gray-700">{interest.description}</p>
+          {onDeleteInterest && (
+            <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteInterest()}>
+              Delete
+            </button>
+          )}
         </div>
       )}
     </div>

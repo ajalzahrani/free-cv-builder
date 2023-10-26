@@ -25,7 +25,7 @@ export default function InputEducation({ education, onUpdateEducation }: InputEd
   };
 
   return (
-    <div className="mb-4">
+    <div className="mt-4 mb-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{education.institution}</h3>
         {!isEditing && (
@@ -106,7 +106,7 @@ export default function InputEducation({ education, onUpdateEducation }: InputEd
         </div>
       ) : (
         <div className="mt-2">
-          <p className="text-red-700">ENTERY ID: {education.id}</p>
+          {/* <p className="text-red-700">ENTERY ID: {education.id}</p> */}
           <p className="text-gray-700">{education.institution}</p>
           <p className="text-gray-700">{education.degree}</p>
           <p className="text-gray-700">{education.location}</p>

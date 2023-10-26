@@ -28,7 +28,7 @@ export default function InputCertificate({ certificate, onUpdateCertificate }: I
   // new 37
 
   return (
-    <div className="mb-4">
+    <div className="mt-4 mb-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{certificate.title}</h3>
         {!isEditing && (
@@ -122,7 +122,7 @@ export default function InputCertificate({ certificate, onUpdateCertificate }: I
         </div>
       ) : (
         <div className="mt-2">
-          <p className="text-red-700">ENTERY ID: {certificate.id}</p>
+          {/* <p className="text-red-700">ENTERY ID: {certificate.id}</p> */}
           <p className="text-gray-700">{certificate.title}</p>
           <p className="text-gray-700">{certificate.company}</p>
           <p className="text-gray-700">

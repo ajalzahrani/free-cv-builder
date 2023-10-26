@@ -5,7 +5,7 @@ import InputExperience from './InputExperience';
 import { section } from '~/components/types';
 import UUID from '../micro-components/UUID';
 
-const title = 'Professional Experience';
+const title = 'Work Experience';
 
 const experience: experienceType = {
   id: UUID(),
@@ -51,6 +51,18 @@ export default function ExperienceBuilder(section: section) {
     setIsAddingExperience(false);
   };
 
+  const handleDeleteExperience = (id: string) => {
+    const newData: experienceType = produce(experience, (draft) => {
+      const index = draft.findIndex((ex) => ex.id === id);
+      draft.splice(index, 1);
+    });
+    setExp(newData);
+  };
+
+  const handleCancelExperience = () => {
+    setIsAddingExperience(false);
+  };
+
   const renderExperience = () => {
     const rows = [];
     for (let i = 0; i < exp.length; i++) {
@@ -59,6 +71,8 @@ export default function ExperienceBuilder(section: section) {
           key={i}
           experience={exp[i]}
           onUpdateExperience={(updatedExperience: experienceType) => updateExperience(updatedExperience)}
+          onCancel={handleCancelAddExperience}
+          onDeleteExperience={(id: string) => handleDeleteExperience(id)}
         />,
       );
     }
@@ -68,6 +82,8 @@ export default function ExperienceBuilder(section: section) {
           key="new"
           experience={{ id: UUID(), title: '', company: '', location: '', from: '', to: '', description: '' }}
           onUpdateExperience={(newExperience: experienceType) => handleSaveExperience(newExperience)}
+          onCancel={handleCancelExperience}
+          onDeleteExperience={(id: string) => handleDeleteExperience(id)}
         />,
       );
     }
@@ -76,7 +92,7 @@ export default function ExperienceBuilder(section: section) {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h1 className="text-2xl font-bold mb-4">{title}</h1>
           <button

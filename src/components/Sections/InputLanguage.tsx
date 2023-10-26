@@ -1,34 +1,41 @@
 import React from 'react';
-import { projectType } from '~/components/types';
+import { languageType } from '~/components/types';
 
-type InputProjectProps = {
-  project: projectType;
-  onUpdateProject: (updatedProject: projectType) => void;
+type InputLanguageProps = {
+  language: languageType;
+  onUpdateLanguage: (updatedLanguage: languageType) => void;
   onCancel: () => void;
+  onDeleteLanguage?: (id: string) => void;
 };
 
-export default function InputProject({ project, onUpdateProject, onCancel }: InputProjectProps) {
-  const [isEditing, setIsEditing] = React.useState<boolean>(project.title.length === 0 ? true : false);
+export default function InputLanguage({ language, onUpdateLanguage, onCancel, onDeleteLanguage }: InputLanguageProps) {
+  const [isEditing, setIsEditing] = React.useState<boolean>(language.title.length === 0 ? true : false);
 
-  const [updatedProject, setUpdatedProject] = React.useState<projectType>(project);
+  const [updatedLanguage, setUpdatedLanguage] = React.useState<languageType>(language);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
-    setUpdatedProject((prevProject: any) => ({
-      ...prevProject,
+    setUpdatedLanguage((prevLanguage: any) => ({
+      ...prevLanguage,
       [name]: value,
     }));
   };
 
-  const handleUpdateProject = () => {
-    onUpdateProject(updatedProject);
+  const handleUpdateLanguage = () => {
+    onUpdateLanguage(updatedLanguage);
     setIsEditing(false);
+  };
+
+  const handleDeleteLanguage = () => {
+    if (onDeleteLanguage) {
+      onDeleteLanguage(language.id);
+    }
   };
 
   return (
     <div className="mt-4 mb-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-bold">{project.title}</h3>
+        <h3 className="text-lg font-bold">{language.title}</h3>
         {!isEditing && (
           <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
             Edit
@@ -44,7 +51,7 @@ export default function InputProject({ project, onUpdateProject, onCancel }: Inp
             type="text"
             id="title"
             name="title"
-            value={updatedProject.title}
+            value={updatedLanguage.title}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -54,25 +61,14 @@ export default function InputProject({ project, onUpdateProject, onCancel }: Inp
           <textarea
             id="description"
             name="description"
-            value={updatedProject.description}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <label className="block font-bold mt-2 mb-2" htmlFor="link">
-            Link
-          </label>
-          <input
-            type="text"
-            id="link"
-            name="link"
-            value={updatedProject.link}
+            value={updatedLanguage.description}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateProject}
+              onClick={handleUpdateLanguage}
             >
               Save
             </button>
@@ -83,9 +79,13 @@ export default function InputProject({ project, onUpdateProject, onCancel }: Inp
         </div>
       ) : (
         <div className="mt-2">
-          {/* <p className="text-red-700">ENTRY ID: {project.id}</p> */}
-          <p className="text-gray-700">{project.description}</p>
-          <p className="text-gray-700">{project.link}</p>
+          {/* <p className="text-red-700">ENTRY ID: {language.id}</p> */}
+          <p className="text-gray-700">{language.description}</p>
+          {onDeleteLanguage && (
+            <button className="text-red-500 hover:text-red-700" onClick={() => handleDeleteLanguage()}>
+              Delete
+            </button>
+          )}
         </div>
       )}
     </div>

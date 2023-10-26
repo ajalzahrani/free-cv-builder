@@ -86,7 +86,7 @@ export default function CertificateBuilder(section: section) {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h1 className="text-2xl font-bold mb-4">{title}</h1>
           <button

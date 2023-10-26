@@ -9,10 +9,24 @@ export type sectionType =
   | 'footer'
   | 'interests';
 
-type headerType = {
+export type headerType = {
+  id: string;
   name: string;
   title: string;
   pitch: string;
+};
+
+export type contactType = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  website: string;
+  address: string;
+  social: {
+    name: string;
+    url: string;
+  }[];
 };
 
 export type certificateType = {
@@ -24,20 +38,6 @@ export type certificateType = {
   link: string;
   from: string;
   to: string;
-};
-
-type contactType = {
-  contact: {
-    name: string;
-    email: string;
-    phone: string;
-    website: string;
-    address: string;
-    social: {
-      name: string;
-      url: string;
-    }[];
-  };
 };
 
 export type experienceType = {
@@ -68,18 +68,21 @@ export type projectType = {
   link: string;
 };
 
-type skillsType = {
+export type skillType = {
+  id: string;
+  title: string;
+};
+
+export type interestType = {
+  id: string;
   title: string;
   description: string;
 };
 
-type interestsType = {
+export type languageType = {
+  id: string;
   title: string;
   description: string;
-};
-
-type footerType = {
-  text: string;
 };
 
 export type category = {
@@ -90,13 +93,3 @@ export type section = {
   title: string;
   component?: React.FC<any>;
 };
-
-export type sectionDataType =
-  | headerType
-  | contactType
-  | experienceType[]
-  | educationType[]
-  | projectsType[]
-  | skillsType[]
-  | interestsType[]
-  | footerType;
