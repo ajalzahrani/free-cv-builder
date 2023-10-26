@@ -1,25 +1,14 @@
 import React from 'react';
-import Input from './micro-components/Input';
-import { inputType } from '~/components/micro-components/Input';
 import { experienceType, sectionDataType, sectionType } from '~/components/types';
 import { produce } from 'immer';
-import InputExperience from './Sections/InputExperience';
+import InputExperience from './InputExperience';
+import { section } from '~/components/types';
+import UUID from '../micro-components/UUID';
 
-type sectionBuilderType = {
-  title: string;
-  type?: sectionType;
-  textObject: inputType;
-};
-
-const textObjects = {
-  title: '',
-  id: 0,
-  status: true,
-  updateText: () => {},
-};
-const title = 'Experience';
+const title = 'Professional Experience';
 
 const experience: experienceType = {
+  id: UUID(),
   title: 'Software Engineer',
   company: 'ABC Company',
   location: 'San Francisco, CA',
@@ -28,13 +17,16 @@ const experience: experienceType = {
   description: 'Developed and maintained web applications using React and Node.js.',
 };
 
-export default function SectionBuilder() {
+export default function ExperienceBuilder(section: section) {
   const [exp, setExp] = React.useState<experienceType[]>([experience]);
   const [isAddingExperience, setIsAddingExperience] = React.useState<boolean>(false);
-  const [sectionData, setSectionData] = React.useState<string[]>([]);
+
+  const handleAddExperience = () => {
+    setIsAddingExperience(true);
+  };
 
   const updateExperience = (experience: experienceType) => {
-    const index = exp.findIndex((exp) => exp.title === experience.title);
+    const index = exp.findIndex((exp) => exp.id === experience.id);
     if (index !== -1) {
       // Update existing experience
       const newData = produce(exp, (draft) => {
@@ -50,16 +42,12 @@ export default function SectionBuilder() {
     }
   };
 
-  const handleAddExperience = () => {
-    setIsAddingExperience(true);
-  };
-
-  const handleCancelAddExperience = () => {
+  const handleSaveExperience = (experience: experienceType) => {
+    updateExperience(experience);
     setIsAddingExperience(false);
   };
 
-  const handleSaveExperience = (experience: experienceType) => {
-    updateExperience(experience);
+  const handleCancelAddExperience = () => {
     setIsAddingExperience(false);
   };
 
@@ -78,7 +66,7 @@ export default function SectionBuilder() {
       rows.push(
         <InputExperience
           key="new"
-          experience={{ title: '', company: '', location: '', from: '', to: '', description: '' }}
+          experience={{ id: UUID(), title: '', company: '', location: '', from: '', to: '', description: '' }}
           onUpdateExperience={(newExperience: experienceType) => handleSaveExperience(newExperience)}
         />,
       );
@@ -94,7 +82,6 @@ export default function SectionBuilder() {
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
             onClick={() => {
-              // setIsAddingExperience(true);
               handleAddExperience();
             }}
           >
@@ -107,19 +94,3 @@ export default function SectionBuilder() {
     </div>
   );
 }
-
-// const renderTextInput = () => {
-//   const rows = [];
-//   for (let i = 0; i < exp.length; i++) {
-//     rows.push(
-//       <Input
-//         key={i}
-//         id={i}
-//         title={exp[i].title}
-//         status={false}
-//         updateText={(id: number, text: string) => updateExperience(id, text)}
-//       />,
-//     );
-//   }
-//   return <>{rows}</>;
-// };

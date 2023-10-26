@@ -1,33 +1,36 @@
-import React, { useEffect } from 'react';
-import { experienceType } from '~/components/types';
+import React from 'react';
+import { certificateType } from '~/components/types';
 
-type ExperienceProps = {
-  experience: experienceType;
-  onUpdateExperience: (updatedExperience: experienceType) => void;
+type InputCertificationProps = {
+  certificate: certificateType;
+  onUpdateCertificate: (updatedCertificate: certificateType) => void;
 };
 
-export default function Experience({ experience, onUpdateExperience }: ExperienceProps) {
-  const [isEditing, setIsEditing] = React.useState<boolean>(experience.title.length === 0 ? true : false);
+export default function InputCertificate({ certificate, onUpdateCertificate }: InputCertificationProps) {
+  const [isEditing, setIsEditing] = React.useState<boolean>(certificate.title.length === 0 ? true : false);
 
-  const [updatedExperience, setUpdatedExperience] = React.useState<experienceType>(experience);
+  const [updatedCertificate, setupdatedCertificate] = React.useState<certificateType>(certificate);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
-    setUpdatedExperience((prevExperience: any) => ({
-      ...prevExperience,
+    setupdatedCertificate((prevCertification: any) => ({
+      ...prevCertification,
       [name]: value,
     }));
   };
 
-  const handleUpdateExperience = () => {
-    onUpdateExperience(updatedExperience);
+  const handleUpdateCertificate = () => {
+    onUpdateCertificate(updatedCertificate);
     setIsEditing(false);
   };
+
+  // old 67
+  // new 37
 
   return (
     <div className="mb-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-bold">{experience.title}</h3>
+        <h3 className="text-lg font-bold">{certificate.title}</h3>
         {!isEditing && (
           <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
             Edit
@@ -37,16 +40,27 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
       {isEditing ? (
         <div className="mt-2">
           <label className="block font-bold mt-2 mb-2" htmlFor="to">
-            <p className="text-red-700">{experience.id}</p>
+            <p className="text-red-700">{certificate.id}</p>
           </label>
-          <label className="block font-bold mb-2" htmlFor="title">
+          <label className="block font-bold mt-2 mb-2" htmlFor="description">
             Title
           </label>
           <input
             type="text"
             id="title"
             name="title"
-            value={updatedExperience.title}
+            value={updatedCertificate.title}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <label className="block font-bold mt-2 mb-2" htmlFor="description">
+            Description
+          </label>
+          <input
+            type="text"
+            id="description"
+            name="description"
+            value={updatedCertificate.description}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -57,18 +71,18 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
             type="text"
             id="company"
             name="company"
-            value={updatedExperience.company}
+            value={updatedCertificate.company}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="location">
-            Location
+          <label className="block font-bold mt-2 mb-2" htmlFor="link">
+            Link
           </label>
           <input
             type="text"
-            id="location"
-            name="location"
-            value={updatedExperience.location}
+            id="link"
+            name="link"
+            value={updatedCertificate.link}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -79,7 +93,7 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
             type="text"
             id="from"
             name="from"
-            value={updatedExperience.from}
+            value={updatedCertificate.from}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -90,24 +104,14 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
             type="text"
             id="to"
             name="to"
-            value={updatedExperience.to}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <label className="block font-bold mt-2 mb-2" htmlFor="description">
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            value={updatedExperience.description}
+            value={updatedCertificate.to}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateExperience}
+              onClick={handleUpdateCertificate}
             >
               Save
             </button>
@@ -118,13 +122,13 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
         </div>
       ) : (
         <div className="mt-2">
-          <p className="text-red-700">ENTERY ID: {experience.id}</p>
-          <p className="text-gray-700">{experience.company}</p>
-          <p className="text-gray-700">{experience.location}</p>
+          <p className="text-red-700">ENTERY ID: {certificate.id}</p>
+          <p className="text-gray-700">{certificate.title}</p>
+          <p className="text-gray-700">{certificate.company}</p>
           <p className="text-gray-700">
-            {experience.from} - {experience.to}
+            {certificate.from} - {certificate.to}
           </p>
-          <p className="text-gray-700">{experience.description}</p>
+          <p className="text-gray-700">{certificate.description}</p>
         </div>
       )}
     </div>

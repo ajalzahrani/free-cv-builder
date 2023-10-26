@@ -1,33 +1,33 @@
-import React, { useEffect } from 'react';
-import { experienceType } from '~/components/types';
+import React from 'react';
+import { educationType } from '~/components/types';
 
-type ExperienceProps = {
-  experience: experienceType;
-  onUpdateExperience: (updatedExperience: experienceType) => void;
+type InputEducationProps = {
+  education: educationType;
+  onUpdateEducation: (updatedEducation: educationType) => void;
 };
 
-export default function Experience({ experience, onUpdateExperience }: ExperienceProps) {
-  const [isEditing, setIsEditing] = React.useState<boolean>(experience.title.length === 0 ? true : false);
+export default function InputEducation({ education, onUpdateEducation }: InputEducationProps) {
+  const [isEditing, setIsEditing] = React.useState<boolean>(education.institution.length === 0 ? true : false);
 
-  const [updatedExperience, setUpdatedExperience] = React.useState<experienceType>(experience);
+  const [updatedEducation, setUpdatedEducation] = React.useState<educationType>(education);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
-    setUpdatedExperience((prevExperience: any) => ({
-      ...prevExperience,
+    setUpdatedEducation((prevEducation: any) => ({
+      ...prevEducation,
       [name]: value,
     }));
   };
 
-  const handleUpdateExperience = () => {
-    onUpdateExperience(updatedExperience);
+  const handleUpdateEducation = () => {
+    onUpdateEducation(updatedEducation);
     setIsEditing(false);
   };
 
   return (
     <div className="mb-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-bold">{experience.title}</h3>
+        <h3 className="text-lg font-bold">{education.institution}</h3>
         {!isEditing && (
           <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
             Edit
@@ -36,39 +36,25 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
       </div>
       {isEditing ? (
         <div className="mt-2">
-          <label className="block font-bold mt-2 mb-2" htmlFor="to">
-            <p className="text-red-700">{experience.id}</p>
-          </label>
-          <label className="block font-bold mb-2" htmlFor="title">
-            Title
+          <label className="block font-bold mt-2 mb-2" htmlFor="institution">
+            Institution
           </label>
           <input
             type="text"
-            id="title"
-            name="title"
-            value={updatedExperience.title}
+            id="institution"
+            name="institution"
+            value={updatedEducation.institution}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="company">
-            Company
+          <label className="block font-bold mt-2 mb-2" htmlFor="degree">
+            Degree
           </label>
           <input
             type="text"
-            id="company"
-            name="company"
-            value={updatedExperience.company}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <label className="block font-bold mt-2 mb-2" htmlFor="location">
-            Location
-          </label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={updatedExperience.location}
+            id="degree"
+            name="degree"
+            value={updatedEducation.degree}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -79,7 +65,7 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
             type="text"
             id="from"
             name="from"
-            value={updatedExperience.from}
+            value={updatedEducation.from}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
@@ -90,24 +76,26 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
             type="text"
             id="to"
             name="to"
-            value={updatedExperience.to}
+            value={updatedEducation.to}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="description">
+          <label className="block font-bold mt-2 mb-2" htmlFor="to">
             Description
           </label>
-          <textarea
+          <input
+            type="text"
             id="description"
             name="description"
-            value={updatedExperience.description}
+            value={updatedEducation.description}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateExperience}
+              onClick={handleUpdateEducation}
             >
               Save
             </button>
@@ -118,13 +106,14 @@ export default function Experience({ experience, onUpdateExperience }: Experienc
         </div>
       ) : (
         <div className="mt-2">
-          <p className="text-red-700">ENTERY ID: {experience.id}</p>
-          <p className="text-gray-700">{experience.company}</p>
-          <p className="text-gray-700">{experience.location}</p>
+          <p className="text-red-700">ENTERY ID: {education.id}</p>
+          <p className="text-gray-700">{education.institution}</p>
+          <p className="text-gray-700">{education.degree}</p>
+          <p className="text-gray-700">{education.location}</p>
           <p className="text-gray-700">
-            {experience.from} - {experience.to}
+            {education.from} - {education.to}
           </p>
-          <p className="text-gray-700">{experience.description}</p>
+          <p className="text-gray-700">{education.description}</p>
         </div>
       )}
     </div>

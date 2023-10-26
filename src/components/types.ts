@@ -15,6 +15,17 @@ type headerType = {
   pitch: string;
 };
 
+export type certificateType = {
+  id: string;
+  [x: string]: any;
+  title: string;
+  description: string;
+  company: string;
+  link: string;
+  from: string;
+  to: string;
+};
+
 type contactType = {
   contact: {
     name: string;
@@ -30,6 +41,7 @@ type contactType = {
 };
 
 export type experienceType = {
+  id: string;
   [x: string]: any;
   title: string;
   company: string;
@@ -39,8 +51,9 @@ export type experienceType = {
   description: string;
 };
 
-type educationType = {
-  school: string;
+export type educationType = {
+  id: string;
+  institution: string;
   degree: string;
   location: string;
   from: string;
@@ -48,7 +61,8 @@ type educationType = {
   description: string;
 };
 
-type projectsType = {
+export type projectType = {
+  id: string;
   title: string;
   description: string;
   link: string;
@@ -66,6 +80,15 @@ type interestsType = {
 
 type footerType = {
   text: string;
+};
+
+export type category = {
+  title: string;
+  component?: React.FC<any>;
+};
+export type section = {
+  title: string;
+  component?: React.FC<any>;
 };
 
 export type sectionDataType =

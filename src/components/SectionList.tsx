@@ -1,50 +1,59 @@
-import { useState } from 'react';
-import '../styles/App.css';
-import Section from './Section';
-import useStore from '../store';
+import React from 'react';
+import { section } from './types';
+import EductionBuilder from './Sections/EductionBuilder';
+import ExperienceBuilder from './Sections/ExperienceBuilder';
+import CertificateBuilder from './Sections/CertificateBuilder';
+import ProjectBuilder from './Sections/ProjectBuilder';
 
-export type SectionType = {
-  id: number;
-  title: string;
-  status?: boolean; // true is completed
+type SectionListProps = {
+  sections: section[];
 };
 
-export type SectionListType = SectionType[];
+const sections: section[] = [
+  { title: 'Professional Experience', component: ExperienceBuilder },
+  { title: 'Academic Education', component: EductionBuilder },
+  { title: 'Certificate', component: CertificateBuilder },
+  { title: 'Projects', component: ProjectBuilder },
+];
 
-function SectionList() {
-  const [sectionTitle, setSectionTitle] = useState<string>('');
-  const sections = useStore((s) => s.sections);
-  const addSection = useStore((s) => s.addSection);
-  const [isEdiable, setIsEdiable] = useState<boolean>(false);
+export default function SectionList() {
+  const [selectedSection, setSelectedSection] = React.useState<section | null>(null);
 
-  const submit = () => {
-    const newSection: SectionType = {
-      id: Math.random() * 2.5,
-      title: sectionTitle,
-      status: false,
-    };
+  const handleSectionClick = (section: section) => {
+    setSelectedSection(section);
+  };
 
-    addSection(newSection);
+  const renderBuilder = (title: string) => {
+    // make switch statement amond buklders
+    switch (title) {
+      case 'Professional Experience':
+        return <ExperienceBuilder />;
+      case 'Academic Education':
+        return <EductionBuilder />;
+      case 'Certificate':
+        return <CertificateBuilder />;
+      case 'Projects':
+        return <ProjectBuilder />;
+      default:
+        return <div>Not Found</div>;
+    }
   };
 
   return (
-    <div className="App">
-      {/* <input
-        type="text"
-        // onKeyDown={(e) => onKeyDownHandler(e)}
-        onChange={(e: React.FormEvent<HTMLInputElement>) => setSectionTitle(e.currentTarget.value)}
-        className="input"
-      /> */}
-      <button onClick={submit}>submit</button>
-      <div className="custom-list">
-        <ul>
-          {sections?.map((section, i) => {
-            return <Section key={i} Section={section} />;
-          })}
-        </ul>
+    <div>
+      <div>
+        {sections.map((section) => (
+          <div key={section.title}>
+            <button onClick={() => handleSectionClick(section)}>{section.title}</button>
+          </div>
+        ))}
       </div>
+      {selectedSection && (
+        <div>
+          <button onClick={() => setSelectedSection(null)}>Back</button>
+          <div>{renderBuilder(selectedSection.title)}</div>
+        </div>
+      )}
     </div>
   );
 }
-
-export default SectionList;
