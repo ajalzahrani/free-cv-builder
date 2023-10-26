@@ -8,7 +8,7 @@ const title = 'Interests';
 
 const interest: interestType = {
   id: UUID(),
-  title: 'Interest 1',
+  title: 'React',
   description: '',
 };
 

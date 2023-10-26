@@ -8,7 +8,7 @@ const title = 'Skills';
 
 const skill: skillType = {
   id: UUID(),
-  title: 'Skill 1',
+  title: 'React',
 };
 
 export default function SkillBuilder({ section }: { section: sectionType }) {

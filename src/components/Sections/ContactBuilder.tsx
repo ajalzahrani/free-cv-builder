@@ -9,10 +9,10 @@ const title = 'Contacts';
 const contact: contactType = {
   id: UUID(),
   name: 'Contact 1',
-  email: '',
-  phone: '',
-  website: '',
-  address: '',
+  email: 'example@xyz.com',
+  phone: '000-111-2222',
+  website: 'example.com',
+  address: 'Somewhere in the world',
   social: [],
 };
 

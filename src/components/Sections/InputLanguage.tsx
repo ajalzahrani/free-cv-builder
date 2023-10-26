@@ -32,7 +32,7 @@ export default function InputLanguage({ language, onUpdateLanguage, onCancel, on
   };
 
   return (
-    <div className="mt-4 mb-4">
+    <div className="border rounded-lg mt-4 p-4 mb-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{language.title}</h3>
         {!isEditing && (

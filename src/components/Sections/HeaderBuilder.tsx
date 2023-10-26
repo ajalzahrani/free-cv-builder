@@ -8,9 +8,9 @@ const title = 'Headers';
 
 const header: headerType = {
   id: UUID(),
-  name: 'Header 1',
-  title: 'Title 1',
-  pitch: 'Pitch 1',
+  name: 'John Doe',
+  title: 'Software Engineer',
+  pitch: 'I am a software engineer with 5 years of experience.',
 };
 
 export default function HeaderBuilder({ section }: { section: sectionType }) {
