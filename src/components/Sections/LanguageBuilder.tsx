@@ -2,7 +2,7 @@ import React from 'react';
 import { sectionType, languageType } from '~/components/types';
 import { produce } from 'immer';
 import InputLanguage from './InputLanguage';
-import UUID from '../micro-components/UUID';
+import UUID from '../shared/UUID';
 
 const title = 'Languages';
 

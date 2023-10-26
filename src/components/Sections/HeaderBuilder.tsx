@@ -2,7 +2,7 @@ import React from 'react';
 import { sectionType, headerType } from '~/components/types';
 import { produce } from 'immer';
 import InputHeader from './InputHeader';
-import UUID from '../micro-components/UUID';
+import UUID from '../shared/UUID';
 
 const title = 'Headers';
 

@@ -3,7 +3,7 @@ import { experienceType, sectionDataType, sectionType } from '~/components/types
 import { produce } from 'immer';
 import InputExperience from './InputExperience';
 import { section } from '~/components/types';
-import UUID from '../micro-components/UUID';
+import UUID from '../shared/UUID';
 
 const title = 'Work Experience';
 

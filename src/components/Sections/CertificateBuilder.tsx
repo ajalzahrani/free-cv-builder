@@ -1,9 +1,9 @@
 import React from 'react';
-import { certificateType, sectionDataType, sectionType } from '~/components/types';
+import { certificateType } from '~/components/types';
 import { produce } from 'immer';
 import InputCertificate from './InputCertificate';
 import { section } from '~/components/types';
-import UUID from '../micro-components/UUID';
+import UUID from '../shared/UUID';
 
 const title = 'Certificattions';
 

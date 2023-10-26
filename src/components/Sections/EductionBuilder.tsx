@@ -1,7 +1,7 @@
 import React from 'react';
 import { educationType, section } from '~/components/types';
 import { produce } from 'immer';
-import UUID from '../micro-components/UUID';
+import UUID from '../shared/UUID';
 import InputEducation from './InputEducation';
 
 const title = 'Academic Education';

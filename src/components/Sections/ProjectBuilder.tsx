@@ -2,7 +2,7 @@ import React from 'react';
 import { projectType, sectionType } from '~/components/types';
 import { produce } from 'immer';
 import InputProject from './InputProject';
-import UUID from '../micro-components/UUID';
+import UUID from '../shared/UUID';
 
 const title = 'Projects';
 

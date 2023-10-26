@@ -2,7 +2,7 @@ import React from 'react';
 import { sectionType, skillType } from '~/components/types';
 import { produce } from 'immer';
 import InputSkill from './InputSkill';
-import UUID from '../micro-components/UUID';
+import UUID from '../shared/UUID';
 
 const title = 'Skills';
 

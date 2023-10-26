@@ -2,7 +2,7 @@ import React from 'react';
 import { sectionType, contactType } from '~/components/types';
 import { produce } from 'immer';
 import InputContact from './InputContact';
-import UUID from '../micro-components/UUID';
+import UUID from '../shared/UUID';
 
 const title = 'Contacts';
 
