@@ -31,12 +31,6 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
   };
 
   const handleUpdateExperience = () => {
-    // setUpdatedExperience((prev) => {
-    //   return {
-    //     ...prev,
-    //     tasks: tasks,
-    //   };
-    // });
     handleAddTask();
     onUpdateExperience(updatedExperience);
     setIsEditing(false);
@@ -46,6 +40,10 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
     setIsEditing(false);
     onCancel();
   };
+
+  React.useEffect(() => {
+    handleAddTask();
+  }, [tasks]);
 
   return (
     <div className="border rounded-lg mt-4 p-4 mb-4">
@@ -59,6 +57,9 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
       </div>
       {isEditing ? (
         <div className="mt-2">
+          <button className="text-blue-500 hover:text-blue-700" onClick={() => handleAddTask()}>
+            Redner for task
+          </button>
           <label className="block font-bold mb-2" htmlFor="title">
             Title
           </label>
@@ -92,28 +93,34 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="from">
-            From
-          </label>
-          <input
-            type="text"
-            id="from"
-            name="from"
-            value={updatedExperience.from}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <label className="block font-bold mt-2 mb-2" htmlFor="to">
-            To
-          </label>
-          <input
-            type="text"
-            id="to"
-            name="to"
-            value={updatedExperience.to}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          <div className="flex justify-between">
+            <div className="w-full">
+              <label className="block font-bold mt-2 mb-2" htmlFor="from">
+                From
+              </label>
+              <input
+                type="text"
+                id="from"
+                name="from"
+                value={updatedExperience.from}
+                onChange={handleInputChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="w-full">
+              <label className="block font-bold ml-2 mt-2 mb-2" htmlFor="to">
+                To
+              </label>
+              <input
+                type="text"
+                id="to"
+                name="to"
+                value={updatedExperience.to}
+                onChange={handleInputChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ml-2"
+              />
+            </div>
+          </div>
           <label className="block font-bold mt-2 mb-2" htmlFor="description">
             Description
           </label>
@@ -181,6 +188,7 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
             {experience.from} - {experience.to}
           </p>
           <p className="text-gray-700">{experience.description}</p>
+          <p className="text-gray-700 font-bold">Tasks</p>
           {tasks.map((task, index) => (
             <div key={index} className="flex items-center mb-2">
               <div className="bg-gray-200 rounded-lg py-2 px-3 w-full mr-2">{task}</div>

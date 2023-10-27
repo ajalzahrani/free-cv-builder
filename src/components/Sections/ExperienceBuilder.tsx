@@ -74,7 +74,7 @@ export default function ExperienceBuilder(section: section) {
         <InputExperience
           key={i}
           experience={exp[i]}
-          onUpdateExperience={(updatedExperience: experienceType) => updateExperience(updatedExperience)}
+          onUpdateExperience={(updatedExperience: experienceType) => handleSaveExperience(updatedExperience)}
           onCancel={handleCancelExperience}
           onDeleteExperience={(id: string) => handleDeleteExperience(id)}
         />,
@@ -115,6 +115,14 @@ export default function ExperienceBuilder(section: section) {
             }}
           >
             Add
+          </button>
+          <button
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4"
+            onClick={() => {
+              console.log(exp);
+            }}
+          >
+            Print
           </button>
           {/* <div>{renderTextInput()}</div> */}
           <div>{renderExperience()}</div>
