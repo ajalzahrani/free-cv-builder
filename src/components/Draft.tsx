@@ -1,6 +1,7 @@
 import React from 'react';
 import schema from '../store/Schema';
 import useStore from '../store/RepoLocalStorage';
+import InputHeader from './Sections/InputHeader';
 import {
   headerType,
   contactType,
@@ -14,9 +15,12 @@ import {
 } from './types';
 import DraftCard from './DraftCard';
 import UUID from './shared/UUID';
+import DraftCardPreivew from './DraftCardPreivew';
 
 const Draft = () => {
   const [draft, setDraft] = React.useState(schema);
+  const [showDialog, setShowDialog] = React.useState(false);
+  const [dialogData, setDialgoData] = React.useState({});
   const store = useStore();
 
   const handleHeaderChange = (header: headerType) => {
@@ -156,6 +160,11 @@ const Draft = () => {
     }));
   };
 
+  const handlePreviewCard = (arg0: { data: any }): void => {
+    setShowDialog(true);
+    setDialgoData(arg0.data);
+  };
+
   function handleSectionClick(arg0: { type: string; data: any }): void {
     console.log(arg0);
     // Set the selected section as the resume draft
@@ -195,6 +204,7 @@ const Draft = () => {
 
   return (
     <div>
+      {showDialog && <DraftCardPreivew onClose={() => setShowDialog(false)} data={dialogData} />}
       {/* Render components for each section of the draft */}
       <div>
         <h2 className="text-lg font-bold mb-4">Sections</h2>
@@ -231,7 +241,11 @@ const Draft = () => {
           <div className="flex flex-wrap">
             {store.headers.map((header) => (
               <div key={header.id} className="w-1/2 md:w-1/3 lg:w-1/4 p-2">
-                <DraftCard section={header} onAdd={() => handleSectionClick({ type: 'header', data: header })} />
+                <DraftCard
+                  section={header}
+                  onShow={() => handlePreviewCard({ data: header })}
+                  onAdd={() => handleSectionClick({ type: 'header', data: header })}
+                />
               </div>
             ))}
           </div>
@@ -244,6 +258,7 @@ const Draft = () => {
                 <DraftCard
                   key={key}
                   section={contact}
+                  onShow={() => handlePreviewCard({ data: contact })}
                   onAdd={() => handleSectionClick({ type: 'contact', data: contact })}
                 />
               </div>
@@ -257,6 +272,7 @@ const Draft = () => {
               <div key={experience.id} className="w-1/2 md:w-1/3 lg:w-1/4 p-2">
                 <DraftCard
                   section={experience}
+                  onShow={() => handlePreviewCard({ data: experience })}
                   onAdd={() => handleSectionClick({ type: 'experience', data: experience })}
                 />
               </div>
@@ -270,6 +286,7 @@ const Draft = () => {
               <div key={education.id} className="w-1/2 md:w-1/3 lg:w-1/4 p-2">
                 <DraftCard
                   section={education}
+                  onShow={() => handlePreviewCard({ data: education })}
                   onAdd={() => handleSectionClick({ type: 'education', data: education })}
                 />
               </div>
@@ -284,6 +301,7 @@ const Draft = () => {
               <div key={certificate.id} className="w-1/2 md:w-1/3 lg:w-1/4 p-2">
                 <DraftCard
                   section={certificate}
+                  onShow={() => handlePreviewCard({ data: certificate })}
                   onAdd={() => handleSectionClick({ type: 'certificate', data: certificate })}
                 />
               </div>
@@ -296,7 +314,11 @@ const Draft = () => {
           <div className="flex flex-wrap">
             {store.skills.map((skill) => (
               <div key={skill.id} className="w-1/2 md:w-1/3 lg:w-1/4 p-2">
-                <DraftCard section={skill} onAdd={() => handleSectionClick({ type: 'skill', data: skill })} />
+                <DraftCard
+                  section={skill}
+                  onShow={() => handlePreviewCard({ data: skill })}
+                  onAdd={() => handleSectionClick({ type: 'skill', data: skill })}
+                />
               </div>
             ))}
           </div>
@@ -307,7 +329,11 @@ const Draft = () => {
           <div className="flex flex-wrap">
             {store.projects.map((project) => (
               <div key={project.id} className="w-1/2 md:w-1/3 lg:w-1/4 p-2">
-                <DraftCard section={project} onAdd={() => handleSectionClick({ type: 'project', data: project })} />
+                <DraftCard
+                  section={project}
+                  onShow={() => handlePreviewCard({ data: project })}
+                  onAdd={() => handleSectionClick({ type: 'project', data: project })}
+                />
               </div>
             ))}
           </div>
@@ -318,7 +344,11 @@ const Draft = () => {
           <div className="flex flex-wrap">
             {store.languages.map((language) => (
               <div key={language.id} className="w-1/2 md:w-1/3 lg:w-1/4 p-2">
-                <DraftCard section={language} onAdd={() => handleSectionClick({ type: 'language', data: language })} />
+                <DraftCard
+                  section={language}
+                  onShow={() => handlePreviewCard({ data: language })}
+                  onAdd={() => handleSectionClick({ type: 'language', data: language })}
+                />
               </div>
             ))}
           </div>
@@ -329,7 +359,11 @@ const Draft = () => {
           <div className="flex flex-wrap">
             {store.interests.map((interest) => (
               <div key={interest.id} className="w-1/2 md:w-1/3 lg:w-1/4 p-2">
-                <DraftCard section={interest} onAdd={() => handleSectionClick({ type: 'interest', data: interest })} />
+                <DraftCard
+                  section={interest}
+                  onShow={() => handlePreviewCard({ data: interest })}
+                  onAdd={() => handleSectionClick({ type: 'interest', data: interest })}
+                />
               </div>
             ))}
           </div>
