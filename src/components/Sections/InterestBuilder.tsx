@@ -3,6 +3,7 @@ import { interestType } from '~/components/types';
 import { produce } from 'immer';
 import InputInterest from './InputInterest';
 import UUID from '../shared/UUID';
+import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Interests';
 
@@ -13,7 +14,8 @@ const interest: interestType = {
 };
 
 export default function InterestBuilder() {
-  const [interests, setInterests] = React.useState<interestType[]>([interest]);
+  // const [interests, setInterests] = React.useState<interestType[]>([interest]);
+  const { interests, updateInterests } = useStore();
   const [isAddingInterest, setIsAddingInterest] = React.useState<boolean>(false);
 
   const handleAddInterest = () => {
@@ -27,13 +29,13 @@ export default function InterestBuilder() {
       const newData = produce(interests, (draft) => {
         draft[index] = interest;
       });
-      setInterests(newData);
+      updateInterests(newData);
     } else {
       // Add new interest
       const newData = produce(interests, (draft) => {
         draft.push(interest);
       });
-      setInterests(newData);
+      updateInterests(newData);
     }
   };
 
@@ -52,7 +54,7 @@ export default function InterestBuilder() {
       if (index !== -1) draft.splice(index, 1);
       else handleCancelInterest();
     });
-    setInterests(newData);
+    updateInterests(newData);
   };
 
   const renderInterests = () => {

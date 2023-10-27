@@ -1,3 +1,15 @@
+import {
+  headerType,
+  contactType,
+  experienceType,
+  educationType,
+  certificateType,
+  skillType,
+  projectType,
+  languageType,
+  interestType,
+} from '../components/types';
+
 const schema = {
   name: '',
   title: '',

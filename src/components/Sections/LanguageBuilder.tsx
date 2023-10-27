@@ -3,6 +3,7 @@ import { sectionType, languageType } from '~/components/types';
 import { produce } from 'immer';
 import InputLanguage from './InputLanguage';
 import UUID from '../shared/UUID';
+import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Languages';
 
@@ -13,7 +14,8 @@ const language: languageType = {
 };
 
 export default function LanguageBuilder({ section }: { section: sectionType }) {
-  const [languages, setLanguages] = React.useState<languageType[]>([language]);
+  // const [languages, setLanguages] = React.useState<languageType[]>([language]);
+  const { languages, updateLanguages } = useStore();
   const [isAddingLanguage, setIsAddingLanguage] = React.useState<boolean>(false);
 
   const handleAddLanguage = () => {
@@ -27,13 +29,13 @@ export default function LanguageBuilder({ section }: { section: sectionType }) {
       const newData = produce(languages, (draft) => {
         draft[index] = language;
       });
-      setLanguages(newData);
+      updateLanguages(newData);
     } else {
       // Add new language
       const newData = produce(languages, (draft) => {
         draft.push(language);
       });
-      setLanguages(newData);
+      updateLanguages(newData);
     }
   };
 
@@ -52,7 +54,7 @@ export default function LanguageBuilder({ section }: { section: sectionType }) {
       if (index !== -1) draft.splice(index, 1);
       else handleCancelLanguage();
     });
-    setLanguages(newData);
+    updateLanguages(newData);
   };
 
   const renderLanguages = () => {
