@@ -26,12 +26,6 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
     setIsEditing(false);
   };
 
-  // const handleDeleteContact = () => {
-  //   if (onDeleteContact) {
-  //     onDeleteContact(contact.id);
-  //   }
-  // };
-
   const handleCancelContact = () => {
     setIsEditing(false);
     onCancel();
@@ -104,6 +98,62 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          <div className="flex justify-between">
+            <div className="w-full">
+              <label className="block font-bold mt-2 mb-2" htmlFor="linkedin">
+                Linkedin
+              </label>
+              <input
+                type="text"
+                id="linkedin"
+                name="linkedin"
+                value={updatedContact.linkedin}
+                onChange={handleInputChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="w-full">
+              <label className="block font-bold mt-2 mb-2 ml-2" htmlFor="twitter">
+                twitter
+              </label>
+              <input
+                type="text"
+                id="twitter"
+                name="twitter"
+                value={updatedContact.twitter}
+                onChange={handleInputChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 ml-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+          </div>
+          <div className="flex justify-between">
+            <div className="w-full">
+              <label className="block font-bold mt-2 mb-2" htmlFor="facebook">
+                Facebook
+              </label>
+              <input
+                type="text"
+                id="facebook"
+                name="facebook"
+                value={updatedContact.facebook}
+                onChange={handleInputChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="w-full">
+              <label className="block font-bold mt-2 mb-2 ml-2" htmlFor="github">
+                Github
+              </label>
+              <input
+                type="text"
+                id="github"
+                name="github"
+                value={updatedContact.github}
+                onChange={handleInputChange}
+                className="shadow appearance-none border rounded w-full ml-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+          </div>
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
@@ -132,6 +182,10 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
             {contact.phone} - {contact.website}
           </p>
           <p className="text-gray-700">{contact.address}</p>
+          <p className="text-gray-700">{contact.twitter}</p>
+          <p className="text-gray-700">{contact.facebook}</p>
+          <p className="text-gray-700">{contact.linkedin}</p>
+          <p className="text-gray-700">{contact.github}</p>
         </div>
       )}
     </div>

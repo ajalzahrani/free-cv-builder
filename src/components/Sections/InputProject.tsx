@@ -75,6 +75,34 @@ export default function InputProject({ project, onUpdateProject, onCancel, onDel
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          <div className="flex justify-between">
+            <div className="w-full">
+              <label className="block font-bold mt-2 mb-2" htmlFor="from">
+                From
+              </label>
+              <input
+                type="text"
+                id="from"
+                name="from"
+                value={updatedProject.from}
+                onChange={handleInputChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div className="w-full">
+              <label className="block font-bold ml-2 mt-2 mb-2" htmlFor="to">
+                To
+              </label>
+              <input
+                type="text"
+                id="to"
+                name="to"
+                value={updatedProject.to}
+                onChange={handleInputChange}
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ml-2"
+              />
+            </div>
+          </div>
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
@@ -98,6 +126,9 @@ export default function InputProject({ project, onUpdateProject, onCancel, onDel
           {/* <p className="text-red-700">ENTRY ID: {project.id}</p> */}
           <p className="text-gray-700">{project.description}</p>
           <p className="text-gray-700">{project.link}</p>
+          <p className="text-gray-700">
+            {project.from} - {project.to}
+          </p>
         </div>
       )}
     </div>

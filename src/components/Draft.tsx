@@ -11,7 +11,6 @@ import {
   projectType,
   languageType,
   interestType,
-  sectionType,
 } from './types';
 import DraftCard from './DraftCard';
 import UUID from './shared/UUID';
@@ -19,7 +18,6 @@ import UUID from './shared/UUID';
 const Draft = () => {
   const [draft, setDraft] = React.useState(schema);
   const store = useStore();
-  const [selectedSection, setSelectedSection] = React.useState<sectionType | null>(null);
 
   const handleHeaderChange = (header: headerType) => {
     setDraft((prevDraft) => ({
@@ -50,16 +48,16 @@ const Draft = () => {
   const handleExperienceChange = (experience: experienceType) => {
     setDraft((prevDraft) => ({
       ...prevDraft,
-      experiences: [
+      experience: [
         ...prevDraft.experience,
         {
-          id: UUID(),
           title: experience.title,
           company: experience.company,
           location: experience.location,
           from: experience.from,
           to: experience.to,
           description: experience.description,
+          tasks: experience.tasks,
         },
       ],
     }));
@@ -68,7 +66,7 @@ const Draft = () => {
   const handleEducationChange = (education: educationType) => {
     setDraft((prevDraft) => ({
       ...prevDraft,
-      educations: [
+      education: [
         ...prevDraft.education,
         {
           id: UUID(),
@@ -201,10 +199,30 @@ const Draft = () => {
       <div>
         <h2 className="text-lg font-bold mb-4">Sections</h2>
         <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
+          onClick={() => {
+            // save draft to localstorage
+            console.log(JSON.stringify(draft));
+
+            localStorage.setItem('draft', JSON.stringify(draft));
+          }}
+        >
+          Save Draft
+        </button>
+        <button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
           onClick={() => console.log(draft)}
         >
           Print Draft
+        </button>
+        <button
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
+          onClick={() => {
+            // delete draft from localstorage
+            localStorage.removeItem('draft');
+          }}
+        >
+          Delete Draft
         </button>
       </div>
       <div className="flex flex-wrap">

@@ -4,6 +4,8 @@ import Scene from './components/screens/Scene';
 import { produce } from 'immer';
 import { experienceType } from './components/types';
 import SectionList from './components/SectionList';
+import Draft from './components/Draft';
+import Templete from './components/Templete';
 
 function App() {
   const [exp, setExp] = React.useState<experienceType[]>([]);
@@ -24,6 +26,16 @@ function App() {
               </Link>
             </li>
             <li>
+              <Link to="/draft" className="font-bold text-lg">
+                Draft
+              </Link>
+            </li>
+            <li>
+              <Link to="/templete" className="font-bold text-lg">
+                Templete
+              </Link>
+            </li>
+            <li>
               <Link to="/scene" className="font-bold text-lg">
                 Scene
               </Link>
@@ -34,6 +46,8 @@ function App() {
         <div className="container mx-auto px-6 py-4">
           <Routes>
             <Route path="/" element={<SectionList />} />
+            <Route path="/draft" element={<Draft />} />
+            <Route path="/templete" element={<Templete />} />
             <Route path="/scene" element={<Scene />} />
           </Routes>
         </div>

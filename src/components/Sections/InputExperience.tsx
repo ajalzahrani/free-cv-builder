@@ -30,6 +30,12 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
     }));
   };
 
+  const handleDeleteTask = (index: number) => {
+    const newTasks = [...tasks];
+    newTasks.splice(index, 1);
+    setTasks(newTasks);
+  };
+
   const handleUpdateExperience = () => {
     handleAddTask();
     onUpdateExperience(updatedExperience);
@@ -144,6 +150,12 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
                     setTasks(newTask);
                   }}
                 />
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => handleDeleteTask(index)}
+                >
+                  X
+                </button>
               </div>
             ))}
             <button

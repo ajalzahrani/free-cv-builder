@@ -1,12 +1,17 @@
 import React from 'react';
 import p from '~/store/Predefined';
+import { projectType } from '../types';
 
-export default function Projects() {
+type props = {
+  projects: projectType[];
+};
+
+export default function Projects({ projects }: props) {
   return (
     <div className="mt-2 px-6 text-xs">
       <div className="text-xl fu-regular underline text-gray-500">PERSONAL PROJECTS</div>
       <ul>
-        {p.projects.map((p, i) => {
+        {projects.map((p, i) => {
           return (
             <div key={i}>
               <div>

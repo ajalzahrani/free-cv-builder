@@ -17,8 +17,8 @@ type SectionListProps = {
 const sections: section[] = [
   { title: 'Header', component: HeaderBuilder },
   { title: 'Contacts', component: ContactBuilder },
-  { title: 'Work Experience', component: ExperienceBuilder },
-  { title: 'Academic Education', component: EductionBuilder },
+  { title: 'Experience', component: ExperienceBuilder },
+  { title: 'Education', component: EductionBuilder },
   { title: 'Certificate', component: CertificateBuilder },
   { title: 'Projects', component: ProjectBuilder },
   { title: 'Skills', component: SkillBuilder },
@@ -40,9 +40,9 @@ export default function SectionList() {
         return <HeaderBuilder />;
       case 'Contacts':
         return <ContactBuilder />;
-      case 'Work Experience':
+      case 'Experience':
         return <ExperienceBuilder />;
-      case 'Academic Education':
+      case 'Education':
         return <EductionBuilder />;
       case 'Certificate':
         return <CertificateBuilder />;
