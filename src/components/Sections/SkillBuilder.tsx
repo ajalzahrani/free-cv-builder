@@ -48,7 +48,8 @@ export default function SkillBuilder({ section }: { section: sectionType }) {
   const handleDeleteSkill = (id: string) => {
     const newData = produce(skills, (draft) => {
       const index = draft.findIndex((sk) => sk.id === id);
-      draft.splice(index, 1);
+      if (index !== -1) draft.splice(index, 1);
+      else handleCancelSkill();
     });
     setSkills(newData);
   };

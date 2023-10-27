@@ -49,7 +49,8 @@ export default function LanguageBuilder({ section }: { section: sectionType }) {
   const handleDeleteLanguage = (id: string) => {
     const newData = produce(languages, (draft) => {
       const index = draft.findIndex((lang) => lang.id === id);
-      draft.splice(index, 1);
+      if (index !== -1) draft.splice(index, 1);
+      else handleCancelLanguage();
     });
     setLanguages(newData);
   };
@@ -74,6 +75,7 @@ export default function LanguageBuilder({ section }: { section: sectionType }) {
           language={{ id: UUID(), title: '', description: '' }}
           onUpdateLanguage={(newLanguage: languageType) => handleSaveLanguage(newLanguage)}
           onCancel={() => setIsAddingLanguage(false)}
+          onDeleteLanguage={(id: string) => handleDeleteLanguage(id)}
         />,
       );
     }

@@ -55,7 +55,11 @@ export default function CertificateBuilder(section: section) {
   const handleDeleteCertificate = (id: string) => {
     const newData = produce(cert, (draft) => {
       const index = draft.findIndex((cert) => cert.id === id);
-      draft.splice(index, 1);
+      if (index !== -1) {
+        draft.splice(index, 1);
+      } else {
+        handleCancelCertificate();
+      }
     });
     setCert(newData);
   };

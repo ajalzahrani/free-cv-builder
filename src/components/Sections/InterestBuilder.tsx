@@ -49,7 +49,8 @@ export default function InterestBuilder() {
   const handleDeleteInterest = (id: string) => {
     const newData = produce(interests, (draft) => {
       const index = draft.findIndex((int) => int.id === id);
-      draft.splice(index, 1);
+      if (index !== -1) draft.splice(index, 1);
+      else handleCancelInterest();
     });
     setInterests(newData);
   };

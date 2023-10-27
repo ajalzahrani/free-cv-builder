@@ -57,9 +57,7 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
       </div>
       {isEditing ? (
         <div className="mt-2">
-          <button className="text-blue-500 hover:text-blue-700" onClick={() => handleAddTask()}>
-            Redner for task
-          </button>
+          <p className="text-red-700">ENTERY ID: {experience.id}</p>
           <label className="block font-bold mb-2" htmlFor="title">
             Title
           </label>
@@ -180,7 +178,7 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
         </div>
       ) : (
         <div className="mt-2">
-          {/* <p className="text-red-700">ENTERY ID: {experience.id}</p> */}
+          <p className="text-red-700">ENTERY ID: {experience.id}</p>
 
           <p className="text-gray-700">{experience.company}</p>
           <p className="text-gray-700">{experience.location}</p>

@@ -50,7 +50,11 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
   const handleDeleteHeader = (id: string) => {
     const newData = produce(headers, (draft) => {
       const index = draft.findIndex((hd) => hd.id === id);
-      draft.splice(index, 1);
+      if (index !== -1) {
+        draft.splice(index, 1);
+      } else {
+        handleCancelHeader();
+      }
     });
     setHeaders(newData);
   };
@@ -75,6 +79,7 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
           header={{ id: UUID(), name: '', title: '', pitch: '' }}
           onUpdateHeader={(newHeader: headerType) => handleSaveHeader(newHeader)}
           onCancel={() => setIsAddingHeader(false)}
+          onDeleteHeader={(id: string) => handleDeleteHeader(id)}
         />,
       );
     }

@@ -53,7 +53,8 @@ export default function EducationBuilder(section: section) {
   const handleDeleteEducation = (id: string) => {
     const newData = produce(edu, (draft) => {
       const index = draft.findIndex((edu) => edu.id === id);
-      draft.splice(index, 1);
+      if (index !== -1) draft.splice(index, 1);
+      else handleCancelEducation();
     });
     setEdu(newData);
   };

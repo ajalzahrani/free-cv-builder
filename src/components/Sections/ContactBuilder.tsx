@@ -53,7 +53,8 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
   const handleDeleteContact = (id: string) => {
     const newData = produce(contacts, (draft) => {
       const index = draft.findIndex((ct) => ct.id === id);
-      draft.splice(index, 1);
+      if (index !== -1) draft.splice(index, 1);
+      else handleCancelContact();
     });
     setContacts(newData);
   };

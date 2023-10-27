@@ -50,7 +50,11 @@ export default function ProjectBuilder({ section }: { section: sectionType }) {
   const handleDeleteProject = (id: string) => {
     const newData = produce(projects, (draft) => {
       const index = draft.findIndex((proj) => proj.id === id);
-      draft.splice(index, 1);
+      if (index !== -1) {
+        draft.splice(index, 1);
+      } else {
+        handleCancelProject();
+      }
     });
     setProjects(newData);
   };

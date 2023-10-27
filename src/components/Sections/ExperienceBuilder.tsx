@@ -58,7 +58,11 @@ export default function ExperienceBuilder(section: section) {
   const handleDeleteExperience = (id: string) => {
     const newData = produce(exp, (draft) => {
       const index = draft.findIndex((exp) => exp.id === id);
-      draft.splice(index, 1);
+      if (index !== -1) {
+        draft.splice(index, 1);
+      } else {
+        handleCancelExperience();
+      }
     });
     setExp(newData);
   };
