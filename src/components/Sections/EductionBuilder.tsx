@@ -3,6 +3,7 @@ import { educationType, section } from '~/components/types';
 import { produce } from 'immer';
 import UUID from '../shared/UUID';
 import InputEducation from './InputEducation';
+import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Academic Education';
 
@@ -17,7 +18,8 @@ const education: educationType = {
 };
 
 export default function EducationBuilder(section: section) {
-  const [edu, setEdu] = React.useState<educationType[]>([education]);
+  // const [edu, setEdu] = React.useState<educationType[]>([education]);
+  const { educations, updateEducations } = useStore();
   const [isAddingEducation, setIsAddingEducation] = React.useState<boolean>(false);
 
   const handleAddEducation = () => {
@@ -25,19 +27,19 @@ export default function EducationBuilder(section: section) {
   };
 
   const updateEducation = (education: educationType) => {
-    const index = edu.findIndex((edu) => edu.id === education.id);
+    const index = educations.findIndex((edu) => edu.id === education.id);
     if (index !== -1) {
       // Update existing education
-      const newData = produce(edu, (draft) => {
+      const newData = produce(educations, (draft) => {
         draft[index] = education;
       });
-      setEdu(newData);
+      updateEducations(newData);
     } else {
       // Add new education
-      const newData = produce(edu, (draft) => {
+      const newData = produce(educations, (draft) => {
         draft.push(education);
       });
-      setEdu(newData);
+      updateEducations(newData);
     }
   };
 
@@ -51,21 +53,21 @@ export default function EducationBuilder(section: section) {
   };
 
   const handleDeleteEducation = (id: string) => {
-    const newData = produce(edu, (draft) => {
+    const newData = produce(educations, (draft) => {
       const index = draft.findIndex((edu) => edu.id === id);
       if (index !== -1) draft.splice(index, 1);
       else handleCancelEducation();
     });
-    setEdu(newData);
+    updateEducations(newData);
   };
 
   const renderEducation = () => {
     const rows = [];
-    for (let i = 0; i < edu.length; i++) {
+    for (let i = 0; i < educations.length; i++) {
       rows.push(
         <InputEducation
           key={i}
-          education={edu[i]}
+          education={educations[i]}
           onUpdateEducation={(updatedEducation: educationType) => updateEducation(updatedEducation)}
           onCancel={handleCancelEducation}
           onDeleteEducation={(id: string) => handleDeleteEducation(id)}

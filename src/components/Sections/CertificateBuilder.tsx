@@ -4,6 +4,7 @@ import { produce } from 'immer';
 import InputCertificate from './InputCertificate';
 import { section } from '~/components/types';
 import UUID from '../shared/UUID';
+import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Certificattions';
 
@@ -19,7 +20,8 @@ const certificate: certificateType = {
 };
 
 export default function CertificateBuilder(section: section) {
-  const [cert, setCert] = React.useState<certificateType[]>([certificate]);
+  // const [cert, setCert] = React.useState<certificateType[]>([certificate]);
+  const { certificates, updateCertificates } = useStore();
   const [isAddingCertificate, setIsAddingCertificate] = React.useState<boolean>(false);
 
   const handleAddCertificate = () => {
@@ -27,19 +29,19 @@ export default function CertificateBuilder(section: section) {
   };
 
   const updateCertificate = (certificate: certificateType) => {
-    const index = cert.findIndex((cert) => cert.id === certificate.id);
+    const index = certificates.findIndex((cert) => cert.id === certificate.id);
     if (index !== -1) {
       // Update existing certificate
-      const newData = produce(cert, (draft) => {
+      const newData = produce(certificates, (draft) => {
         draft[index] = certificate;
       });
-      setCert(newData);
+      updateCertificates(newData);
     } else {
       // Add new certificate
-      const newData = produce(cert, (draft) => {
+      const newData = produce(certificates, (draft) => {
         draft.push(certificate);
       });
-      setCert(newData);
+      updateCertificates(newData);
     }
   };
 
@@ -53,7 +55,7 @@ export default function CertificateBuilder(section: section) {
   };
 
   const handleDeleteCertificate = (id: string) => {
-    const newData = produce(cert, (draft) => {
+    const newData = produce(certificates, (draft) => {
       const index = draft.findIndex((cert) => cert.id === id);
       if (index !== -1) {
         draft.splice(index, 1);
@@ -61,16 +63,16 @@ export default function CertificateBuilder(section: section) {
         handleCancelCertificate();
       }
     });
-    setCert(newData);
+    updateCertificates(newData);
   };
 
   const renderCertificate = () => {
     const rows = [];
-    for (let i = 0; i < cert.length; i++) {
+    for (let i = 0; i < certificates.length; i++) {
       rows.push(
         <InputCertificate
           key={i}
-          certificate={cert[i]}
+          certificate={certificates[i]}
           onUpdateCertificate={(updatedCertificate: certificateType) => updateCertificate(updatedCertificate)}
           onDeleteCertificate={(id: string) => handleDeleteCertificate(id)}
           onCancel={() => handleCancelCertificate()}
@@ -85,7 +87,6 @@ export default function CertificateBuilder(section: section) {
             id: UUID(),
             title: '',
             company: '',
-            location: '',
             from: '',
             to: '',
             description: '',

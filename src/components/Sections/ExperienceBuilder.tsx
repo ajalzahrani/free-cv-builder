@@ -4,6 +4,7 @@ import { produce } from 'immer';
 import InputExperience from './InputExperience';
 import { section } from '~/components/types';
 import UUID from '../shared/UUID';
+import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Work Experience';
 
@@ -22,32 +23,33 @@ const experience: experienceType = {
 };
 
 export default function ExperienceBuilder(section: section) {
-  const [exp, setExp] = React.useState<experienceType[]>([experience]);
+  // const [exp, setExp] = React.useState<experienceType[]>([experience]);
+  const { experiences, updateExperiences } = useStore();
   const [isAddingExperience, setIsAddingExperience] = React.useState<boolean>(false);
 
   const handleAddExperience = () => {
     setIsAddingExperience(true);
   };
 
-  const updateExperience = (experience: experienceType) => {
-    const index = exp.findIndex((exp) => exp.id === experience.id);
+  const handleUpdateExpierance = (experience: experienceType) => {
+    const index = experiences.findIndex((exp) => exp.id === experience.id);
     if (index !== -1) {
       // Update existing experience
-      const newData = produce(exp, (draft) => {
+      const newData = produce(experiences, (draft) => {
         draft[index] = experience;
       });
-      setExp(newData);
+      updateExperiences(newData);
     } else {
       // Add new experience
-      const newData = produce(exp, (draft) => {
+      const newData = produce(experiences, (draft) => {
         draft.push(experience);
       });
-      setExp(newData);
+      updateExperiences(newData);
     }
   };
 
   const handleSaveExperience = (experience: experienceType) => {
-    updateExperience(experience);
+    handleUpdateExpierance(experience);
     setIsAddingExperience(false);
   };
 
@@ -56,7 +58,7 @@ export default function ExperienceBuilder(section: section) {
   // };
 
   const handleDeleteExperience = (id: string) => {
-    const newData = produce(exp, (draft) => {
+    const newData = produce(experiences, (draft) => {
       const index = draft.findIndex((exp) => exp.id === id);
       if (index !== -1) {
         draft.splice(index, 1);
@@ -64,7 +66,7 @@ export default function ExperienceBuilder(section: section) {
         handleCancelExperience();
       }
     });
-    setExp(newData);
+    updateExperiences(newData);
   };
 
   const handleCancelExperience = () => {
@@ -73,11 +75,11 @@ export default function ExperienceBuilder(section: section) {
 
   const renderExperience = () => {
     const rows = [];
-    for (let i = 0; i < exp.length; i++) {
+    for (let i = 0; i < experiences.length; i++) {
       rows.push(
         <InputExperience
           key={i}
-          experience={exp[i]}
+          experience={experiences[i]}
           onUpdateExperience={(updatedExperience: experienceType) => handleSaveExperience(updatedExperience)}
           onCancel={handleCancelExperience}
           onDeleteExperience={(id: string) => handleDeleteExperience(id)}
@@ -123,7 +125,7 @@ export default function ExperienceBuilder(section: section) {
           <button
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4"
             onClick={() => {
-              console.log(exp);
+              console.log(experiences);
             }}
           >
             Print

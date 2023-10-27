@@ -3,6 +3,7 @@ import { sectionType, skillType } from '~/components/types';
 import { produce } from 'immer';
 import InputSkill from './InputSkill';
 import UUID from '../shared/UUID';
+import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Skills';
 
@@ -12,7 +13,8 @@ const skill: skillType = {
 };
 
 export default function SkillBuilder({ section }: { section: sectionType }) {
-  const [skills, setSkills] = React.useState<skillType[]>([skill]);
+  // const [skills, setSkills] = React.useState<skillType[]>([skill]);
+  const { skills, updateSkills } = useStore();
   const [isAddingSkill, setIsAddingSkill] = React.useState<boolean>(false);
 
   const handleAddSkill = () => {
@@ -26,13 +28,13 @@ export default function SkillBuilder({ section }: { section: sectionType }) {
       const newData = produce(skills, (draft) => {
         draft[index] = skill;
       });
-      setSkills(newData);
+      updateSkills(newData);
     } else {
       // Add new skill
       const newData = produce(skills, (draft) => {
         draft.push(skill);
       });
-      setSkills(newData);
+      updateSkills(newData);
     }
   };
 
@@ -51,7 +53,7 @@ export default function SkillBuilder({ section }: { section: sectionType }) {
       if (index !== -1) draft.splice(index, 1);
       else handleCancelSkill();
     });
-    setSkills(newData);
+    updateSkills(newData);
   };
 
   const renderSkills = () => {

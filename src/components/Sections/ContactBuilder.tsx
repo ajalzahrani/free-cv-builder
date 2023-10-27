@@ -3,6 +3,7 @@ import { sectionType, contactType } from '~/components/types';
 import { produce } from 'immer';
 import InputContact from './InputContact';
 import UUID from '../shared/UUID';
+import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Contacts';
 
@@ -13,11 +14,15 @@ const contact: contactType = {
   phone: '000-111-2222',
   website: 'example.com',
   address: 'Somewhere in the world',
-  social: [],
+  facebook: 'https://www.facebook.com/',
+  twitter: 'https://twitter.com/',
+  linkedin: 'https://www.linkedin.com/',
+  github: 'https://www.github.com/',
 };
 
 export default function ContactBuilder({ section }: { section: sectionType }) {
-  const [contacts, setContacts] = React.useState<contactType[]>([contact]);
+  // const [contacts, setContacts] = React.useState<contactType[]>([contact]);
+  const { contacts, updateContacts } = useStore();
   const [isAddingContact, setIsAddingContact] = React.useState<boolean>(false);
 
   const handleAddContact = () => {
@@ -31,13 +36,13 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
       const newData = produce(contacts, (draft) => {
         draft[index] = contact;
       });
-      setContacts(newData);
+      updateContacts(newData);
     } else {
       // Add new contact
       const newData = produce(contacts, (draft) => {
         draft.push(contact);
       });
-      setContacts(newData);
+      updateContacts(newData);
     }
   };
 
@@ -56,7 +61,7 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
       if (index !== -1) draft.splice(index, 1);
       else handleCancelContact();
     });
-    setContacts(newData);
+    updateContacts(newData);
   };
 
   const renderContacts = () => {
@@ -76,7 +81,18 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
       rows.push(
         <InputContact
           key="new"
-          contact={{ id: UUID(), name: '', email: '', phone: '', website: '', address: '', social: [] }}
+          contact={{
+            id: UUID(),
+            name: '',
+            email: '',
+            phone: '',
+            website: '',
+            address: '',
+            facebook: '',
+            twitter: '',
+            linkedin: '',
+            github: '',
+          }}
           onUpdateContact={(newContact: contactType) => handleSaveContact(newContact)}
           onCancel={() => setIsAddingContact(false)}
           onDeleteContact={(id: string) => handleDeleteContact(id)}

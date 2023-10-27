@@ -3,6 +3,7 @@ import { sectionType, headerType } from '~/components/types';
 import { produce } from 'immer';
 import InputHeader from './InputHeader';
 import UUID from '../shared/UUID';
+import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Headers';
 
@@ -14,7 +15,8 @@ const header: headerType = {
 };
 
 export default function HeaderBuilder({ section }: { section: sectionType }) {
-  const [headers, setHeaders] = React.useState<headerType[]>([header]);
+  // const [headers, setHeaders] = React.useState<headerType[]>([header]);
+  const { headers, updateHeaders } = useStore();
   const [isAddingHeader, setIsAddingHeader] = React.useState<boolean>(false);
 
   const handleAddHeader = () => {
@@ -28,13 +30,13 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
       const newData = produce(headers, (draft) => {
         draft[index] = header;
       });
-      setHeaders(newData);
+      updateHeaders(newData);
     } else {
       // Add new header
       const newData = produce(headers, (draft) => {
         draft.push(header);
       });
-      setHeaders(newData);
+      updateHeaders(newData);
     }
   };
 
@@ -56,11 +58,13 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
         handleCancelHeader();
       }
     });
-    setHeaders(newData);
+    updateHeaders(newData);
   };
 
   const renderHeaders = () => {
     const rows = [];
+    // if (!headers) return null; // Add null check here
+    console.log(headers.length);
     for (let i = 0; i < headers.length; i++) {
       rows.push(
         <InputHeader

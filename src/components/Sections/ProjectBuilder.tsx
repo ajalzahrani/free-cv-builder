@@ -3,18 +3,22 @@ import { projectType, sectionType } from '~/components/types';
 import { produce } from 'immer';
 import InputProject from './InputProject';
 import UUID from '../shared/UUID';
+import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Projects';
 
 const project: projectType = {
   id: UUID(),
   title: 'Project 1',
+  from: 'January 2019',
+  to: 'Present',
   description: 'Description of Project 1',
   link: 'https://example.com/project1',
 };
 
 export default function ProjectBuilder({ section }: { section: sectionType }) {
-  const [projects, setProjects] = React.useState<projectType[]>([project]);
+  // const [projects, setProjects] = React.useState<projectType[]>([project]);
+  const { projects, updateProjects } = useStore();
   const [isAddingProject, setIsAddingProject] = React.useState<boolean>(false);
 
   const handleAddProject = () => {
@@ -28,13 +32,13 @@ export default function ProjectBuilder({ section }: { section: sectionType }) {
       const newData = produce(projects, (draft) => {
         draft[index] = project;
       });
-      setProjects(newData);
+      updateProjects(newData);
     } else {
       // Add new project
       const newData = produce(projects, (draft) => {
         draft.push(project);
       });
-      setProjects(newData);
+      updateProjects(newData);
     }
   };
 
@@ -56,7 +60,7 @@ export default function ProjectBuilder({ section }: { section: sectionType }) {
         handleCancelProject();
       }
     });
-    setProjects(newData);
+    updateProjects(newData);
   };
 
   const renderProjects = () => {
@@ -76,7 +80,7 @@ export default function ProjectBuilder({ section }: { section: sectionType }) {
       rows.push(
         <InputProject
           key="new"
-          project={{ id: UUID(), title: '', description: '', link: '' }}
+          project={{ id: UUID(), title: '', description: '', link: '', from: '', to: '' }}
           onUpdateProject={(newProject: projectType) => handleSaveProject(newProject)}
           onCancel={handleCancelProject}
           onDeleteProject={(id: string) => handleDeleteProject(id)}
