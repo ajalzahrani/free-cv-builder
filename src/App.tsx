@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Router, Route, Link, useLocation } from 'react-router-dom';
 import Scene from './components/screens/Scene';
 import { produce } from 'immer';
 import { experienceType } from './components/types';
@@ -9,12 +9,12 @@ import Templete from './components/Templete';
 
 function App() {
   const [exp, setExp] = React.useState<experienceType[]>([]);
-  const updateExperience = (experience: experienceType) => {
-    const newData = produce(exp, (draft) => {
-      draft.push(experience);
-    });
-    setExp(newData);
-  };
+  // const location = useLocation();
+  // Get the current location using the useLocation hook
+
+  // Hide the nav bar on the Template screen
+  // const hideNavBar = location.pathname === '/template';
+
   return (
     <BrowserRouter>
       <div className="bg-gray-100 min-h-screen">
