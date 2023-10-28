@@ -64,6 +64,15 @@ export default function SectionList() {
       <h2 className="text-lg font-bold mb-4">Sections</h2>
       <div className="flex">
         <div className="bg-gray-100 w-1/5">
+          <button
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full mb-4"
+            onClick={() => {
+              // save data to local storage
+              alert('Not implemented yet');
+            }}
+          >
+            Upload
+          </button>
           {sections.map((section) => (
             <div key={section.title} className="mb-4">
               <button

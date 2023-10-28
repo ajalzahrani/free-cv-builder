@@ -17,16 +17,16 @@ function Builder() {
   const initialState = storedState ? JSON.parse(storedState) : schema;
 
   return (
-    <div className="fu-light container">
+    <div className="bg-white fu-light container">
       <Header header={initialState} />
-      <Contacts contact={initialState.contact} />
-      <Experience experience={initialState.experience} />
-      <Education education={initialState.education} />
-      <Certificates cetifications={initialState.certifications} />
+      <Contacts contact={initialState.contacts} />
+      <Experience experience={initialState.experiences} />
+      <Education education={initialState.educations} />
+      <Certificates certificates={initialState.certificates} />
       <Skills skills={initialState.skills} />
       <Projects projects={initialState.projects} />
-      <Languages languages={initialState.languages} />
-      <Intersets interests={initialState.interests} />
+      <Languages language={initialState.languages} />
+      <Intersets interest={initialState.interests} />
     </div>
   );
 }
