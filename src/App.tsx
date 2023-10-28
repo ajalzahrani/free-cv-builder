@@ -1,3 +1,4 @@
+import './styles/App.css';
 import React from 'react';
 import { BrowserRouter, Routes, Router, Route, Link, useLocation } from 'react-router-dom';
 import Scene from './components/screens/Scene';
@@ -17,7 +18,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="bg-gray-100 min-h-screen">
+      <div className="bg-gray-100 min-h-screen ">
         <nav className="bg-gray-800 text-white">
           <ul className="flex justify-between px-6 py-3">
             <li>

@@ -15,7 +15,7 @@ export default function Skills({ skills }: props) {
         {skills.map((s, i) => {
           return (
             <div key={i} className="mb-3 mr-3">
-              <h4 className="bg-gray-700 inline-block text-white p-1 rounded text-xs sm:text-base">{s.title}</h4>
+              <h4 className="bg-gray-700 inline-block text-white p-1 rounded text-xs fu-regular mt-1">{s.title}</h4>
             </div>
           );
         })}

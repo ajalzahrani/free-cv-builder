@@ -10,7 +10,7 @@ export default function Certificates({ certificates }: props) {
   return (
     <div className="mt-2 px-6">
       <div className="text-xl fu-regular underline text-gray-500">CERTIFICATES</div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-2">
         {certificates.map((c, i) => {
           return (
             <div key={i}>

@@ -1,5 +1,3 @@
-import React from 'react';
-import '../styles/App.css';
 import Experience from './Sections/Experience';
 import Header from './Sections/Header';
 import Contacts from './Sections/Contacts';
