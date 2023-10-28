@@ -9,7 +9,7 @@ const title = 'Contacts';
 
 const contact: contactType = {
   id: UUID(),
-  name: 'Contact 1',
+  title: 'Contact 1',
   email: 'example@xyz.com',
   phone: '000-111-2222',
   website: 'example.com',
@@ -83,7 +83,7 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
           key="new"
           contact={{
             id: UUID(),
-            name: '',
+            title: '',
             email: '',
             phone: '',
             website: '',

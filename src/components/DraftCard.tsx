@@ -1,66 +1,88 @@
 import React from 'react';
 import { sectionType } from '~/components/types';
-import DraftCardPreview from './DraftCardPreivew';
-import Draft from './Draft';
 
 type Props = {
   section: sectionType;
   onAdd?: () => void;
   onShow?: () => void;
+  isCardSelected?: boolean;
 };
 
 const MAX_TEXT_LENGTH = 50;
 
-const DraftCard = ({ section, onAdd, onShow }: Props) => {
-  const renderProperties = () => {
-    return Object.entries(section).map(([key, value]) => (
-      <div key={key}>
-        <span className="font-bold">{key}: </span>
-        {/* check if value is array if is array then apply max_text_lenght to each element */}
-        {Array.isArray(value) ? (
-          <ul>
-            {value.map((item, index) => (
-              <li key={index}>
-                <span>{item.length > MAX_TEXT_LENGTH ? `${item.slice(0, MAX_TEXT_LENGTH - 20)}...` : item}</span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <span>{value.length > MAX_TEXT_LENGTH ? `${value.slice(0, MAX_TEXT_LENGTH)}...` : value}</span>
-        )}
-      </div>
-    ));
+const DraftCard: React.FC<Props> = ({ section, onAdd, onShow, isCardSelected }) => {
+  // make a state and action for add button if add button clicked it change the text to added
+  const [isAdded, setIsAdded] = React.useState(false);
+  // make the action
+
+  const handleAdd = () => {
+    setIsAdded(true);
+    onAdd && onAdd();
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-4  flex flex-col justify-between">
-      {/* <h1 className="text-2xl font-bold mb-4">{section.type}</h1> */}
-      {renderProperties()}
-      {onAdd && (
-        <div>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => {
-              onAdd();
-            }}
-          >
-            Add
-          </button>
-          {onShow && (
-            <div>
+    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="p-5">
+        <h5 className="text-l font-bold tracking-tight text-gray-900 dark:text-white">{section.title}</h5>
+
+        <div
+          className="mb-3 font-normal text-gray-700 dark:text-gray-400"
+          style={{ maxHeight: '100px', overflow: 'hidden' }}
+        >
+          <ul className="list-disc ">
+            {Object.entries(section).map(([key, value]) => (
+              <li key={key} className="flex items-center ">
+                <span className="font-semibold mr-1">{key}:</span>
+                {Array.isArray(value) ? (
+                  <ul className="list-disc ml-4">
+                    {value.map((item, index) => (
+                      <li key={index}>
+                        <span
+                          style={{
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            maxWidth: '100%',
+                          }}
+                        >
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p style={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '100%' }}>
+                    {value}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className=" flex">
+          <div>
+            {onAdd && (
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold ml-4 py-2 px-4 rounded mt-4"
-                onClick={() => {
-                  // when show button is clicked, we want to show the Input component for this section
-                  onShow();
-                }}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-300 ease-in-out"
+                onClick={handleAdd}
+                style={isCardSelected ? { background: 'gray' } : { background: 'blue' }}
+              >
+                {isCardSelected ? 'Added' : 'Add'}
+              </button>
+            )}
+          </div>
+          <div>
+            {onShow && (
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded transition duration-300 ease-in-out ml-2"
+                onClick={onShow}
               >
                 Show
               </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

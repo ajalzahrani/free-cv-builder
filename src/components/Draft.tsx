@@ -1,7 +1,7 @@
 import React from 'react';
 import schema from '../store/Schema';
 import useStore from '../store/RepoLocalStorage';
-import InputHeader from './Sections/InputHeader';
+import useDraftStore from '../store/DraftLocalStore';
 import {
   headerType,
   contactType,
@@ -18,15 +18,18 @@ import UUID from './shared/UUID';
 import DraftCardPreivew from './DraftCardPreivew';
 
 const Draft = () => {
+  const { setSchema, schema } = useDraftStore();
   const [draft, setDraft] = React.useState(schema);
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogData, setDialgoData] = React.useState({});
+  const [selectedCards, setSelectedCards] = React.useState<string[]>(schema.selectedCards);
+
   const store = useStore();
 
   const handleHeaderChange = (header: headerType) => {
     setDraft((prevDraft) => ({
       ...prevDraft,
-      id: UUID(),
+      id: header.id,
       name: header.name,
       title: header.title,
       pitch: header.pitch,
@@ -36,8 +39,9 @@ const Draft = () => {
   const handleContactChange = (contact: contactType) => {
     setDraft((prevDraft) => ({
       ...prevDraft,
-      contact: {
-        name: contact.name,
+      contacts: {
+        id: contact.id,
+        name: contact.title,
         email: contact.email,
         phone: contact.phone,
         address: contact.address || '',
@@ -52,9 +56,10 @@ const Draft = () => {
   const handleExperienceChange = (experience: experienceType) => {
     setDraft((prevDraft) => ({
       ...prevDraft,
-      experience: [
-        ...prevDraft.experience,
+      experiences: [
+        ...prevDraft.experiences,
         {
+          id: experience.id,
           title: experience.title,
           company: experience.company,
           location: experience.location,
@@ -70,10 +75,10 @@ const Draft = () => {
   const handleEducationChange = (education: educationType) => {
     setDraft((prevDraft) => ({
       ...prevDraft,
-      education: [
-        ...prevDraft.education,
+      educations: [
+        ...prevDraft.educations,
         {
-          id: UUID(),
+          id: education.id,
           institution: education.institution,
           degree: education.degree,
           location: education.location,
@@ -88,9 +93,10 @@ const Draft = () => {
   const handleCertificationChange = (certifications: certificateType) => {
     setDraft((prevDraft) => ({
       ...prevDraft,
-      certifications: [
-        ...prevDraft.certifications,
+      certificates: [
+        ...prevDraft.certificates,
         {
+          id: certifications.id,
           title: certifications.title,
           from: certifications.from,
           company: certifications.company,
@@ -108,7 +114,7 @@ const Draft = () => {
       skills: [
         ...prevDraft.skills,
         {
-          id: UUID(),
+          id: skills.id,
           title: skills.title,
         },
       ],
@@ -121,7 +127,7 @@ const Draft = () => {
       projects: [
         ...prevDraft.projects,
         {
-          id: UUID(),
+          id: projects.id,
           title: projects.title,
           from: projects.from,
           to: projects.to,
@@ -165,9 +171,27 @@ const Draft = () => {
     setDialgoData(arg0.data);
   };
 
+  React.useEffect(() => {
+    setDraft((prevDraft) => ({
+      ...prevDraft,
+      selectedCards: selectedCards,
+    }));
+  }, [selectedCards.length]);
+
+  const handleSelectedCards = (id: string) => {
+    if (selectedCards.includes(id)) {
+      // remove the id from the selected cards
+      setSelectedCards(selectedCards.filter((cardId) => cardId !== id));
+    } else {
+      // push the id to the selected cards
+      setSelectedCards([...selectedCards, id]);
+    }
+  };
+
   function handleSectionClick(arg0: { type: string; data: any }): void {
-    console.log(arg0);
-    // Set the selected section as the resume draft
+    console.log(arg0.data.id);
+
+    handleSelectedCards(arg0.data.id);
 
     switch (arg0.type) {
       case 'header':
@@ -211,24 +235,26 @@ const Draft = () => {
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
           onClick={() => {
-            // save draft to localstorage
-            console.log(JSON.stringify(draft));
+            console.log(draft);
 
-            localStorage.setItem('draft', JSON.stringify(draft));
+            setSchema(draft);
           }}
         >
           Save Draft
         </button>
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
-          onClick={() => console.log(draft)}
+          onClick={() => {
+            // print draft
+            setDialgoData(draft);
+            setShowDialog(true);
+          }}
         >
           Print Draft
         </button>
         <button
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
           onClick={() => {
-            // delete draft from localstorage
             localStorage.removeItem('draft');
           }}
         >
@@ -245,6 +271,7 @@ const Draft = () => {
                   section={header}
                   onShow={() => handlePreviewCard({ data: header })}
                   onAdd={() => handleSectionClick({ type: 'header', data: header })}
+                  isCardSelected={selectedCards.includes(header.id)}
                 />
               </div>
             ))}
@@ -260,6 +287,7 @@ const Draft = () => {
                   section={contact}
                   onShow={() => handlePreviewCard({ data: contact })}
                   onAdd={() => handleSectionClick({ type: 'contact', data: contact })}
+                  isCardSelected={selectedCards.includes(contact.id)}
                 />
               </div>
             ))}
@@ -274,6 +302,7 @@ const Draft = () => {
                   section={experience}
                   onShow={() => handlePreviewCard({ data: experience })}
                   onAdd={() => handleSectionClick({ type: 'experience', data: experience })}
+                  isCardSelected={selectedCards.includes(experience.id)}
                 />
               </div>
             ))}
@@ -288,6 +317,7 @@ const Draft = () => {
                   section={education}
                   onShow={() => handlePreviewCard({ data: education })}
                   onAdd={() => handleSectionClick({ type: 'education', data: education })}
+                  isCardSelected={selectedCards.includes(education.id)}
                 />
               </div>
             ))}
@@ -303,6 +333,7 @@ const Draft = () => {
                   section={certificate}
                   onShow={() => handlePreviewCard({ data: certificate })}
                   onAdd={() => handleSectionClick({ type: 'certificate', data: certificate })}
+                  isCardSelected={selectedCards.includes(certificate.id)}
                 />
               </div>
             ))}
@@ -318,6 +349,7 @@ const Draft = () => {
                   section={skill}
                   onShow={() => handlePreviewCard({ data: skill })}
                   onAdd={() => handleSectionClick({ type: 'skill', data: skill })}
+                  isCardSelected={selectedCards.includes(skill.id)}
                 />
               </div>
             ))}
@@ -333,6 +365,7 @@ const Draft = () => {
                   section={project}
                   onShow={() => handlePreviewCard({ data: project })}
                   onAdd={() => handleSectionClick({ type: 'project', data: project })}
+                  isCardSelected={selectedCards.includes(project.id)}
                 />
               </div>
             ))}
@@ -348,6 +381,7 @@ const Draft = () => {
                   section={language}
                   onShow={() => handlePreviewCard({ data: language })}
                   onAdd={() => handleSectionClick({ type: 'language', data: language })}
+                  isCardSelected={selectedCards.includes(language.id)}
                 />
               </div>
             ))}
@@ -363,6 +397,7 @@ const Draft = () => {
                   section={interest}
                   onShow={() => handlePreviewCard({ data: interest })}
                   onAdd={() => handleSectionClick({ type: 'interest', data: interest })}
+                  isCardSelected={selectedCards.includes(interest.id)}
                 />
               </div>
             ))}

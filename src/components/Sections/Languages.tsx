@@ -3,15 +3,15 @@ import p from '~/store/Predefined';
 import { languageType } from '../types';
 
 type props = {
-  languages: languageType[];
+  language: languageType[];
 };
 
-export default function Languages({ languages }: props) {
+export default function Languages({ language }: props) {
   return (
     <div className="mt-2 px-6 text-xs">
       <div className="text-xl fu-regular underline text-gray-500">LANGUAGES</div>
       <div className="grid grid-cols-2 gap-4">
-        {languages.map((l, i) => {
+        {language.map((l, i) => {
           return (
             <div key={i}>
               <h4 className="fu-regular text-xs">{l.title}</h4>

@@ -9,7 +9,7 @@ type InputContactProps = {
 };
 
 const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, onCancel, onDeleteContact }) => {
-  const [isEditing, setIsEditing] = useState<boolean>(contact.name.length === 0 ? true : false);
+  const [isEditing, setIsEditing] = useState<boolean>(contact.title.length === 0 ? true : false);
 
   const [updatedContact, setUpdatedContact] = useState<contactType>(contact);
 
@@ -34,7 +34,7 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
   return (
     <div className="border rounded-lg mt-4 p-4 mb-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-bold">{contact.name}</h3>
+        <h3 className="text-lg font-bold">{contact.title}</h3>
         {!isEditing && (
           <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
             Edit
@@ -43,14 +43,14 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
       </div>
       {isEditing ? (
         <div className="mt-2">
-          <label className="block font-bold mt-2 mb-2" htmlFor="name">
-            Name
+          <label className="block font-bold mt-2 mb-2" htmlFor="title">
+            Title
           </label>
           <input
             type="text"
-            id="name"
-            name="name"
-            value={updatedContact.name}
+            id="title"
+            name="title"
+            value={updatedContact.title}
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />

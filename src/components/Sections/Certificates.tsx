@@ -3,15 +3,15 @@ import p from '~/store/Predefined';
 import { certificateType } from '../types';
 
 type props = {
-  cetifications: certificateType[];
+  certificates: certificateType[];
 };
 
-export default function Certificates({ cetifications }: props) {
+export default function Certificates({ certificates }: props) {
   return (
     <div className="mt-2 px-6">
       <div className="text-xl fu-regular underline text-gray-500">CERTIFICATES</div>
       <div className="grid grid-cols-2 gap-4">
-        {cetifications.map((c, i) => {
+        {certificates.map((c, i) => {
           return (
             <div key={i}>
               <h4 className="fu-regular text-xs">{c.title}</h4>

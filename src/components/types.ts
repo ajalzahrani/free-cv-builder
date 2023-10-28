@@ -18,7 +18,7 @@ export type headerType = {
 
 export type contactType = {
   id: string;
-  name: string;
+  title: string;
   email: string;
   phone: string;
   website: string;
