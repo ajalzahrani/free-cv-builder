@@ -161,17 +161,18 @@ const Draft = () => {
   };
 
   const handleSkillChange = (skill: skillType) => {
-    const index = draft.skills.findIndex((skill) => {
-      return skill.id === skill.id;
+    const index = draft.skills.findIndex((skl) => {
+      return skl.id === skill.id;
     });
     if (index !== -1) {
       // remove experience object from draft
       setDraft((prevDraft) => ({
         ...prevDraft,
-        skills: prevDraft.skills.filter((skill) => skill.id !== skill.id),
+        skills: prevDraft.skills.filter((skl) => skl.id !== skill.id),
       }));
       return;
     }
+
     setDraft((prevDraft) => ({
       ...prevDraft,
       skills: [
