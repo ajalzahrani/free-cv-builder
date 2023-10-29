@@ -12,13 +12,19 @@ import {
   projectType,
   languageType,
   interestType,
+  draftType,
 } from './types';
 import DraftCard from './DraftCard';
 import UUID from './shared/UUID';
 import DraftCardPreivew from './DraftCardPreivew';
 
-const Draft = () => {
-  const { setSchema, schema } = useDraftStore();
+type DraftProps = {
+  schema: draftType['schema'];
+  setSchema: (schema: draftType['schema']) => void;
+};
+
+const Draft = ({ schema, setSchema }: DraftProps) => {
+  // const { setSchema, schema } = useDraftStore();
   const [draft, setDraft] = React.useState(schema);
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogData, setDialgoData] = React.useState({});
@@ -328,7 +334,7 @@ const Draft = () => {
       {showDialog && <DraftCardPreivew onClose={() => setShowDialog(false)} data={dialogData} />}
       {/* Render components for each section of the draft */}
       <div>
-        <h2 className="text-lg font-bold mb-4">Sections</h2>
+        <h2 className="text-lg font-bold mb-4">Schema</h2>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
           onClick={() => {

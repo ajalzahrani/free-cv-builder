@@ -1,8 +1,6 @@
-const schema = {
-  name: '',
-  title: '',
-  pitch: '',
-  contacts: {},
+const schemaInit = {
+  headers: [],
+  contacts: [],
   experiences: [],
   educations: [],
   certificates: [],
@@ -10,6 +8,7 @@ const schema = {
   projects: [],
   languages: [],
   interests: [],
+  selectedCards: [],
 };
 
-export default schema;
+export default schemaInit;

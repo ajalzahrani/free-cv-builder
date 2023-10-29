@@ -6,6 +6,8 @@ import { produce } from 'immer';
 import { experienceType } from './components/types';
 import SectionList from './components/SectionList';
 import Draft from './components/Draft';
+import Drafts from './components/screens/DraftsBuilder';
+import DraftBuilder from './components/screens/DraftsBuilder';
 import Templete from './components/Templete';
 
 function App() {
@@ -19,7 +21,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="bg-gray-100 min-h-screen ">
-        <nav className="bg-gray-800 text-white">
+        <nav id="navbar" className="bg-gray-800 text-white">
           <ul className="flex justify-between px-6 py-3">
             <li>
               <Link to="/" className="font-bold text-lg">
@@ -37,17 +39,18 @@ function App() {
               </Link>
             </li>
             <li>
-              <Link to="/scene" className="font-bold text-lg">
-                Scene
+              <Link to="/drafts" className="font-bold text-lg">
+                Drafts Builder
               </Link>
             </li>
           </ul>
         </nav>
 
-        <div className="container mx-auto px-6 py-4">
+        <div className={true ? 'container' : 'container mx-auto px-6 py-4'}>
           <Routes>
             <Route path="/" element={<SectionList />} />
             <Route path="/draft" element={<Draft />} />
+            <Route path="/drafts" element={<DraftBuilder />} />
             <Route path="/templete" element={<Templete />} />
             <Route path="/scene" element={<Scene />} />
           </Routes>
