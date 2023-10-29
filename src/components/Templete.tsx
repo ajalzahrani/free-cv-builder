@@ -16,7 +16,7 @@ function Builder() {
 
   return (
     <div className="bg-white fu-light container">
-      <Header header={initialState} />
+      <Header header={initialState.headers} />
       <Contacts contact={initialState.contacts} />
       <Experience experience={initialState.experiences} />
       <Education education={initialState.educations} />

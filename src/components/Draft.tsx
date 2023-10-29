@@ -27,12 +27,28 @@ const Draft = () => {
   const store = useStore();
 
   const handleHeaderChange = (header: headerType) => {
+    const index = draft.headers.findIndex((head) => {
+      return head.id === header.id;
+    });
+    if (index !== -1) {
+      // remove experience object from draft
+      setDraft((prevDraft) => ({
+        ...prevDraft,
+        headers: prevDraft.headers.filter((head) => head.id !== header.id),
+      }));
+      return;
+    }
     setDraft((prevDraft) => ({
       ...prevDraft,
-      id: header.id,
-      name: header.name,
-      title: header.title,
-      pitch: header.pitch,
+      headers: [
+        ...prevDraft.headers,
+        {
+          id: header.id,
+          name: header.name,
+          title: header.title,
+          pitch: header.pitch,
+        },
+      ],
     }));
   };
 
@@ -54,6 +70,20 @@ const Draft = () => {
   };
 
   const handleExperienceChange = (experience: experienceType) => {
+    const index = draft.experiences.findIndex((exp) => {
+      return exp.id === experience.id;
+    });
+    if (index !== -1) {
+      // remove experience object from draft
+      setDraft((prevDraft) => ({
+        ...prevDraft,
+        experiences: prevDraft.experiences.filter((exp) => exp.id !== experience.id),
+      }));
+      return;
+    }
+
+    console.log(experience.id + ' not exists, so now added.');
+
     setDraft((prevDraft) => ({
       ...prevDraft,
       experiences: [
@@ -73,6 +103,17 @@ const Draft = () => {
   };
 
   const handleEducationChange = (education: educationType) => {
+    const index = draft.educations.findIndex((edu) => {
+      return edu.id === education.id;
+    });
+    if (index !== -1) {
+      // remove experience object from draft
+      setDraft((prevDraft) => ({
+        ...prevDraft,
+        educations: prevDraft.educations.filter((edu) => edu.id !== education.id),
+      }));
+      return;
+    }
     setDraft((prevDraft) => ({
       ...prevDraft,
       educations: [
@@ -90,77 +131,132 @@ const Draft = () => {
     }));
   };
 
-  const handleCertificationChange = (certifications: certificateType) => {
+  const handleCertificationChange = (certificate: certificateType) => {
+    const index = draft.certificates.findIndex((edu) => {
+      return edu.id === certificate.id;
+    });
+    if (index !== -1) {
+      // remove experience object from draft
+      setDraft((prevDraft) => ({
+        ...prevDraft,
+        certificates: prevDraft.certificates.filter((edu) => edu.id !== certificate.id),
+      }));
+      return;
+    }
     setDraft((prevDraft) => ({
       ...prevDraft,
       certificates: [
         ...prevDraft.certificates,
         {
-          id: certifications.id,
-          title: certifications.title,
-          from: certifications.from,
-          company: certifications.company,
-          to: certifications.to,
-          description: certifications.description,
-          link: certifications.link,
+          id: certificate.id,
+          title: certificate.title,
+          from: certificate.from,
+          company: certificate.company,
+          to: certificate.to,
+          description: certificate.description,
+          link: certificate.link,
         },
       ],
     }));
   };
 
-  const handleSkillChange = (skills: skillType) => {
+  const handleSkillChange = (skill: skillType) => {
+    const index = draft.skills.findIndex((skill) => {
+      return skill.id === skill.id;
+    });
+    if (index !== -1) {
+      // remove experience object from draft
+      setDraft((prevDraft) => ({
+        ...prevDraft,
+        skills: prevDraft.skills.filter((skill) => skill.id !== skill.id),
+      }));
+      return;
+    }
     setDraft((prevDraft) => ({
       ...prevDraft,
       skills: [
         ...prevDraft.skills,
         {
-          id: skills.id,
-          title: skills.title,
+          id: skill.id,
+          title: skill.title,
         },
       ],
     }));
   };
 
-  const handleProjectChange = (projects: projectType) => {
+  const handleProjectChange = (project: projectType) => {
+    const index = draft.projects.findIndex((proj) => {
+      return proj.id === project.id;
+    });
+    if (index !== -1) {
+      // remove experience object from draft
+      setDraft((prevDraft) => ({
+        ...prevDraft,
+        projects: prevDraft.projects.filter((proj) => proj.id !== project.id),
+      }));
+      return;
+    }
     setDraft((prevDraft) => ({
       ...prevDraft,
       projects: [
         ...prevDraft.projects,
         {
-          id: projects.id,
-          title: projects.title,
-          from: projects.from,
-          to: projects.to,
-          description: projects.description,
-          link: projects.link,
+          id: project.id,
+          title: project.title,
+          from: project.from,
+          to: project.to,
+          description: project.description,
+          link: project.link,
         },
       ],
     }));
   };
 
-  const handleLanguageChange = (languages: languageType) => {
+  const handleLanguageChange = (language: languageType) => {
+    const index = draft.languages.findIndex((lang) => {
+      return lang.id === language.id;
+    });
+    if (index !== -1) {
+      // remove experience object from draft
+      setDraft((prevDraft) => ({
+        ...prevDraft,
+        languages: prevDraft.languages.filter((lang) => lang.id !== language.id),
+      }));
+      return;
+    }
     setDraft((prevDraft) => ({
       ...prevDraft,
       languages: [
         ...prevDraft.languages,
         {
-          id: UUID(),
-          title: languages.title,
-          description: languages.description,
+          id: language.id,
+          title: language.title,
+          description: language.description,
         },
       ],
     }));
   };
 
-  const handleInterestChange = (interests: interestType) => {
+  const handleInterestChange = (interest: interestType) => {
+    const index = draft.interests.findIndex((lang) => {
+      return lang.id === interest.id;
+    });
+    if (index !== -1) {
+      // remove experience object from draft
+      setDraft((prevDraft) => ({
+        ...prevDraft,
+        interests: prevDraft.interests.filter((lang) => lang.id !== interest.id),
+      }));
+      return;
+    }
     setDraft((prevDraft) => ({
       ...prevDraft,
       interests: [
         ...prevDraft.interests,
         {
-          id: UUID(),
-          title: interests.title,
-          description: interests.description,
+          id: interest.id,
+          title: interest.title,
+          description: interest.description,
         },
       ],
     }));
@@ -189,7 +285,7 @@ const Draft = () => {
   };
 
   function handleSectionClick(arg0: { type: string; data: any }): void {
-    console.log(arg0.data.id);
+    console.log(arg0.data.id, ' type: ', arg0.type);
 
     handleSelectedCards(arg0.data.id);
 
@@ -246,8 +342,9 @@ const Draft = () => {
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
           onClick={() => {
             // print draft
-            setDialgoData(draft);
-            setShowDialog(true);
+            // setDialgoData(draft);
+            // setShowDialog(true);
+            console.log(draft);
           }}
         >
           Print Draft
