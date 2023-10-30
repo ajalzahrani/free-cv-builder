@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import schema from '../store/Schema';
 import useStore from '../store/RepoLocalStorage';
 import useDraftStore from '../store/DraftLocalStore';
@@ -274,12 +274,18 @@ const Draft = ({ schema, setSchema }: DraftProps) => {
     setDialgoData(arg0.data);
   };
 
+  // Update local draft when selected cards change
   React.useEffect(() => {
     setDraft((prevDraft) => ({
       ...prevDraft,
       selectedCards: selectedCards,
     }));
   }, [selectedCards.length]);
+
+  // Update schema state when draft changes
+  React.useEffect(() => {
+    setSchema(draft);
+  }, [draft.selectedCards.length]);
 
   const handleSelectedCards = (id: string) => {
     if (selectedCards.includes(id)) {

@@ -14,7 +14,7 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
 
   const [updatedDraft, setUpdatedDraft] = React.useState<draftType>(draft);
 
-  const [schema, setSchema] = React.useState<draftType['schema']>(draft.schema);
+  // const [schema, setSchema] = React.useState<draftType['schema']>(draft.schema);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -32,6 +32,13 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
   const handleCancelDraft = () => {
     setIsEditing(false);
     onCancel();
+  };
+
+  const handleUpdateSchema = (updatedSchema: draftType['schema']) => {
+    setUpdatedDraft((prevDraft: any) => ({
+      ...prevDraft,
+      schema: updatedSchema,
+    }));
   };
 
   return (
@@ -69,7 +76,7 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           <div className="mt-2">
-            <Draft schema={schema} setSchema={setSchema} />
+            <Draft schema={draft.schema} setSchema={handleUpdateSchema} />
           </div>
           <div className="flex justify-end mt-4">
             <button

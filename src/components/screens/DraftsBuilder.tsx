@@ -1,5 +1,4 @@
 import React from 'react';
-import DraftForm from './DraftForm';
 import useDraftStore from '../../store/draftStore';
 import { produce } from 'immer';
 import { draftType } from '../types';
@@ -57,7 +56,7 @@ const DraftBuilder = () => {
         <InputDraft
           key={i}
           draft={drafts[i]}
-          onUpdateDraft={(updatedDraft: draftType) => updateDraft(updatedDraft)}
+          onUpdateDraft={(updatedDraft: draftType) => handleSaveDraft(updatedDraft)}
           onCancel={handleCancelDraft}
           onDeleteDraft={(id: string) => handleDeleteDraft(id)}
         />,
