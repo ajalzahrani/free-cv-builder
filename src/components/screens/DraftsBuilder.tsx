@@ -18,14 +18,14 @@ const DraftBuilder = () => {
     const index = drafts.findIndex((edu) => edu.id === draft.id);
     if (index !== -1) {
       // Update existing draft
-      const newData = produce(drafts, (drft) => {
-        drft[index] = draft;
+      const newData = produce(drafts, (drfts) => {
+        drfts[index] = draft;
       });
       updateDrafts(newData);
     } else {
       // Add new draft
-      const newData = produce(drafts, (drft) => {
-        drft.push(draft);
+      const newData = produce(drafts, (drfts) => {
+        drfts.push(draft);
       });
       updateDrafts(newData);
     }
@@ -56,21 +56,18 @@ const DraftBuilder = () => {
         <InputDraft
           key={i}
           draft={drafts[i]}
-          onUpdateDraft={(updatedDraft: draftType) => handleSaveDraft(updatedDraft)}
+          onUpdateDraft={(updatedDraft: draftType) => updateDraft(updatedDraft)}
           onCancel={handleCancelDraft}
           onDeleteDraft={(id: string) => handleDeleteDraft(id)}
         />,
       );
     }
     if (isAddingDraft) {
-      // Alternatively, you can use object destructuring and Object.keys() to create the object
-      const bigObject2 = Object.fromEntries(Object.keys(schemaInit).map((key) => [key, '']));
-
       rows.push(
         <InputDraft
           key="new"
-          draft={{ id: UUID(), title: '', schema: schemaInit, description: '' }}
-          onUpdateDraft={(updatedDraft: draftType) => updateDraft(updatedDraft)}
+          draft={{ id: UUID(), title: '', description: '', schema: schemaInit }}
+          onUpdateDraft={(newDraft: draftType) => handleSaveDraft(newDraft)}
           onCancel={handleCancelDraft}
           onDeleteDraft={(id: string) => handleDeleteDraft(id)}
         />,

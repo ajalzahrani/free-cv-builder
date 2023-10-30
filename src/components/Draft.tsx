@@ -339,38 +339,6 @@ const Draft = ({ schema, setSchema }: DraftProps) => {
     <div>
       {showDialog && <DraftCardPreivew onClose={() => setShowDialog(false)} data={dialogData} />}
       {/* Render components for each section of the draft */}
-      <div>
-        <h2 className="text-lg font-bold mb-4">Schema</h2>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
-          onClick={() => {
-            console.log(draft);
-
-            setSchema(draft);
-          }}
-        >
-          Save Draft
-        </button>
-        <button
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
-          onClick={() => {
-            // print draft
-            // setDialgoData(draft);
-            // setShowDialog(true);
-            console.log(draft);
-          }}
-        >
-          Print Draft
-        </button>
-        <button
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-          onClick={() => {
-            localStorage.removeItem('draft');
-          }}
-        >
-          Delete Draft
-        </button>
-      </div>
       <div className="flex flex-wrap">
         <div className="w-full mb-4">
           <h2 className="text-lg font-bold mb-2">Header</h2>
