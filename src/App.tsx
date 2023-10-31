@@ -28,19 +28,19 @@ function App() {
                 Sections
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/draft" className="font-bold text-lg">
                 Draft
               </Link>
-            </li>
+            </li> */}
             <li>
-              <Link to="/templete" className="font-bold text-lg">
-                Templete
+              <Link to="/drafts" className="font-bold text-lg">
+                Drafts
               </Link>
             </li>
             <li>
-              <Link to="/drafts" className="font-bold text-lg">
-                Drafts Builder
+              <Link to="/template" className="font-bold text-lg">
+                Template
               </Link>
             </li>
           </ul>
@@ -49,9 +49,9 @@ function App() {
         <div className={true ? 'container' : 'container mx-auto px-6 py-4'}>
           <Routes>
             <Route path="/" element={<SectionList />} />
-            <Route path="/draft" element={<Draft />} />
+            {/* <Route path="/draft" element={<Draft />} /> */}
             <Route path="/drafts" element={<DraftBuilder />} />
-            <Route path="/templete" element={<Templete />} />
+            <Route path="/template" element={<Templete />} />
             <Route path="/scene" element={<Scene />} />
           </Routes>
         </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { draftType } from '~/components/types';
 import Draft from '../Draft';
 
@@ -13,6 +14,12 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
   const [isEditing, setIsEditing] = React.useState<boolean>(draft.title.length === 0 ? true : false);
 
   const [updatedDraft, setUpdatedDraft] = React.useState<draftType>(draft);
+
+  const navigate = useNavigate();
+
+  const handleTemplateButtonClick = () => {
+    navigate('/template', { state: { updatedDraft } });
+  };
 
   // const [schema, setSchema] = React.useState<draftType['schema']>(draft.schema);
 
@@ -45,6 +52,9 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
     <div className="border rounded-lg mt-4 p-4 mb-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{draft.title}</h3>
+        <button className="text-blue-500 hover:text-blue-700" onClick={handleTemplateButtonClick}>
+          Show
+        </button>
         {!isEditing && (
           <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
             Edit
