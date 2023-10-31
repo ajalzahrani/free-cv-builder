@@ -1,6 +1,7 @@
 import React from 'react';
 import p from '~/store/Predefined';
 import { headerType } from '../types';
+import { draftType } from '../types';
 
 type props = {
   header: headerType;

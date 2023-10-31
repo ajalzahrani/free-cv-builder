@@ -8,20 +8,13 @@ type InputDraftProps = {
   onUpdateDraft: (updatedDraft: draftType) => void;
   onCancel: () => void;
   onDeleteDraft: (id: string) => void;
+  onShowTemplate: (id: draftType['id']) => void;
 };
 
-export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDraft }: InputDraftProps) {
+export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDraft, onShowTemplate }: InputDraftProps) {
   const [isEditing, setIsEditing] = React.useState<boolean>(draft.title.length === 0 ? true : false);
 
   const [updatedDraft, setUpdatedDraft] = React.useState<draftType>(draft);
-
-  const navigate = useNavigate();
-
-  const handleTemplateButtonClick = () => {
-    navigate('/template', { state: { updatedDraft } });
-  };
-
-  // const [schema, setSchema] = React.useState<draftType['schema']>(draft.schema);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -52,7 +45,7 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
     <div className="border rounded-lg mt-4 p-4 mb-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{draft.title}</h3>
-        <button className="text-blue-500 hover:text-blue-700" onClick={handleTemplateButtonClick}>
+        <button className="text-blue-500 hover:text-blue-700" onClick={() => onShowTemplate(updatedDraft.id)}>
           Show
         </button>
         {!isEditing && (

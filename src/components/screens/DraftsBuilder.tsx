@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import useDraftStore from '../../store/draftStore';
 import { produce } from 'immer';
 import { draftType } from '../types';
 import UUID from '../shared/UUID';
 import InputDraft from './InputDraft';
 import schemaInit from '~/store/Schema';
+import Template from '../Templete';
 
 const DraftBuilder = () => {
   const { drafts, updateDrafts } = useDraftStore();
   const [isAddingDraft, setIsAddingDraft] = React.useState<boolean>(false);
+  const [showDialog, setShowDialog] = React.useState(false);
+  const [dialogData, setDialgoData] = React.useState<draftType>({} as draftType);
 
   const handleAddDraft = () => {
     setIsAddingDraft(true);
@@ -49,6 +52,13 @@ const DraftBuilder = () => {
     updateDrafts(newData);
   };
 
+  const handleShowTemplate = (id: string): void => {
+    console.log('draft id: ', id);
+    setShowDialog(true);
+    const draft = drafts.find((draft) => draft.id === id);
+    setDialgoData(draft ? draft : ({} as draftType));
+  };
+
   const renderDraft = () => {
     const rows = [];
     for (let i = 0; i < drafts.length; i++) {
@@ -59,6 +69,7 @@ const DraftBuilder = () => {
           onUpdateDraft={(updatedDraft: draftType) => updateDraft(updatedDraft)}
           onCancel={handleCancelDraft}
           onDeleteDraft={(id: string) => handleDeleteDraft(id)}
+          onShowTemplate={(id: any) => handleShowTemplate(id)}
         />,
       );
     }
@@ -70,6 +81,7 @@ const DraftBuilder = () => {
           onUpdateDraft={(newDraft: draftType) => handleSaveDraft(newDraft)}
           onCancel={handleCancelDraft}
           onDeleteDraft={(id: string) => handleDeleteDraft(id)}
+          onShowTemplate={(id: any) => handleShowTemplate(id)}
         />,
       );
     }
@@ -78,6 +90,7 @@ const DraftBuilder = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
+      {showDialog && <Template onClose={() => setShowDialog(false)} draft={dialogData} />}
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h1 className="text-2xl font-bold mb-4">{'Drafts'}</h1>
