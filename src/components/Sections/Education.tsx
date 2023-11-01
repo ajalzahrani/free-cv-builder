@@ -8,7 +8,7 @@ type props = {
 
 export default function Education({ education }: props) {
   return (
-    <div className="mt-24 pt-10 px-6">
+    <div className="mt-2 px-6">
       <div className="text-xl fu-regular underline text-gray-500">EDUCATION</div>
       <div className="flex">
         <div className="w-1/1">

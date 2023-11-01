@@ -14,8 +14,8 @@ export default function Skills({ skills }: props) {
       <div className="flex flex-wrap">
         {skills.map((s, i) => {
           return (
-            <div key={i} className="mb-3 mr-3">
-              <h4 className="bg-gray-700 inline-block text-white p-1 rounded text-xs fu-regular mt-1">{s.title}</h4>
+            <div key={i} className="mt-2 mr-3 align-text-top">
+              <h4 className="bg-gray-700 inline-block text-white p-1 pb-4 rounded text-xs fu-regular ">{s.title}</h4>
             </div>
           );
         })}

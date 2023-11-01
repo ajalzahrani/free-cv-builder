@@ -38,7 +38,7 @@ const DraftBuilder = () => {
     updateDraft(draft);
     setIsAddingDraft(false);
   };
-
+  
   const handleCancelDraft = () => {
     setIsAddingDraft(false);
   };
@@ -91,9 +91,9 @@ const DraftBuilder = () => {
   return (
     <div className="bg-gray-100 min-h-screen">
       {showDialog && <Template onClose={() => setShowDialog(false)} draft={dialogData} />}
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-6 py-6">
+        <h1 className="text-2xl font-bold mb-4">{'Drafts'}</h1>
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-2xl font-bold mb-4">{'Drafts'}</h1>
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
             onClick={() => {

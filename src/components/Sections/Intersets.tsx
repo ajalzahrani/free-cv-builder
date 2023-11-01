@@ -13,9 +13,9 @@ export default function Intersets({ interest }: props) {
       <div className="grid grid-cols-2 gap-4 mt-2">
         {interest.map((i, key) => {
           return (
-            <div key={key}>
+            <div key={key} className="align-text-top mt-2">
               <h4 className="fu-regular text-xs ">
-                <span className="border rounded border-gray-700 p-1">{i.title}</span>
+                <span className="border rounded border-gray-700 p-1 pb-4">{i.title}</span>
               </h4>
               {/* <h5 className="fu-regular text-xs">{i.description}</h5> */}
             </div>

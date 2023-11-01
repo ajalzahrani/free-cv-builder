@@ -9,7 +9,7 @@ type props = {
 
 export default function Header({ header }: props) {
   return (
-    <div className="flex pt-10 bg-gray-700">
+    <div className="flex py-2 bg-gray-700">
       <div className="mx-auto px-6 py-2">
         <h1 className="text-2xl text-white">{header?.name}</h1>
         <h2 className="text-lg mt-1 text-gray-400 ">{header?.title}</h2>

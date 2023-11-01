@@ -10,10 +10,6 @@ import HeaderBuilder from './Sections/HeaderBuilder';
 import ContactBuilder from './Sections/ContactBuilder';
 import LanguageBuilder from './Sections/LanguageBuilder';
 
-type SectionListProps = {
-  sections: section[];
-};
-
 const sections: section[] = [
   { title: 'Header', component: HeaderBuilder },
   { title: 'Contacts', component: ContactBuilder },
@@ -27,7 +23,7 @@ const sections: section[] = [
 ];
 
 export default function SectionList() {
-  const [selectedSection, setSelectedSection] = React.useState<section | null>(null);
+  const [selectedSection, setSelectedSection] = React.useState<section | null>(sections[0]);
 
   const handleSectionClick = (section: section) => {
     setSelectedSection(section);
@@ -60,8 +56,8 @@ export default function SectionList() {
   };
 
   return (
-    <div>
-      <h2 className="text-lg font-bold mb-4">Sections</h2>
+    <div className="container mx-auto px-6 py-6">
+      <h1 className="text-2xl font-bold mb-4">Sections</h1>
       <div className="flex">
         <div className="bg-gray-100 w-1/5">
           <button

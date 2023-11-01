@@ -8,8 +8,6 @@ import Education from './Sections/Education';
 import Languages from './Sections/Languages';
 import Intersets from './Sections/Intersets';
 import { draftType, headerType } from './types';
-import schema from '~/store/Schema';
-import { useLocation } from 'react-router-dom';
 
 type props = {
   onClose: () => void;
@@ -19,22 +17,11 @@ type props = {
 function Template({ onClose, draft }: props) {
   const schema = draft.schema;
 
-  console.log(schema);
-
-  // const location = useLocation();
-  // const updatedDraft = location.state.updatedDraft;
-
-  // console.log(updatedDraft.schema);
-
-  // let drafts = localStorage.getItem('drafts');
-  // const draftObj = drafts ? JSON.parse(drafts) : [];
-  // const draft = draftObj[0];
-
   // Open a new browser tab when the user clicks a link
   // Pass the draft object as a query parameter in the URL
   const handleLinkClick = () => {
     const draftString = JSON.stringify(schema);
-    window.open(`scene`, '_blank');
+    window.open(`scene?draft_id=${draft.id}`, '_blank');
   };
 
   return (

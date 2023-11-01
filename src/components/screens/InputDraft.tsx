@@ -78,28 +78,6 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-
-          {/* <div className="flex justify-end mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={() => {
-                handleUpdateDraft();
-                console.log(updatedDraft);
-              }}
-            >
-              Save
-            </button>
-            <button
-              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={() => onDeleteDraft(draft.id)}
-            >
-              Delete
-            </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={handleCancelDraft}>
-              Cancel
-            </button>
-          </div> */}
-          {/* <h2 className="text-lg font-bold mt-2">Schema</h2> */}
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
@@ -109,17 +87,6 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
               }}
             >
               Save
-            </button>
-            <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
-              onClick={() => {
-                // print draft
-                // setDialgoData(draft);
-                // setShowDialog(true);
-                console.log(draft);
-              }}
-            >
-              Print
             </button>
             <button
               className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"

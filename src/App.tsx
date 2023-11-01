@@ -38,11 +38,6 @@ function App() {
                 Drafts
               </Link>
             </li>
-            <li>
-              <Link to="/template" className="font-bold text-lg">
-                Template
-              </Link>
-            </li>
           </ul>
         </nav>
 
@@ -51,7 +46,6 @@ function App() {
             <Route path="/" element={<SectionList />} />
             {/* <Route path="/draft" element={<Draft />} /> */}
             <Route path="/drafts" element={<DraftBuilder />} />
-            <Route path="/template" element={<Templete />} />
             <Route path="/scene" element={<Scene />} />
           </Routes>
         </div>
