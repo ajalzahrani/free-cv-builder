@@ -7,10 +7,3 @@ import App from './App';
 const root = createRott.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(<App />);
-
-// ReactDOM.render(
-//   <React.StrictMode>
-//     <App />
-//   </React.StrictMode>,
-//   document.getElementById('root'),
-// );

@@ -43,7 +43,10 @@ export default function InputHeader({ header, onUpdateHeader, onCancel, onDelete
         <h3 className="text-2xl font-bold">{header.name}</h3>
 
         {!isEditing && (
-          <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
+          <button
+            className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
+            onClick={() => setIsEditing(true)}
+          >
             Edit
           </button>
         )}

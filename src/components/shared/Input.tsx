@@ -38,7 +38,8 @@ const Input = React.memo(({ id, title, status, updateText }: InputProps) => {
       <div onDoubleClick={handleEditing} className={editing ? 'hidden' : 'flex items-center'}>
         <button
           onClick={handleEditing}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          // className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
         >
           Edit
         </button>

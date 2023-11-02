@@ -56,7 +56,10 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{experience.title}</h3>
         {!isEditing && (
-          <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
+          <button
+            className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
+            onClick={() => setIsEditing(true)}
+          >
             Edit
           </button>
         )}

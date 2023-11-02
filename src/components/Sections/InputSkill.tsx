@@ -36,7 +36,10 @@ export default function InputSkill({ skill, onUpdateSkill, onCancel, onDeleteSki
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{skill.title}</h3>
         {!isEditing && (
-          <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
+          <button
+            className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
+            onClick={() => setIsEditing(true)}
+          >
             Edit
           </button>
         )}
@@ -67,7 +70,7 @@ export default function InputSkill({ skill, onUpdateSkill, onCancel, onDeleteSki
             >
               Delete
             </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => onCancel()}>
+            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelSkill()}>
               Cancel
             </button>
           </div>

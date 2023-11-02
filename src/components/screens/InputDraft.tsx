@@ -45,14 +45,22 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
     <div className="border rounded-lg mt-4 p-4 mb-4">
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{draft.title}</h3>
-        <button className="text-blue-500 hover:text-blue-700" onClick={() => onShowTemplate(updatedDraft.id)}>
-          Show
-        </button>
-        {!isEditing && (
-          <button className="text-blue-500 hover:text-blue-700" onClick={() => setIsEditing(true)}>
-            Edit
+        <div>
+          <button
+            className="text-blue-500 hover:text-blue-700 mr-2 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
+            onClick={() => onShowTemplate(updatedDraft.id)}
+          >
+            Show
           </button>
-        )}
+          {!isEditing && (
+            <button
+              className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
+              onClick={() => setIsEditing(true)}
+            >
+              Edit
+            </button>
+          )}
+        </div>
       </div>
       {isEditing ? (
         <div className="mt-2">

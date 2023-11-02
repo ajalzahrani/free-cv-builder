@@ -11,7 +11,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.16",
+    "@headlessui/reacti": "^1.7.16",
     "@heroicons/react": "^2.0.18",
     "daisyui": "^2.52.0",
     "html2canvas": "^1.4.1",
