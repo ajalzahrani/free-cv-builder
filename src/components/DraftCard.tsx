@@ -2,7 +2,7 @@ import React from 'react';
 import { sectionType } from '~/components/types';
 
 type Props = {
-  section: sectionType;
+  section: any;
   onAdd?: () => void;
   onShow?: () => void;
   isCardSelected?: boolean;

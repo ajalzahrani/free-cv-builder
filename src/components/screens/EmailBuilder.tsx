@@ -4,6 +4,7 @@ import { produce } from 'immer';
 import InputEmail from './InputEmail';
 import UUID from '../shared/UUID';
 import useStore from '../../store/RepoLocalStorage';
+import EmailTemplate from './EmailTemplate';
 
 const title = 'Emails';
 
@@ -12,6 +13,9 @@ const email: emailFormType[] = [];
 export default function EmailBuilder() {
   const [emails, updateEmails] = useState<emailFormType[]>([]);
   const [isAddingEmail, setIsAddingEmail] = useState<boolean>(false);
+
+  const [showDialog, setShowDialog] = React.useState(false);
+  const [dialogData, setDialgoData] = React.useState<emailFormType>({} as emailFormType);
 
   const handleAddEmail = () => {
     setIsAddingEmail(true);
@@ -52,6 +56,12 @@ export default function EmailBuilder() {
     updateEmails(newData);
   };
 
+  const handleShowTemplate = (id: string): void => {
+    setShowDialog(true);
+    const email = emails.find((email) => email.id === id);
+    setDialgoData(email ? email : ({} as emailFormType));
+  };
+
   const renderEmails = () => {
     const rows = [];
     for (let i = 0; i < emails.length; i++) {
@@ -62,6 +72,7 @@ export default function EmailBuilder() {
           onUpdateEmail={(updatedEmail: emailFormType) => updateEmail(updatedEmail)}
           onCancel={() => handleCancelEmail()}
           onDeleteEmail={(id: string) => handleDeleteEmail(id)}
+          onShowTemplate={(id: any) => handleShowTemplate(id)}
         />,
       );
     }
@@ -73,24 +84,17 @@ export default function EmailBuilder() {
             id: UUID(),
             title: '',
             description: '',
-            sender: {
-              id: '',
-              name: '',
-              email: '',
-              mobile: '',
-            },
-            receiver: {
-              id: '',
-              name: '',
-              email: '',
-              company: '',
-            },
+            name: '',
+            to: '',
+            company: '',
             subject: '',
+            message: '',
             isSent: false,
           }}
           onUpdateEmail={(newEmail: emailFormType) => handleSaveEmail(newEmail)}
           onCancel={() => setIsAddingEmail(false)}
           onDeleteEmail={(id: string) => handleDeleteEmail(id)}
+          onShowTemplate={(id: any) => handleShowTemplate(id)}
         />,
       );
     }
@@ -99,6 +103,7 @@ export default function EmailBuilder() {
 
   return (
     <div className="bg-gray-100 min-h-screen">
+      {showDialog && <EmailTemplate onClose={() => setShowDialog(false)} email={dialogData} />}
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h1 className="text-2xl font-bold mb-4">{title}</h1>
@@ -110,6 +115,7 @@ export default function EmailBuilder() {
           >
             Add
           </button>
+
           <div>{renderEmails()}</div>
         </div>
       </div>

@@ -38,7 +38,7 @@ const DraftBuilder = () => {
     updateDraft(draft);
     setIsAddingDraft(false);
   };
-  
+
   const handleCancelDraft = () => {
     setIsAddingDraft(false);
   };

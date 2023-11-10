@@ -123,18 +123,16 @@ export type emailFormType = {
   id: string;
   title: string;
   description: string;
-  sender: {
-    id: string;
-    name: string;
-    email: string;
-    mobile: string;
-  };
-  receiver: {
-    id: string;
-    name: string;
-    email: string;
-    company: string;
-  };
+  to: string;
+  name: string;
+  company: string;
   subject: string;
+  message: string;
   isSent: boolean;
+};
+
+export type emailDraftType = {
+  id: string;
+  title: string;
+  message: string;
 };
