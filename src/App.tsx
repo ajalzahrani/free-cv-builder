@@ -8,6 +8,8 @@ import SectionList from './components/SectionList';
 import Drafts from './components/screens/DraftsBuilder';
 import DraftBuilder from './components/screens/DraftsBuilder';
 import Templete from './components/Templete';
+import EmailFormBuilder from './components/screens/EmailBuilder';
+import CoverLetterBulder from './components/screens/CoverLetterBuilder';
 
 function App() {
   const [exp, setExp] = React.useState<experienceType[]>([]);
@@ -32,6 +34,16 @@ function App() {
                 Drafts
               </Link>
             </li>
+            <li>
+              <Link to="/email" className="font-bold text-lg">
+                Email
+              </Link>
+            </li>
+            <li>
+              <Link to="/cover-letter" className="font-bold text-lg">
+                Cover Letter
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -40,6 +52,8 @@ function App() {
             <Route path="/" element={<SectionList />} />
             <Route path="/drafts" element={<DraftBuilder />} />
             <Route path="/scene" element={<Scene />} />
+            <Route path="/email" element={<EmailFormBuilder />} />
+            <Route path="/cover-letter" element={<CoverLetterBulder />} />
           </Routes>
         </div>
       </div>

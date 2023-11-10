@@ -10,7 +10,7 @@ import {
   projectType,
   languageType,
   interestType,
-} from './types';
+} from '../types';
 
 type StoreState = {
   header: headerType;

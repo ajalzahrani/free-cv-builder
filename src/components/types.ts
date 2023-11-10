@@ -117,3 +117,24 @@ export type draftType = {
     interests: interestType[];
   };
 };
+
+// Email template
+export type emailFormType = {
+  id: string;
+  title: string;
+  description: string;
+  sender: {
+    id: string;
+    name: string;
+    email: string;
+    mobile: string;
+  };
+  receiver: {
+    id: string;
+    name: string;
+    email: string;
+    company: string;
+  };
+  subject: string;
+  isSent: boolean;
+};
