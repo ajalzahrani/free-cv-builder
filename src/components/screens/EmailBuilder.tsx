@@ -15,7 +15,7 @@ export default function EmailBuilder() {
   const [isAddingEmail, setIsAddingEmail] = useState<boolean>(false);
 
   const [showDialog, setShowDialog] = React.useState(false);
-  const [dialogData, setDialgoData] = React.useState<emailFormType>({} as emailFormType);
+  const [dialogData, setDialgoData] = React.useState<string>('');
 
   const handleAddEmail = () => {
     setIsAddingEmail(true);
@@ -59,7 +59,7 @@ export default function EmailBuilder() {
   const handleShowTemplate = (id: string): void => {
     setShowDialog(true);
     const email = emails.find((email) => email.id === id);
-    setDialgoData(email ? email : ({} as emailFormType));
+    setDialgoData(email?.message || '');
   };
 
   const renderEmails = () => {
@@ -88,6 +88,7 @@ export default function EmailBuilder() {
             to: '',
             company: '',
             subject: '',
+            position: '',
             message: '',
             isSent: false,
           }}

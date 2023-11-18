@@ -128,6 +128,7 @@ export type emailFormType = {
   company: string;
   subject: string;
   message: string;
+  position: string;
   isSent: boolean;
 };
 

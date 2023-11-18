@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import useDraftStore from '../../store/draftStore';
+import useDraftsStore from '../../store/draftStore';
 import { produce } from 'immer';
 import { draftType } from '../types';
 import UUID from '../shared/UUID';
@@ -8,7 +8,8 @@ import schemaInit from '~/store/Schema';
 import Template from '../Templete';
 
 const DraftBuilder = () => {
-  const { drafts, updateDrafts } = useDraftStore();
+  const { drafts, updateDrafts } = useDraftsStore();
+
   const [isAddingDraft, setIsAddingDraft] = React.useState<boolean>(false);
   const [showDialog, setShowDialog] = React.useState(false);
   const [dialogData, setDialgoData] = React.useState<draftType>({} as draftType);

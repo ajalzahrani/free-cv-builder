@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { emailDraftType, emailFormType } from '~/components/types';
+import { emailDraftType, emailFormType, headerType } from '~/components/types';
 import DraftCardPreivew from '../DraftCardPreivew';
+import EmailTemplate from './EmailTemplate';
 import DraftCard from '../DraftCard';
-import { email_drafts } from '~/store/EmailTamplates';
+import email_drafts from '~/store/EmailTamplates';
+import useStore from '~/store/RepoLocalStorage';
 
 type InputContactProps = {
   email: emailFormType;
@@ -17,8 +19,10 @@ const InputEmail: React.FC<InputContactProps> = ({ email, onUpdateEmail, onCance
   const [updatedEmail, setUpdatedEmail] = useState<emailFormType>(email);
 
   const [showDialog, setShowDialog] = React.useState(false);
-  const [dialogData, setDialgoData] = React.useState({});
-  const [selectedCards, setSelectedCards] = React.useState<emailDraftType>({} as emailDraftType);
+  const [dialogData, setDialgoData] = React.useState('');
+
+  const contacts = useStore((state) => state.contacts);
+  const headers = useStore((state) => state.headers);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -28,39 +32,61 @@ const InputEmail: React.FC<InputContactProps> = ({ email, onUpdateEmail, onCance
     }));
   };
 
-  const handlePreviewCard = (arg0: { data: any }): void => {
-    setShowDialog(true);
-    setDialgoData(arg0.data);
-  };
-
-  const handleUpdateEmail = () => {
-    onUpdateEmail(updatedEmail);
-    setIsEditing(false);
-  };
-
   const handleCancelEmail = () => {
     setIsEditing(false);
     onCancel();
   };
 
-  const handleCardSelection = (arg0: { type: string; data: emailDraftType }): void => {
-    setSelectedCards(arg0.data);
+  const handleSaveEmail = () => {
+    handleSelectEmailTamplate({ type: 'email', data: updatedEmail.message });
+    setUpdatedEmail((prevEmail: emailFormType) => {
+      const updatedEmail = { ...prevEmail };
+      onUpdateEmail(updatedEmail);
+      return updatedEmail;
+    });
+    setIsEditing(false);
   };
 
-  const handleUpdateUpdatedEmail = () => {
-    setUpdatedEmail((prevEmail: any) => ({
-      ...prevEmail,
-      ...selectedCards,
-    }));
+  const handlePreviewCard = (arg0: { data: any }): void => {
+    setShowDialog(true);
+    setDialgoData(arg0.data);
+  };
+
+  const handleSelectEmailTamplate = (arg0: { type: string; data: any }): void => {
+    setUpdatedEmail((prevEmail: any) => {
+      const updatedEmail = {
+        ...prevEmail,
+        message: updateMessage(arg0.data, prevEmail),
+      };
+      return updatedEmail;
+    });
+  };
+
+  const updateMessage = (message: string, updatedEmail: any) => {
+    // Update message string with input fields values
+    const updatedMessage = message
+      .replace(/#to_name#/g, updatedEmail.name || 'Hiring Manager')
+      .replace(/#from_name#/g, headers[0].name)
+      .replace(/#from_phone#/g, contacts[0].phone)
+      .replace(/#from_email#/g, contacts[0].email)
+      .replace(/#from_linkedin#/g, contacts[0].linkedin || '')
+      .replace(/#position#/g, updatedEmail.position)
+      .replace(/#company#/g, updatedEmail.company);
+
+    return updatedMessage;
   };
 
   useEffect(() => {
-    handleUpdateUpdatedEmail();
-  }, [selectedCards.message]);
+    setUpdatedEmail((prevEmail: any) => ({
+      ...prevEmail,
+      message: updateMessage(prevEmail.message, prevEmail),
+    }));
+  }, [updatedEmail.name, updatedEmail.position, updatedEmail.company, headers, contacts]);
 
   return (
     <div className="border rounded-lg mt-4 p-4 mb-4">
-      {showDialog && <DraftCardPreivew onClose={() => setShowDialog(false)} data={dialogData} />}
+      {/* {showDialog && <DraftCardPreivew onClose={() => setShowDialog(false)} data={dialogData} />} */}
+      {showDialog && <EmailTemplate onClose={() => setShowDialog(false)} email={dialogData} />}
       <div className="flex justify-between items-center">
         <h3 className="text-lg font-bold">{email.title}</h3>
         <button
@@ -102,17 +128,6 @@ const InputEmail: React.FC<InputContactProps> = ({ email, onUpdateEmail, onCance
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="to">
-            To
-          </label>
-          <input
-            type="text"
-            id="to"
-            name="to"
-            value={updatedEmail.to}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
           <label className="block font-bold mt-2 mb-2" htmlFor="subject">
             Subject
           </label>
@@ -124,8 +139,20 @@ const InputEmail: React.FC<InputContactProps> = ({ email, onUpdateEmail, onCance
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          <label className="block font-bold mt-2 mb-2" htmlFor="to">
+            To
+          </label>
+          <input
+            placeholder="email@emailcompany.com"
+            type="text"
+            id="to"
+            name="to"
+            value={updatedEmail.to}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
           <label className="block font-bold mt-2 mb-2" htmlFor="name">
-            Name
+            Interviewer Name
           </label>
           <input
             type="text"
@@ -135,6 +162,18 @@ const InputEmail: React.FC<InputContactProps> = ({ email, onUpdateEmail, onCance
             onChange={handleInputChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
+          <label className="block font-bold mt-2 mb-2" htmlFor="position">
+            Position
+          </label>
+          <input
+            type="text"
+            id="position"
+            name="position"
+            value={updatedEmail.position}
+            onChange={handleInputChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+
           <label className="block font-bold mt-2 mb-2" htmlFor="company">
             Company
           </label>
@@ -147,19 +186,23 @@ const InputEmail: React.FC<InputContactProps> = ({ email, onUpdateEmail, onCance
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
           <label className="block font-bold mt-2 mb-2" htmlFor="message">
-            Message
+            Email Message
           </label>
-          <textarea
-            id="message"
-            name="message"
-            value={updatedEmail.message}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          {email_drafts.map((draft, id) => (
+            <div className="mt-4" key={id}>
+              {
+                <DraftCard
+                  section={{ draft: draft, title: draft.substring(0, 20) }}
+                  onShow={() => handlePreviewCard({ data: draft })}
+                  onAdd={() => handleSelectEmailTamplate({ type: 'email', data: draft })}
+                />
+              }
+            </div>
+          ))}
           <div className="flex justify-end mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateEmail}
+              onClick={handleSaveEmail}
             >
               Save
             </button>
@@ -173,32 +216,20 @@ const InputEmail: React.FC<InputContactProps> = ({ email, onUpdateEmail, onCance
               Cancel
             </button>
           </div>
-
-          {email_drafts.map((draft) => (
-            <div className="mt-2" key={draft.id}>
-              {
-                <DraftCard
-                  section={draft}
-                  onShow={() => handlePreviewCard({ data: draft })}
-                  onAdd={() => handleCardSelection({ type: 'email', data: draft })}
-                />
-              }
-            </div>
-          ))}
         </div>
       ) : (
         <div className="mt-2">
-          <p className="text-gray-700">{email.description}</p>
+          <p className="text-gray-700">Description: {email.description}</p>
+
           <p className="text-gray-700">
-            Sender: {email.name} ({email.to})
+            Sender: {headers[0].name} ({contacts[0].email})
           </p>
+          <p className="text-gray-700">Subject: {email.subject}</p>
           <p className="text-gray-700">
             Receiver: {email.name} ({email.to})
           </p>
-          <p className="text-gray-700">
-            Company: {email.company} {email.company}
-          </p>
-          <p className="text-gray-700">Subject: {email.subject}</p>
+          <p className="text-gray-700">Position: {email.position}</p>
+          <p className="text-gray-700">Company: {email.company.length === 0 ? '' : email.company}</p>
           <p className="text-gray-700">Is Sent: {email.isSent ? 'Yes' : 'No'}</p>
         </div>
       )}
