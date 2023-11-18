@@ -2,18 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-.App {
-    text-align: center;
+.scene-container {
     /* Set the maximum width of the container */
-    max-width: 800px;
+    /* max-width: 1100px; */
+    /* Center the container horizontally */
+    width: 210mm;
+    /* height: 297mm; */
+    padding-bottom: 50px;
     margin: 0 auto;
+    /* padding-bottom: 80px; */
+    /* background-color: gray-100; */
+    
 }
 
-.container {
-    /* Set the maximum width of the container */
-    max-width: 1100px;
-    /* Center the container horizontally */
-    margin: 0 auto;
+#navbar {
+    display: block;
 }
 
 .fu {
@@ -82,11 +85,4 @@
     to {
         transform: rotate(360deg);
     }
-}
-
-.align-text-top {
-    /* display: flex;
-    align-items: flex-start; */
-    line-height: 30px;
-    /* background-color: yellow; */
 }
