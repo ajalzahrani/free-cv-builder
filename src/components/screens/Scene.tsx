@@ -48,7 +48,7 @@ export default function Scene() {
 
   return (
     <>
-      <button onClick={printDocument}>Print</button>
+      {/* <button onClick={printDocument}>Print</button> */}
       <div id="scene-container" className="scene-container">
         <Header header={schema.headers[0]} />
         <Contacts contact={schema.contacts} />

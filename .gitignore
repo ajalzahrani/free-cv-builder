@@ -4,6 +4,7 @@ dist
 dist-ssr
 *.local
 package-lock.json
-yarn.lock
 Predefined.ts
+Predefined2.ts
 yarn.lock
+```

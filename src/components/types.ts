@@ -123,13 +123,10 @@ export type emailFormType = {
   id: string;
   title: string;
   description: string;
-  to: string;
   name: string;
   company: string;
-  subject: string;
   message: string;
   position: string;
-  isSent: boolean;
 };
 
 export type emailDraftType = {

@@ -64,7 +64,7 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
   const renderHeaders = () => {
     const rows = [];
     // if (!headers) return null; // Add null check here
-    console.log(headers.length);
+    // console.log(headers.length);
     for (let i = 0; i < headers.length; i++) {
       rows.push(
         <InputHeader
