@@ -7,6 +7,7 @@ import Certificates from '../Sections/Certificates';
 import Education from '../Sections/Education';
 import Languages from '../Sections/Languages';
 import Intersets from '../Sections/Intersets';
+import Committees from '../Sections/Committee';
 import schema from '~/store/Schema';
 import React, { useRef } from 'react';
 import '../../styles/Scene.css';
@@ -56,9 +57,10 @@ export default function Scene() {
         <Education education={schema.educations} />
         <Certificates certificates={schema.certificates} />
         <Skills skills={schema.skills} />
-        <Projects projects={schema.projects} />
+        <Committees committes={schema.committees} />
+        {/* <Projects projects={schema.projects} /> */}
         <Languages language={schema.languages} />
-        <Intersets interest={schema.interests} />
+        {/* <Intersets interest={schema.interests} /> */}
       </div>
     </>
   );

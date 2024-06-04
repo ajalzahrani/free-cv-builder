@@ -63,6 +63,13 @@ type StoreState = {
       id: string;
       name: string;
     }[];
+    committees: {
+      id: string;
+      name: string;
+      Role: string;
+      date: string;
+      responsibility: string;
+    }[];
   };
 };
 
@@ -84,6 +91,7 @@ const useDraftStore = create<StoreState & StoreActions>((set) => {
         projects: [],
         languages: [],
         interests: [],
+        committees: [],
         selectedCards: [],
       };
 

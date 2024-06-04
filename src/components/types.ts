@@ -7,7 +7,8 @@ export type sectionType =
   | skillType
   | projectType
   | languageType
-  | interestType;
+  | interestType
+  | committeeType;
 // | selectedCardType;
 
 type selectedCardType = {
@@ -34,6 +35,10 @@ export type contactType = {
   facebook?: string;
 };
 
+export type experinceTasksType = {
+  description: string;
+};
+
 export type experienceType = {
   id: string;
   title: string;
@@ -42,7 +47,7 @@ export type experienceType = {
   from: string;
   to: string;
   description: string;
-  tasks: string[];
+  experinceTasks: experinceTasksType[];
 };
 
 export type educationType = {
@@ -77,6 +82,14 @@ export type projectType = {
   to: string;
   description: string;
   link: string;
+};
+
+export type committeeType = {
+  id: string;
+  title: string;
+  role: string;
+  date: string;
+  responsibility: string;
 };
 
 export type languageType = {
@@ -115,6 +128,7 @@ export type draftType = {
     projects: projectType[];
     languages: languageType[];
     interests: interestType[];
+    committees: committeeType[];
   };
 };
 

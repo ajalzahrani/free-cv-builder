@@ -9,6 +9,7 @@ import InterestBuilder from './Sections/InterestBuilder';
 import HeaderBuilder from './Sections/HeaderBuilder';
 import ContactBuilder from './Sections/ContactBuilder';
 import LanguageBuilder from './Sections/LanguageBuilder';
+import CommitteeBuilder from './Sections/CommitteeBuilder';
 
 const sections: section[] = [
   { title: 'Header', component: HeaderBuilder },
@@ -20,6 +21,7 @@ const sections: section[] = [
   { title: 'Skills', component: SkillBuilder },
   { title: 'Interests', component: InterestBuilder },
   { title: 'Languages', component: LanguageBuilder },
+  { title: 'Committees', component: CommitteeBuilder },
 ];
 
 export default function SectionList() {
@@ -50,6 +52,8 @@ export default function SectionList() {
         return <InterestBuilder />;
       case 'Languages':
         return <LanguageBuilder />;
+      case 'Committees':
+        return <CommitteeBuilder />;
       default:
         return <div>Not Found</div>;
     }
