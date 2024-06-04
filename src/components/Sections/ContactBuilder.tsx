@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { sectionType, contactType } from '~/components/types';
 import { produce } from 'immer';
 import InputContact from './InputContact';
@@ -21,12 +21,38 @@ const contact: contactType = {
 };
 
 export default function ContactBuilder({ section }: { section: sectionType }) {
-  // const [contacts, setContacts] = React.useState<contactType[]>([contact]);
-  const { contacts, updateContacts } = useStore();
+  const [contacts, updateContacts] = React.useState<contactType[]>([]);
+  // const { contacts, updateContacts } = useStore();
   const [isAddingContact, setIsAddingContact] = React.useState<boolean>(false);
 
   const handleAddContact = () => {
     setIsAddingContact(true);
+  };
+
+  useEffect(() => {
+    handleGetContacts();
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetContacts = async () => {
+    const response = await fetch('http://localhost:3000/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      updateContacts(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
   };
 
   const updateContact = (contact: contactType) => {

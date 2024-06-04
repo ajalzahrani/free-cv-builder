@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { certificateType } from '~/components/types';
 import { produce } from 'immer';
 import InputCertificate from './InputCertificate';
@@ -20,9 +20,35 @@ const certificate: certificateType = {
 };
 
 export default function CertificateBuilder(section: section) {
-  // const [cert, setCert] = React.useState<certificateType[]>([certificate]);
-  const { certificates, updateCertificates } = useStore();
+  const [certificates, updateCertificates] = React.useState<certificateType[]>([certificate]);
+  // const { certificates, updateCertificates } = useStore();
   const [isAddingCertificate, setIsAddingCertificate] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    handleGetCertificates();
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetCertificates = async () => {
+    const response = await fetch('http://localhost:3000/certificates', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateCertificates(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddCertificate = () => {
     setIsAddingCertificate(true);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { experienceType } from '~/components/types';
 import { produce } from 'immer';
 import InputExperience from './InputExperience';
@@ -16,16 +16,42 @@ const experience: experienceType = {
   from: 'January 2019',
   to: 'Present',
   description: '',
-  tasks: [
-    'Developed and maintained web applications using React and Node.js.',
-    'Developed and maintained web applications using C# and SQL.',
+  experinceTasks: [
+    { description: 'Developed and maintained web applications using React and Node.js.' },
+    { description: 'Developed and maintained web applications using C# and SQL.' },
   ],
 };
 
 export default function ExperienceBuilder(section: section) {
-  // const [exp, setExp] = React.useState<experienceType[]>([experience]);
-  const { experiences, updateExperiences } = useStore();
+  const [experiences, updateExperiences] = React.useState<experienceType[]>([]);
+  // const { experiences, updateExperiences } = useStore();
   const [isAddingExperience, setIsAddingExperience] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    handleGetExperiences();
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetExperiences = async () => {
+    const response = await fetch('http://localhost:3000/experiences', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateExperiences(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddExperience = () => {
     setIsAddingExperience(true);
@@ -98,7 +124,7 @@ export default function ExperienceBuilder(section: section) {
             from: '',
             to: '',
             description: '',
-            tasks: [],
+            experinceTasks: [],
           }}
           onUpdateExperience={(newExperience: experienceType) => handleSaveExperience(newExperience)}
           onCancel={handleCancelExperience}

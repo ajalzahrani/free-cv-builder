@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { sectionType, skillType } from '~/components/types';
 import { produce } from 'immer';
 import InputSkill from './InputSkill';
@@ -13,9 +13,35 @@ const skill: skillType = {
 };
 
 export default function SkillBuilder({ section }: { section: sectionType }) {
-  // const [skills, setSkills] = React.useState<skillType[]>([skill]);
-  const { skills, updateSkills } = useStore();
+  const [skills, updateSkills] = React.useState<skillType[]>([skill]);
+  // const { skills, updateSkills } = useStore();
   const [isAddingSkill, setIsAddingSkill] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    handleGetSkills();
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetSkills = async () => {
+    const response = await fetch('http://localhost:3000/skills', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateSkills(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddSkill = () => {
     setIsAddingSkill(true);

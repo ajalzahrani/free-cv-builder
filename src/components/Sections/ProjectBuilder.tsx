@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { projectType, sectionType } from '~/components/types';
 import { produce } from 'immer';
 import InputProject from './InputProject';
@@ -17,9 +17,35 @@ const project: projectType = {
 };
 
 export default function ProjectBuilder({ section }: { section: sectionType }) {
-  // const [projects, setProjects] = React.useState<projectType[]>([project]);
-  const { projects, updateProjects } = useStore();
+  const [projects, updateProjects] = React.useState<projectType[]>([project]);
+  // const { projects, updateProjects } = useStore();
   const [isAddingProject, setIsAddingProject] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    handleGetProjects();
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetProjects = async () => {
+    const response = await fetch('http://localhost:3000/projects', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateProjects(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddProject = () => {
     setIsAddingProject(true);

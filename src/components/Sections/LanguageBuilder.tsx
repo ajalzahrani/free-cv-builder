@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { sectionType, languageType } from '~/components/types';
 import { produce } from 'immer';
 import InputLanguage from './InputLanguage';
@@ -14,9 +14,35 @@ const language: languageType = {
 };
 
 export default function LanguageBuilder({ section }: { section: sectionType }) {
-  // const [languages, setLanguages] = React.useState<languageType[]>([language]);
-  const { languages, updateLanguages } = useStore();
+  const [languages, updateLanguages] = React.useState<languageType[]>([language]);
+  // const { languages, updateLanguages } = useStore();
   const [isAddingLanguage, setIsAddingLanguage] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    handleGetLanguages();
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetLanguages = async () => {
+    const response = await fetch('http://localhost:3000/languages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateLanguages(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddLanguage = () => {
     setIsAddingLanguage(true);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { interestType } from '~/components/types';
 import { produce } from 'immer';
 import InputInterest from './InputInterest';
@@ -14,9 +14,35 @@ const interest: interestType = {
 };
 
 export default function InterestBuilder() {
-  // const [interests, setInterests] = React.useState<interestType[]>([interest]);
-  const { interests, updateInterests } = useStore();
+  const [interests, updateInterests] = React.useState<interestType[]>([interest]);
+  // const { interests, updateInterests } = useStore();
   const [isAddingInterest, setIsAddingInterest] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    handleGetInterrests();
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetInterrests = async () => {
+    const response = await fetch('http://localhost:3000/interrests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateInterests(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddInterest = () => {
     setIsAddingInterest(true);

@@ -10,6 +10,7 @@ import DraftBuilder from './components/screens/DraftsBuilder';
 import Templete from './components/Templete';
 import EmailFormBuilder from './components/screens/EmailBuilder';
 import CoverLetterBulder from './components/screens/CoverLetterBuilder';
+import Login from './components/screens/Login';
 
 function App() {
   const [exp, setExp] = React.useState<experienceType[]>([]);
@@ -51,7 +52,8 @@ function App() {
 
         <div className={true ? 'container' : 'container mx-auto px-6 py-4'}>
           <Routes>
-            <Route path="/" element={<SectionList />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/home" element={<SectionList />} />
             <Route path="/drafts" element={<DraftBuilder />} />
             <Route path="/scene" element={<Scene />} />
             <Route path="/email" element={<EmailFormBuilder />} />

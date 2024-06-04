@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { educationType, section } from '~/components/types';
 import { produce } from 'immer';
 import UUID from '../shared/UUID';
@@ -18,9 +18,35 @@ const education: educationType = {
 };
 
 export default function EducationBuilder(section: section) {
-  // const [edu, setEdu] = React.useState<educationType[]>([education]);
-  const { educations, updateEducations } = useStore();
+  const [educations, updateEducations] = React.useState<educationType[]>([education]);
+  // const { educations, updateEducations } = useStore();
   const [isAddingEducation, setIsAddingEducation] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    handleGetEducations();
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetEducations = async () => {
+    const response = await fetch('http://localhost:3000/educations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateEducations(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddEducation = () => {
     setIsAddingEducation(true);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { sectionType, headerType } from '~/components/types';
 import { produce } from 'immer';
 import InputHeader from './InputHeader';
@@ -7,20 +7,47 @@ import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Headers';
 
-const header: headerType = {
-  id: UUID(),
-  name: 'John Doe',
-  title: 'Software Engineer',
-  pitch: 'I am a software engineer with 5 years of experience.',
-};
+// const header: headerType = {
+//   id: UUID(),
+//   name: 'John Doe',
+//   title: 'Software Engineer',
+//   pitch: 'I am a software engineer with 5 years of experience.',
+// };
 
 export default function HeaderBuilder({ section }: { section: sectionType }) {
   // const [headers, setHeaders] = React.useState<headerType[]>([header]);
-  const { headers, updateHeaders } = useStore();
-  const [isAddingHeader, setIsAddingHeader] = React.useState<boolean>(false);
+  // const { headers, updateHeaders } = useStore();
+  const [headers, updateHeaders] = useState<headerType[]>([]); // Add null check here();
+  const [isAddingHeader, setIsAddingHeader] = useState<boolean>(false);
 
   const handleAddHeader = () => {
     setIsAddingHeader(true);
+  };
+
+  useEffect(() => {
+    handleGetHeaders();
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetHeaders = async () => {
+    const response = await fetch('http://localhost:3000/headers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      updateHeaders(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
   };
 
   const updateHeader = (header: headerType) => {
