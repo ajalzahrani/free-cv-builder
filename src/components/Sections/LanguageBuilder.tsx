@@ -86,7 +86,7 @@ export default function LanguageBuilder({ section }: { section: sectionType }) {
   const renderLanguages = () => {
     const rows = [];
     for (let i = 0; i < languages.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputLanguage
           key={i}
           language={languages[i]}
@@ -97,7 +97,7 @@ export default function LanguageBuilder({ section }: { section: sectionType }) {
       );
     }
     if (isAddingLanguage) {
-      rows.push(
+      rows.unshift(
         <InputLanguage
           key="new"
           language={{ id: UUID(), title: '', description: '' }}

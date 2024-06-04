@@ -85,7 +85,7 @@ export default function SkillBuilder({ section }: { section: sectionType }) {
   const renderSkills = () => {
     const rows = [];
     for (let i = 0; i < skills.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputSkill
           key={i}
           skill={skills[i]}
@@ -96,7 +96,7 @@ export default function SkillBuilder({ section }: { section: sectionType }) {
       );
     }
     if (isAddingSkill) {
-      rows.push(
+      rows.unshift(
         <InputSkill
           key="new"
           skill={{ id: UUID(), title: '' }}

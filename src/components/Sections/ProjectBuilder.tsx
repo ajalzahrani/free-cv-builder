@@ -92,7 +92,7 @@ export default function ProjectBuilder({ section }: { section: sectionType }) {
   const renderProjects = () => {
     const rows = [];
     for (let i = 0; i < projects.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputProject
           key={i}
           project={projects[i]}
@@ -103,7 +103,7 @@ export default function ProjectBuilder({ section }: { section: sectionType }) {
       );
     }
     if (isAddingProject) {
-      rows.push(
+      rows.unshift(
         <InputProject
           key="new"
           project={{ id: UUID(), title: '', description: '', link: '', from: '', to: '' }}

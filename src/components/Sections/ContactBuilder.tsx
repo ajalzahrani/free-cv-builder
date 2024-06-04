@@ -93,7 +93,7 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
   const renderContacts = () => {
     const rows = [];
     for (let i = 0; i < contacts.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputContact
           key={i}
           contact={contacts[i]}
@@ -104,7 +104,7 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
       );
     }
     if (isAddingContact) {
-      rows.push(
+      rows.unshift(
         <InputContact
           key="new"
           contact={{

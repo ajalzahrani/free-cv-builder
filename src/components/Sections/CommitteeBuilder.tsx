@@ -92,7 +92,7 @@ export default function CommitteeBuilder({ section }: { section: sectionType }) 
   const renderCommittees = () => {
     const rows = [];
     for (let i = 0; i < committees.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputCommittee
           key={i}
           committee={committees[i]}

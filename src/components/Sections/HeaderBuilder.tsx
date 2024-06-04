@@ -93,7 +93,7 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
     // if (!headers) return null; // Add null check here
     // console.log(headers.length);
     for (let i = 0; i < headers.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputHeader
           key={i}
           header={headers[i]}
@@ -104,7 +104,7 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
       );
     }
     if (isAddingHeader) {
-      rows.push(
+      rows.unshift(
         <InputHeader
           key="new"
           header={{ id: UUID(), name: '', title: '', pitch: '' }}

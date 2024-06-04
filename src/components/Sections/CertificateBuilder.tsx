@@ -95,7 +95,7 @@ export default function CertificateBuilder(section: section) {
   const renderCertificate = () => {
     const rows = [];
     for (let i = 0; i < certificates.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputCertificate
           key={i}
           certificate={certificates[i]}
@@ -106,7 +106,7 @@ export default function CertificateBuilder(section: section) {
       );
     }
     if (isAddingCertificate) {
-      rows.push(
+      rows.unshift(
         <InputCertificate
           key="new"
           certificate={{

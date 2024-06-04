@@ -86,7 +86,7 @@ export default function InterestBuilder() {
   const renderInterests = () => {
     const rows = [];
     for (let i = 0; i < interests.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputInterest
           key={i}
           interest={interests[i]}
@@ -97,7 +97,7 @@ export default function InterestBuilder() {
       );
     }
     if (isAddingInterest) {
-      rows.push(
+      rows.unshift(
         <InputInterest
           key="new"
           interest={{ id: UUID(), title: '', description: '' }}
