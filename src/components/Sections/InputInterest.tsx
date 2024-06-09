@@ -1,5 +1,5 @@
 import React from 'react';
-import { interestType } from '~/components/types';
+import { interestType } from '~/components/Types';
 
 type InputInterestProps = {
   interest: interestType;
@@ -32,20 +32,13 @@ export default function InputInterest({ interest, onUpdateInterest, onCancel, on
   };
 
   return (
-    <div className="border rounded-lg mt-4 p-4 mb-4">
-      <div className="flex justify-between items-center">
+    <div className="builders-element">
+      <div className="section-title">
         <h3 className="text-lg font-bold">{interest.title}</h3>
-        {!isEditing && (
-          <button
-            className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
-            onClick={() => setIsEditing(true)}
-          >
-            Edit
-          </button>
-        )}
+        {!isEditing && <button onClick={() => setIsEditing(true)}>Edit</button>}
       </div>
       {isEditing ? (
-        <div className="mt-2">
+        <div className="builders-input">
           <label className="block font-bold mt-2 mb-2" htmlFor="title">
             Title
           </label>

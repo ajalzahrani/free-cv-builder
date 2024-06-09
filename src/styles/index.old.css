@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'UbuntuBold';
+  src: url("../fonts/Ubuntu-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: 'UbuntuItalic';
+  src: url("../fonts/Ubuntu-Italic.ttf");
+  font-weight: Italic;
+}
+
+@font-face {
+  font-family: 'UbuntuLight';
+  src: url("../fonts/Ubuntu-Light.ttf");
+  font-weight: Light;
+}
+
+@font-face {
+  font-family: 'UbuntuLightItalic';
+  src: url("../fonts/Ubuntu-LightItalic.ttf");
+  font-weight: LightItalic;
+}
+
+@font-face {
+  font-family: 'UbuntuMedium';
+  src: url("../fonts/Ubuntu-Medium.ttf");
+  font-weight: Medium;
+}
+
+@font-face {
+  font-family: 'UbuntuMediumItalic';
+  src: url("../fonts/Ubuntu-MediumItalic.ttf");
+  font-weight: MediumItalic;
+}
+
+@font-face {
+  font-family: 'UbuntuRegular';
+  src: url("../fonts/Ubuntu-Regular.ttf");
+  font-weight: Regular;
+}
+
+body {
+  margin: 0;
+  /* font-family: 'Open Sans', sans-serif, 'Ubuntu'; */
+  font-family: 'Ubuntu', sans-serif;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
