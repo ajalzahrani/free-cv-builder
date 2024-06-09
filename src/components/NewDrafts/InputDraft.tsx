@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { draftType } from '~/components/types';
-import Draft from '../Draft';
+import { draftType, draftSkiltonType } from '~/components/Types';
+import Draft from './Draft';
 
 type InputDraftProps = {
   draft: draftType;
@@ -34,36 +34,39 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
     onCancel();
   };
 
-  const handleUpdateSchema = (updatedSchema: draftType['schema']) => {
+  const handleUpdateDraftSkilton = (updatedDraftSkilton: draftSkiltonType) => {
     setUpdatedDraft((prevDraft: any) => ({
       ...prevDraft,
-      schema: updatedSchema,
+      draftSkilton: updatedDraftSkilton,
     }));
   };
 
   return (
-    <div className="border rounded-lg mt-4 p-4 mb-4">
-      <div className="flex justify-between items-center">
+    <div className="builders-element">
+      <div className="section-title">
         <h3 className="text-lg font-bold">{draft.title}</h3>
         <div>
-          <button
-            className="text-blue-500 hover:text-blue-700 mr-2 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
-            onClick={() => onShowTemplate(updatedDraft.id)}
-          >
-            Show
-          </button>
           {!isEditing && (
-            <button
-              className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
-              onClick={() => setIsEditing(true)}
-            >
-              Edit
-            </button>
+            <div>
+              <button
+                className="text-blue-500 hover:text-blue-700 mr-2 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
+                onClick={() => onShowTemplate(updatedDraft.id)}
+              >
+                Show
+              </button>
+
+              <button
+                className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
+                onClick={() => setIsEditing(true)}
+              >
+                Edit
+              </button>
+            </div>
           )}
         </div>
       </div>
       {isEditing ? (
-        <div className="mt-2">
+        <div className="builders-input">
           <label className="block font-bold mt-2 mb-2" htmlFor="institution">
             Title
           </label>
@@ -105,10 +108,18 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
             <button className="text-gray-500 hover:text-gray-700 py-2 px-4" onClick={handleCancelDraft}>
               Cancel
             </button>
+            <button
+              className="text-blue-500 hover:text-blue-700 mr-2 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
+              onClick={() => onShowTemplate(updatedDraft.id)}
+            >
+              Show Draft Preview
+            </button>
           </div>
 
-          {/* Schema cards */}
-          <div className="mt-2">{<Draft schema={draft.schema} setSchema={handleUpdateSchema} />}</div>
+          {/* DraftSkilton Cards */}
+          <div style={{ marginTop: '20px' }}>
+            {<Draft draftSkilton={draft.draftSkilton} setDraftSkilton={handleUpdateDraftSkilton} />}
+          </div>
 
           <div className="flex justify-end mt-4">
             <button
@@ -143,8 +154,8 @@ export default function InputDraft({ draft, onUpdateDraft, onCancel, onDeleteDra
         </div>
       ) : (
         <div className="mt-2">
-          <p className="text-red-700">ENTERY ID: {draft.id}</p>
-          <p className="text-gray-700">{draft.title}</p>
+          {/* <p className="text-red-700">ENTERY ID: {draft.id}</p> */}
+          {/* <p className="text-gray-700">{draft.title}</p> */}
           <p className="text-gray-700">{draft.description}</p>
         </div>
       )}

@@ -5,8 +5,8 @@ import { PaperClipIcon } from '@heroicons/react/24/solid';
 import { DevicePhoneMobileIcon } from '@heroicons/react/24/solid';
 import { GlobeAltIcon } from '@heroicons/react/24/solid';
 import p from '~/store/Predefined';
-import { contactType } from '../types';
-import { draftType } from '../types';
+import { contactType } from '../Types';
+import { draftType } from '../Types';
 
 type props = {
   contact: contactType;

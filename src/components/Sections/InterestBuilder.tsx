@@ -1,8 +1,8 @@
-import React from 'react';
-import { interestType } from '~/components/types';
+import React, { useEffect } from 'react';
+import { interestType } from '~/components/Types';
 import { produce } from 'immer';
 import InputInterest from './InputInterest';
-import UUID from '../shared/UUID';
+import UUID from '../Shared/UUID';
 import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Interests';
@@ -14,9 +14,38 @@ const interest: interestType = {
 };
 
 export default function InterestBuilder() {
-  // const [interests, setInterests] = React.useState<interestType[]>([interest]);
+  // const [interests, updateInterests] = React.useState<interestType[]>([interest]);
   const { interests, updateInterests } = useStore();
   const [isAddingInterest, setIsAddingInterest] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    if (interests.length === 0) {
+      handleGetInterrests();
+      return;
+    }
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetInterrests = async () => {
+    const response = await fetch('http://localhost:3000/interrests', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateInterests(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddInterest = () => {
     setIsAddingInterest(true);
@@ -60,7 +89,7 @@ export default function InterestBuilder() {
   const renderInterests = () => {
     const rows = [];
     for (let i = 0; i < interests.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputInterest
           key={i}
           interest={interests[i]}
@@ -71,7 +100,7 @@ export default function InterestBuilder() {
       );
     }
     if (isAddingInterest) {
-      rows.push(
+      rows.unshift(
         <InputInterest
           key="new"
           interest={{ id: UUID(), title: '', description: '' }}
@@ -88,15 +117,17 @@ export default function InterestBuilder() {
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-2xl font-bold mb-4">{title}</h1>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => {
-              handleAddInterest();
-            }}
-          >
-            Add
-          </button>
+          <div className="section-title">
+            <h2 className="text-2xl font-bold mb-4">{title}</h2>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => {
+                handleAddInterest();
+              }}
+            >
+              Add
+            </button>
+          </div>
           <div>{renderInterests()}</div>
         </div>
       </div>

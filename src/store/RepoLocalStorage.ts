@@ -9,7 +9,10 @@ import {
   projectType,
   languageType,
   interestType,
-} from '../components/types';
+  committeeType,
+} from '../components/Types';
+// import { predefined } from './Predefined3StackForDBA';
+import { predefined } from './Predefined3StackForDBA1';
 
 type StoreState = {
   headers: headerType[];
@@ -21,6 +24,7 @@ type StoreState = {
   projects: projectType[];
   languages: languageType[];
   interests: interestType[];
+  committees: committeeType[];
 };
 
 type StoreActions = {
@@ -33,10 +37,15 @@ type StoreActions = {
   updateProjects: (projects: projectType[]) => void;
   updateLanguages: (languages: languageType[]) => void;
   updateInterests: (interests: interestType[]) => void;
+  updateCommittees: (committees: committeeType[]) => void;
 };
 
 const useStore = create<StoreState & StoreActions>((set, get) => {
-  const storedState = localStorage.getItem('resumeData');
+  let storedState = localStorage.getItem('resumeData');
+  // if (!storedState) {
+  //   localStorage.setItem('resumeData', JSON.stringify(predefined));
+  //   storedState = localStorage.getItem('resumeData');
+  // }
   const initialState = storedState
     ? JSON.parse(storedState)
     : {
@@ -49,6 +58,7 @@ const useStore = create<StoreState & StoreActions>((set, get) => {
         projects: [],
         languages: [],
         interests: [],
+        committees: [],
       };
 
   return {
@@ -87,6 +97,10 @@ const useStore = create<StoreState & StoreActions>((set, get) => {
     },
     updateInterests: (interests: interestType[]) => {
       set({ interests });
+      localStorage.setItem('resumeData', JSON.stringify(get()));
+    },
+    updateCommittees: (committees: committeeType[]) => {
+      set({ committees });
       localStorage.setItem('resumeData', JSON.stringify(get()));
     },
   };

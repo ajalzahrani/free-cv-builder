@@ -1,9 +1,9 @@
-import React from 'react';
-import { experienceType } from '~/components/types';
+import React, { useEffect, useState } from 'react';
+import { experienceType } from '~/components/Types';
 import { produce } from 'immer';
 import InputExperience from './InputExperience';
-import { section } from '~/components/types';
-import UUID from '../shared/UUID';
+import { section } from '~/components/Types';
+import UUID from '../Shared/UUID';
 import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Work Experience';
@@ -16,16 +16,45 @@ const experience: experienceType = {
   from: 'January 2019',
   to: 'Present',
   description: '',
-  tasks: [
-    'Developed and maintained web applications using React and Node.js.',
-    'Developed and maintained web applications using C# and SQL.',
+  experinceTasks: [
+    { description: 'Developed and maintained web applications using React and Node.js.' },
+    { description: 'Developed and maintained web applications using C# and SQL.' },
   ],
 };
 
 export default function ExperienceBuilder(section: section) {
-  // const [exp, setExp] = React.useState<experienceType[]>([experience]);
+  // const [experiences, updateExperiences] = React.useState<experienceType[]>([experience]);
   const { experiences, updateExperiences } = useStore();
   const [isAddingExperience, setIsAddingExperience] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    if (experiences.length === 0) {
+      handleGetExperiences();
+      return;
+    }
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetExperiences = async () => {
+    const response = await fetch('http://localhost:3000/experiences', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateExperiences(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddExperience = () => {
     setIsAddingExperience(true);
@@ -98,7 +127,7 @@ export default function ExperienceBuilder(section: section) {
             from: '',
             to: '',
             description: '',
-            tasks: [],
+            experinceTasks: [],
           }}
           onUpdateExperience={(newExperience: experienceType) => handleSaveExperience(newExperience)}
           onCancel={handleCancelExperience}
@@ -113,23 +142,27 @@ export default function ExperienceBuilder(section: section) {
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-2xl font-bold mb-4">{title}</h1>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => {
-              handleAddExperience();
-            }}
-          >
-            Add
-          </button>
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4"
-            onClick={() => {
-              console.log(experiences);
-            }}
-          >
-            Print
-          </button>
+          <div className="section-title">
+            <h2 className="text-2xl font-bold mb-4">{title}</h2>
+            <div className="section-title">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+                onClick={() => {
+                  handleAddExperience();
+                }}
+              >
+                Add
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4"
+                onClick={() => {
+                  console.log(experiences);
+                }}
+              >
+                Print
+              </button>
+            </div>
+          </div>
           {/* <div>{renderTextInput()}</div> */}
           <div>{renderExperience()}</div>
         </div>

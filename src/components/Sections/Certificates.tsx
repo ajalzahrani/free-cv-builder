@@ -1,6 +1,6 @@
 import React from 'react';
 import p from '~/store/Predefined';
-import { certificateType } from '../types';
+import { certificateType } from '../Types';
 
 type props = {
   certificates: certificateType[];

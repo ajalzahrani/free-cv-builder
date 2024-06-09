@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import useDraftsStore from '../../store/draftStore';
 import { produce } from 'immer';
-import { draftType } from '../types';
-import UUID from '../shared/UUID';
+import { draftType } from '../Types';
+import UUID from '../Shared/UUID';
 import InputDraft from './InputDraft';
 import schemaInit from '~/store/Schema';
-import Template from '../Templete';
+import Template from './Templete';
 
 const DraftBuilder = () => {
   const { drafts, updateDrafts } = useDraftsStore();
@@ -93,16 +93,18 @@ const DraftBuilder = () => {
     <div className="bg-gray-100 min-h-screen">
       {showDialog && <Template onClose={() => setShowDialog(false)} draft={dialogData} />}
       <div className="container mx-auto px-6 py-6">
-        <h1 className="text-2xl font-bold mb-4">{'Drafts'}</h1>
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => {
-              handleAddDraft();
-            }}
-          >
-            Add
-          </button>
+        <div className="section-title">
+          <h1 className="text-2xl font-bold mb-4">{'Drafts'}</h1>
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => {
+                handleAddDraft();
+              }}
+            >
+              Add
+            </button>
+          </div>
           {/* <div>{renderTextInput()}</div> */}
           <div>{renderDraft()}</div>
         </div>

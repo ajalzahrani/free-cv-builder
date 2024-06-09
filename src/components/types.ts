@@ -7,7 +7,8 @@ export type sectionType =
   | skillType
   | projectType
   | languageType
-  | interestType;
+  | interestType
+  | committeeType;
 // | selectedCardType;
 
 type selectedCardType = {
@@ -34,6 +35,10 @@ export type contactType = {
   facebook?: string;
 };
 
+export type experinceTasksType = {
+  description: string;
+};
+
 export type experienceType = {
   id: string;
   title: string;
@@ -42,7 +47,7 @@ export type experienceType = {
   from: string;
   to: string;
   description: string;
-  tasks: string[];
+  experinceTasks: experinceTasksType[];
 };
 
 export type educationType = {
@@ -79,6 +84,14 @@ export type projectType = {
   link: string;
 };
 
+export type committeeType = {
+  id: string;
+  title: string;
+  role: string;
+  date: string;
+  responsibility: string;
+};
+
 export type languageType = {
   id: string;
   title: string;
@@ -100,22 +113,42 @@ export type section = {
   component?: React.FC<any>;
 };
 
+type skiltonCardType = {
+  id: string;
+  order: number;
+};
+
+export type draftSkiltonType = {
+  [key: string]: any; // Index Signature
+  header?: skiltonCardType;
+  contact?: skiltonCardType;
+  experiences?: skiltonCardType[];
+  educations?: skiltonCardType[];
+  certificates?: skiltonCardType[];
+  skills?: skiltonCardType[];
+  projects?: skiltonCardType[];
+  languages?: skiltonCardType[];
+  interests?: skiltonCardType[];
+  committees?: skiltonCardType[];
+};
+
 export type draftType = {
   id: string;
   title: string;
   description: string;
-  schema: {
-    selectedCards: string[];
-    headers: headerType[];
-    contacts: contactType[];
-    experiences: experienceType[];
-    educations: educationType[];
-    certificates: certificateType[];
-    skills: skillType[];
-    projects: projectType[];
-    languages: languageType[];
-    interests: interestType[];
-  };
+  draftSkilton: draftSkiltonType;
+};
+
+export type userType = {
+  id: number;
+  mobile: string;
+};
+
+export type authType = {
+  user: userType;
+  accessToken: string;
+  refreshToken: string;
+  roles: number[];
 };
 
 // Email template
@@ -123,13 +156,10 @@ export type emailFormType = {
   id: string;
   title: string;
   description: string;
-  to: string;
   name: string;
   company: string;
-  subject: string;
   message: string;
   position: string;
-  isSent: boolean;
 };
 
 export type emailDraftType = {

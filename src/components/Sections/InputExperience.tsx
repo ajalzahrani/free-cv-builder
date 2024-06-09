@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { experienceType } from '~/components/types';
+import { experienceType, experinceTasksType } from '~/components/Types';
 
 type ExperienceProps = {
   experience: experienceType;
@@ -13,7 +13,7 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
 
   const [updatedExperience, setUpdatedExperience] = React.useState<experienceType>(experience);
 
-  const [tasks, setTasks] = React.useState<string[]>(updatedExperience.tasks);
+  const [tasks, setTasks] = React.useState<experinceTasksType[]>(updatedExperience.experinceTasks);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
@@ -26,7 +26,7 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
   const handleAddTask = () => {
     setUpdatedExperience((prevExperience) => ({
       ...prevExperience,
-      tasks: tasks,
+      experinceTasks: tasks,
     }));
   };
 
@@ -52,21 +52,14 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
   }, [tasks]);
 
   return (
-    <div className="border rounded-lg mt-4 p-4 mb-4">
-      <div className="flex justify-between items-center">
+    <div className="builders-element">
+      <div className="section-title">
         <h3 className="text-lg font-bold">{experience.title}</h3>
-        {!isEditing && (
-          <button
-            className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
-            onClick={() => setIsEditing(true)}
-          >
-            Edit
-          </button>
-        )}
+        {!isEditing && <button onClick={() => setIsEditing(true)}>Edit</button>}
       </div>
       {isEditing ? (
-        <div className="mt-2">
-          <p className="text-red-700">ENTERY ID: {experience.id}</p>
+        <div className="builders-input">
+          {/* <p className="text-red-700">ENTERY ID: {experience.id}</p> */}
           <label className="block font-bold mb-2" htmlFor="title">
             Title
           </label>
@@ -140,16 +133,16 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
           />
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2 mt-2">Task</label>
-            {tasks.map((item, index) => (
+            {tasks?.map((item, index) => (
               <div key={index} className="flex items-center mb-2">
                 <input
                   className="border rounded-lg py-2 px-3 w-full mr-2"
                   type="text"
                   placeholder="Task"
-                  value={item}
+                  value={item.description}
                   onChange={(e) => {
                     const newTask = [...tasks];
-                    newTask[index] = e.target.value;
+                    newTask[index].description = e.target.value;
                     setTasks(newTask);
                   }}
                 />
@@ -165,7 +158,7 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => {
                 const newTask = [...tasks];
-                newTask.push('');
+                newTask.push({ description: '' });
                 setTasks(newTask);
               }}
             >
@@ -192,8 +185,8 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
           </div>
         </div>
       ) : (
-        <div className="mt-2">
-          <p className="text-red-700">ENTERY ID: {experience.id}</p>
+        <div className="">
+          {/* <p className="text-red-700">ENTERY ID: {experience.id}</p> */}
 
           <p className="text-gray-700">{experience.company}</p>
           <p className="text-gray-700">{experience.location}</p>
@@ -202,9 +195,9 @@ export default function Experience({ experience, onUpdateExperience, onDeleteExp
           </p>
           <p className="text-gray-700">{experience.description}</p>
           <p className="text-gray-700 font-bold">Tasks</p>
-          {tasks.map((task, index) => (
+          {tasks?.map((task, index) => (
             <div key={index} className="flex items-center mb-2">
-              <div className="bg-gray-200 rounded-lg py-2 px-3 w-full mr-2">{task}</div>
+              <div className="bg-gray-200 rounded-lg py-2 px-3 w-full mr-2">{task.description}</div>
             </div>
           ))}
         </div>

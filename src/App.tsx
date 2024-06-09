@@ -1,63 +1,137 @@
-import './styles/App.css';
-import React from 'react';
-import { BrowserRouter, Routes, Router, Route, Link, useLocation } from 'react-router-dom';
-import Scene from './components/screens/Scene';
-import { produce } from 'immer';
-import { experienceType } from './components/types';
-import SectionList from './components/SectionList';
-import Drafts from './components/screens/DraftsBuilder';
-import DraftBuilder from './components/screens/DraftsBuilder';
-import Templete from './components/Templete';
-import EmailFormBuilder from './components/screens/EmailBuilder';
-import CoverLetterBulder from './components/screens/CoverLetterBuilder';
+import './styles/app.css';
+import { Routes, Route, useNavigate, Link } from 'react-router-dom';
+import useAuthStore from '~/store/authStore';
+
+// Auth
+import RequireAuth from './components/Auth/RequireAuth';
+import Register from './components/Auth/Register';
+import Login from './components/Auth/Login';
+import Admin from './components/Auth/Admin';
+import Editor from './components/Auth/Editor';
+import Home from './components/Auth/Home';
+import Layout from './components/Auth/Layout';
+import LinkPage from './components/Auth/LinkPage';
+import Lounge from './components/Auth/Lounge';
+import Missing from './components/Auth/Missing';
+import Unauthorized from './components/Auth/Unauthorized';
+
+// CV Builder
+import SectionList from './components/Sections/SectionList';
+import DraftBuilder from './components/NewDrafts/DraftsBuilder';
+import EmailFormBuilder from './components/Emails/EmailBuilder';
+import CoverLetterBulder from './components/CoverLetters/CoverLetterBuilder';
+import Scene from './components/Scene';
+
+const ROLES = {
+  User: 2001,
+  Editor: 1984,
+  Admin: 5150,
+};
 
 function App() {
-  const [exp, setExp] = React.useState<experienceType[]>([]);
-  // const location = useLocation();
-  // Get the current location using the useLocation hook
+  const hideNavBar = location.pathname === '/scene';
 
-  // Hide the nav bar on the Template screen
-  // const hideNavBar = location.pathname === '/template';
+  const { resetAuth, auth } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    const response = await fetch('http://localhost:3000/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: auth?.user.id }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Save the token or handle the response as needed
+      // Redirect to the home page
+      resetAuth();
+      navigate('/login');
+    } else {
+      // Handle login failure
+      // get response message
+
+      // const responsekk = await response.text();
+      // alert(response.status + ' ' + response.statusText + ' ' + responsekk);
+      resetAuth();
+      navigate('/login');
+      // alert('Login failed. Please check your credentials.');
+    }
+  };
 
   return (
-    <BrowserRouter>
-      <div className="bg-gray-100 min-h-screen ">
-        <nav id="navbar" className="bg-gray-800 text-white">
-          <ul className="flex justify-between px-6 py-3">
-            <li>
-              <Link to="/" className="font-bold text-lg">
-                Sections
-              </Link>
+    <div className="App">
+      <nav id="navbar">
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/sections">Sections</Link>
+          </li>
+          <li>
+            <Link to="/drafts">Drafts</Link>
+          </li>
+          <li>
+            <Link to="/email">Email</Link>
+          </li>
+          <li>
+            <Link to="/cover-letter">Cover Letter</Link>
+          </li>
+          <li>
+            <Link to="/linkpage">Link page</Link>
+          </li>
+          {auth?.user ? (
+            <li className="logout-button">
+              <button onClick={handleLogout}>Logout</button>
             </li>
-            <li>
-              <Link to="/drafts" className="font-bold text-lg">
-                Drafts
-              </Link>
-            </li>
-            <li>
-              <Link to="/email" className="font-bold text-lg">
-                Email
-              </Link>
-            </li>
-            <li>
-              <Link to="/cover-letter" className="font-bold text-lg">
-                Cover Letter
-              </Link>
-            </li>
-          </ul>
-        </nav>
+          ) : null}
+        </ul>
+      </nav>
 
-        <div className={true ? 'container' : 'container mx-auto px-6 py-4'}>
-          <Routes>
-            <Route path="/" element={<SectionList />} />
-            <Route path="/drafts" element={<DraftBuilder />} />
-            <Route path="/scene" element={<Scene />} />
-            <Route path="/email" element={<EmailFormBuilder />} />
-            <Route path="/cover-letter" element={<CoverLetterBulder />} />
-          </Routes>
-        </div>
+      <div className={'container'}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            {/* public routes */}
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="linkpage" element={<LinkPage />} />
+            <Route path="unauthorized" element={<Unauthorized />} />
+
+            {/* we want to protect these routes */}
+            <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+              <Route path="/" element={<Home />} />
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
+              <Route path="sections" element={<SectionList />} />
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
+              <Route path="drafts" element={<DraftBuilder />} />
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
+              <Route path="editor" element={<Editor />} />
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+              <Route path="admin" element={<Admin />} />
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={[ROLES.Editor, ROLES.Admin]} />}>
+              <Route path="lounge" element={<Lounge />} />
+            </Route>
+
+            {/* catch all */}
+            <Route path="*" element={<Missing />} />
+          </Route>
+        </Routes>
       </div>
-    </BrowserRouter>
+    </div>
   );
 }
 

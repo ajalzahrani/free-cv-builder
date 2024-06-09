@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { draftType } from '../components/types';
+import { draftType } from '../components/Types';
 
 type StoreState = {
   drafts: draftType[];

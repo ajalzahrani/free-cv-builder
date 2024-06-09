@@ -8,6 +8,7 @@ const schemaInit = {
   projects: [],
   languages: [],
   interests: [],
+  committees: [],
   selectedCards: [],
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import schema from '../store/Schema';
-import useStore from '../store/RepoLocalStorage';
-import useDraftStore from '../store/DraftLocalStore';
+import schema from '../../store/Schema';
+import useStore from '../../store/RepoLocalStorage';
+import useDraftStore from '../../store/DraftLocalStore';
 import {
   headerType,
   contactType,
@@ -12,10 +12,11 @@ import {
   projectType,
   languageType,
   interestType,
+  committeeType,
   draftType,
-} from './types';
+} from '../Types';
 import DraftCard from './DraftCard';
-import UUID from './shared/UUID';
+import UUID from '../Shared/UUID';
 import DraftCardPreivew from './DraftCardPreivew';
 
 type DraftProps = {
@@ -269,6 +270,32 @@ const Draft = ({ schema, setSchema }: DraftProps) => {
     }));
   };
 
+  const handleCommitteesChange = (committee: committeeType) => {
+    const index = draft.committees.findIndex((comite) => comite.id === committee.id);
+
+    if (index !== -1) {
+      // remove experience object from draft
+      setDraft((prevDraft) => ({
+        ...prevDraft,
+        committees: prevDraft.committees.filter((comite) => comite.id !== committee.id),
+      }));
+      return;
+    }
+    setDraft((prevDraft) => ({
+      ...prevDraft,
+      committees: [
+        ...prevDraft.committees,
+        {
+          id: committee.id,
+          name: committee.name,
+          Role: committee.Role,
+          date: committee.date,
+          responsibility: committee.responsibility,
+        },
+      ],
+    }));
+  };
+
   const handlePreviewCard = (arg0: { data: any }): void => {
     setShowDialog(true);
     setDialgoData(arg0.data);
@@ -329,6 +356,9 @@ const Draft = ({ schema, setSchema }: DraftProps) => {
         break;
       case 'interest':
         handleInterestChange(arg0.data);
+        break;
+      case 'committee':
+        handleCommitteesChange(arg0.data);
         break;
       default:
         new Error('Invalid section type');
@@ -476,6 +506,22 @@ const Draft = ({ schema, setSchema }: DraftProps) => {
                   onShow={() => handlePreviewCard({ data: interest })}
                   onAdd={() => handleSectionClick({ type: 'interest', data: interest })}
                   isCardSelected={selectedCards.includes(interest.id)}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="w-full mb-4">
+          <h2 className="text-lg font-bold mb-2">Committees</h2>
+          <div className="flex flex-wrap">
+            {store.committees.map((committee) => (
+              <div key={committee.id} className="w-1/2 md:w-1/3 lg:w-1/4 p-2">
+                <DraftCard
+                  section={committee}
+                  onShow={() => handlePreviewCard({ data: committee })}
+                  onAdd={() => handleSectionClick({ type: 'committee', data: committee })}
+                  isCardSelected={selectedCards.includes(committee.id)}
                 />
               </div>
             ))}

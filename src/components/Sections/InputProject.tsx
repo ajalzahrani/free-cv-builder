@@ -1,5 +1,5 @@
 import React from 'react';
-import { projectType } from '~/components/types';
+import { projectType } from '~/components/Types';
 
 type InputProjectProps = {
   project: projectType;
@@ -32,8 +32,8 @@ export default function InputProject({ project, onUpdateProject, onCancel, onDel
   };
 
   return (
-    <div className="border rounded-lg mt-4 p-4 mb-4">
-      <div className="flex justify-between items-center">
+    <div className="builders-element">
+      <div className="section-title">
         <h3 className="text-lg font-bold">{project.title}</h3>
         {!isEditing && (
           <button

@@ -1,9 +1,9 @@
-import React from 'react';
-import { certificateType } from '~/components/types';
+import React, { useEffect } from 'react';
+import { certificateType } from '~/components/Types';
 import { produce } from 'immer';
 import InputCertificate from './InputCertificate';
-import { section } from '~/components/types';
-import UUID from '../shared/UUID';
+import { section } from '~/components/Types';
+import UUID from '../Shared/UUID';
 import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Certificattions';
@@ -20,9 +20,38 @@ const certificate: certificateType = {
 };
 
 export default function CertificateBuilder(section: section) {
-  // const [cert, setCert] = React.useState<certificateType[]>([certificate]);
+  // const [certificates, updateCertificates] = React.useState<certificateType[]>([certificate]);
   const { certificates, updateCertificates } = useStore();
   const [isAddingCertificate, setIsAddingCertificate] = React.useState<boolean>(false);
+
+  useEffect(() => {
+    if (certificates.length === 0) {
+      handleGetCertificates();
+      return;
+    }
+  }, []);
+
+  // write a function to call api and get headers and set them in state
+  const handleGetCertificates = async () => {
+    const response = await fetch('http://localhost:3000/certificates', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ userId: 1 }),
+    });
+
+    if (response.ok) {
+      let data = await response.json();
+
+      updateCertificates(data);
+    } else {
+      // Handle login failure
+      const errorData = await response.json();
+      console.error('API call failed: ', errorData);
+      alert('Retrieve data failed. Please check again.');
+    }
+  };
 
   const handleAddCertificate = () => {
     setIsAddingCertificate(true);
@@ -69,7 +98,7 @@ export default function CertificateBuilder(section: section) {
   const renderCertificate = () => {
     const rows = [];
     for (let i = 0; i < certificates.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputCertificate
           key={i}
           certificate={certificates[i]}
@@ -80,7 +109,7 @@ export default function CertificateBuilder(section: section) {
       );
     }
     if (isAddingCertificate) {
-      rows.push(
+      rows.unshift(
         <InputCertificate
           key="new"
           certificate={{
@@ -105,16 +134,17 @@ export default function CertificateBuilder(section: section) {
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-2xl font-bold mb-4">{title}</h1>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => {
-              handleAddCertificate();
-            }}
-          >
-            Add
-          </button>
-          {/* <div>{renderTextInput()}</div> */}
+          <div className="section-title">
+            <h2 className="text-2xl font-bold mb-4">{title}</h2>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => {
+                handleAddCertificate();
+              }}
+            >
+              Add
+            </button>
+          </div>
           <div>{renderCertificate()}</div>
         </div>
       </div>
