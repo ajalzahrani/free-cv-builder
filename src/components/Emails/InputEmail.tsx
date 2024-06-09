@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { emailDraftType, emailFormType, headerType } from '~/components/types';
-import DraftCardPreivew from '../DraftCardPreivew';
+import { emailDraftType, emailFormType, headerType } from '~/components/Types';
+import DraftCardPreivew from '../Drafts/DraftCardPreivew';
 import EmailTemplate from './EmailTemplate';
-import DraftCard from '../DraftCard';
+import DraftCard from '../Drafts/DraftCard';
 import email_drafts from '~/store/EmailTamplates';
 import useStore from '~/store/RepoLocalStorage';
 

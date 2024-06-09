@@ -1,4 +1,4 @@
-import { emailDraftType, emailFormType } from '../types';
+import { emailDraftType, emailFormType } from '../Types';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 

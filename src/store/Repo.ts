@@ -9,7 +9,7 @@ import {
   projectType,
   languageType,
   interestType,
-} from '../components/types';
+} from '../components/Types';
 
 type StoreState = {
   header: headerType;

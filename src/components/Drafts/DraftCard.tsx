@@ -1,5 +1,5 @@
 import React from 'react';
-import { sectionType } from '~/components/types';
+import { sectionType } from '~/components/Types';
 
 type Props = {
   section: any;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { draftType } from '~/components/types';
-import Draft from '../Draft';
+import { draftType } from '~/components/Types';
+import Draft from './Draft';
 
 type InputDraftProps = {
   draft: draftType;

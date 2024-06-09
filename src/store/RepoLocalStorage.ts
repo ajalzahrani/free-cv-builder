@@ -10,7 +10,7 @@ import {
   languageType,
   interestType,
   committeeType,
-} from '../components/types';
+} from '../components/Types';
 // import { predefined } from './Predefined3StackForDBA';
 import { predefined } from './Predefined3StackForDBA1';
 
@@ -42,10 +42,10 @@ type StoreActions = {
 
 const useStore = create<StoreState & StoreActions>((set, get) => {
   let storedState = localStorage.getItem('resumeData');
-  if (!storedState) {
-    localStorage.setItem('resumeData', JSON.stringify(predefined));
-    storedState = localStorage.getItem('resumeData');
-  }
+  // if (!storedState) {
+  //   localStorage.setItem('resumeData', JSON.stringify(predefined));
+  //   storedState = localStorage.getItem('resumeData');
+  // }
   const initialState = storedState
     ? JSON.parse(storedState)
     : {

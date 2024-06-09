@@ -1,14 +1,14 @@
-import Experience from './Sections/Experience';
-import Header from './Sections/Header';
-import Contacts from './Sections/Contacts';
-import Projects from './Sections/Projects';
-import Skills from './Sections/Skills';
-import Certificates from './Sections/Certificates';
-import Education from './Sections/Education';
-import Languages from './Sections/Languages';
-import Intersets from './Sections/Intersets';
-import Committees from './Sections/Committee';
-import { draftType, headerType } from './types';
+import Experience from '../Sections/Experience';
+import Header from '../Sections/Header';
+import Contacts from '../Sections/Contacts';
+import Projects from '../Sections/Projects';
+import Skills from '../Sections/Skills';
+import Certificates from '../Sections/Certificates';
+import Education from '../Sections/Education';
+import Languages from '../Sections/Languages';
+import Intersets from '../Sections/Intersets';
+import Committees from '../Sections/Committee';
+import { draftType, headerType } from '../Types';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 

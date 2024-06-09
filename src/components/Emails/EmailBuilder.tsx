@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { emailFormType } from '../types';
+import { emailFormType } from '../Types';
 import { produce } from 'immer';
 import InputEmail from './InputEmail';
-import UUID from '../shared/UUID';
+import UUID from '../Shared/UUID';
 import useStore from '../../store/RepoLocalStorage';
 import EmailTemplate from './EmailTemplate';
 

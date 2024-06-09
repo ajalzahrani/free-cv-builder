@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import schema from '../store/Schema';
-import useStore from '../store/RepoLocalStorage';
-import useDraftStore from '../store/DraftLocalStore';
+import schema from '../../store/Schema';
+import useStore from '../../store/RepoLocalStorage';
+import useDraftStore from '../../store/DraftLocalStore';
 import {
   headerType,
   contactType,
@@ -14,9 +14,9 @@ import {
   interestType,
   committeeType,
   draftType,
-} from './types';
+} from '../Types';
 import DraftCard from './DraftCard';
-import UUID from './shared/UUID';
+import UUID from '../Shared/UUID';
 import DraftCardPreivew from './DraftCardPreivew';
 
 type DraftProps = {
