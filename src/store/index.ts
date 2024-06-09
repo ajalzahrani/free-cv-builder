@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import { SectionListType } from '../components/SectionList';
-import { SectionType } from '../components/SectionList';
+import { SectionListType } from '../components/Sections/SectionList';
+import { SectionType } from '../components/Sections/SectionList';
 
 const saveTodos = (sections: SectionListType) => {
   localStorage.setItem('sections', JSON.stringify(sections));

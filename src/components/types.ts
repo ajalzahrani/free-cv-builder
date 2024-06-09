@@ -113,23 +113,42 @@ export type section = {
   component?: React.FC<any>;
 };
 
+type skiltonCardType = {
+  id: string;
+  order: number;
+};
+
+export type draftSkiltonType = {
+  [key: string]: any; // Index Signature
+  header?: skiltonCardType;
+  contact?: skiltonCardType;
+  experiences?: skiltonCardType[];
+  educations?: skiltonCardType[];
+  certificates?: skiltonCardType[];
+  skills?: skiltonCardType[];
+  projects?: skiltonCardType[];
+  languages?: skiltonCardType[];
+  interests?: skiltonCardType[];
+  committees?: skiltonCardType[];
+};
+
 export type draftType = {
   id: string;
   title: string;
   description: string;
-  schema: {
-    selectedCards: string[];
-    headers: headerType[];
-    contacts: contactType[];
-    experiences: experienceType[];
-    educations: educationType[];
-    certificates: certificateType[];
-    skills: skillType[];
-    projects: projectType[];
-    languages: languageType[];
-    interests: interestType[];
-    committees: committeeType[];
-  };
+  draftSkilton: draftSkiltonType;
+};
+
+export type userType = {
+  id: number;
+  mobile: string;
+};
+
+export type authType = {
+  user: userType;
+  accessToken: string;
+  refreshToken: string;
+  roles: number[];
 };
 
 // Email template
