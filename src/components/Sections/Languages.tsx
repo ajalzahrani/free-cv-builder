@@ -1,6 +1,6 @@
 import React from 'react';
 import p from '~/store/Predefined';
-import { languageType } from '../types';
+import { languageType } from '../Types';
 
 type props = {
   language: languageType[];

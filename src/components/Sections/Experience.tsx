@@ -1,6 +1,6 @@
 import React from 'react';
 import p from '~/store/Predefined';
-import { experienceType } from '../types';
+import { experienceType } from '../Types';
 
 type props = {
   experience: experienceType[];
@@ -19,10 +19,14 @@ export default function Experience({ experience }: props) {
               <h5 className="text-gray-500 italic fu-light text-xs">
                 {e.from} - {e.to}
               </h5>
-              {e.tasks.length > 0 ? <h5 className="text-gray-500 italic fu-light text-xs">Achievements/Tasks</h5> : ''}
+              {e.experinceTasks.length > 0 ? (
+                <h5 className="text-gray-500 italic fu-light text-xs">Achievements/Tasks</h5>
+              ) : (
+                ''
+              )}
               <ul className="flex flex-col list-disc list-insid text-xs fu-regular">
-                {e.tasks.map((t, i) => {
-                  return <li key={i}>{t}</li>;
+                {e.experinceTasks.map((t, i) => {
+                  return <li key={i}>{t.description}</li>;
                 })}
               </ul>
             </div>

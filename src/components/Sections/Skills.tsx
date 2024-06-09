@@ -1,7 +1,7 @@
 import React from 'react';
 import p from '~/store/Predefined';
 
-import { skillType } from '../types';
+import { skillType } from '../Types';
 
 type props = {
   skills: skillType[];

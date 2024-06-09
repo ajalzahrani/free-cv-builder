@@ -1,6 +1,6 @@
 import React from 'react';
 import p from '~/store/Predefined';
-import { educationType } from '../types';
+import { educationType } from '../Types';
 
 type props = {
   education: educationType[];

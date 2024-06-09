@@ -1,6 +1,6 @@
 import React from 'react';
 import p from '~/store/Predefined';
-import { interestType } from '../types';
+import { interestType } from '../Types';
 
 type props = {
   interest: interestType[];
