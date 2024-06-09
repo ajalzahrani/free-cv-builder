@@ -1,28 +1,30 @@
 import React, { useEffect } from 'react';
-import { committeeType, sectionType } from '~/components/types';
+import { committeeType, sectionType } from '~/components/Types';
 import { produce } from 'immer';
 import InputCommittee from './InputCommittee';
-import UUID from '../shared/UUID';
+import UUID from '../Shared/UUID';
 import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Committees';
 
-// const project: committeeType = {
-//   id: UUID(),
-//   title: 'Project 1',
-//   from: 'January 2019',
-//   to: 'Present',
-//   description: 'Description of Project 1',
-//   link: 'https://example.com/project1',
-// };
+const committee: committeeType = {
+  id: UUID(),
+  title: 'Project 1',
+  date: 'January 2019',
+  role: 'Description of Project 1',
+  responsibility: 'Responsibility of Project 1',
+};
 
 export default function CommitteeBuilder({ section }: { section: sectionType }) {
-  const [committees, updateCommittees] = React.useState<committeeType[]>([]);
-  // const { committees, updateCommittees } = useStore();
+  // const [committees, updateCommittees] = React.useState<committeeType[]>([committee]);
+  const { committees, updateCommittees } = useStore();
   const [isAddingCommittee, setIsAddingCommittee] = React.useState<boolean>(false);
 
   useEffect(() => {
-    handleGetCommittees();
+    if (committees.length === 0) {
+      handleGetCommittees();
+      return;
+    }
   }, []);
 
   // write a function to call api and get headers and set them in state
@@ -91,7 +93,7 @@ export default function CommitteeBuilder({ section }: { section: sectionType }) 
 
   const renderCommittees = () => {
     const rows = [];
-    for (let i = 0; i < committees.length; i++) {
+    for (let i = 0; i < committees?.length; i++) {
       rows.unshift(
         <InputCommittee
           key={i}
@@ -120,15 +122,17 @@ export default function CommitteeBuilder({ section }: { section: sectionType }) 
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-2xl font-bold mb-4">{title}</h1>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => {
-              handleAddProject();
-            }}
-          >
-            Add
-          </button>
+          <div className="section-title">
+            <h2 className="text-2xl font-bold mb-4">{title}</h2>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => {
+                handleAddProject();
+              }}
+            >
+              Add
+            </button>
+          </div>
           <div>{renderCommittees()}</div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { educationType, section } from '~/components/types';
+import { educationType, section } from '~/components/Types';
 import { produce } from 'immer';
-import UUID from '../shared/UUID';
+import UUID from '../Shared/UUID';
 import InputEducation from './InputEducation';
 import useStore from '../../store/RepoLocalStorage';
 
@@ -18,12 +18,15 @@ const education: educationType = {
 };
 
 export default function EducationBuilder(section: section) {
-  const [educations, updateEducations] = React.useState<educationType[]>([education]);
-  // const { educations, updateEducations } = useStore();
+  // const [educations, updateEducations] = React.useState<educationType[]>([education]);
+  const { educations, updateEducations } = useStore();
   const [isAddingEducation, setIsAddingEducation] = React.useState<boolean>(false);
 
   useEffect(() => {
-    handleGetEducations();
+    if (educations.length === 0) {
+      handleGetEducations();
+      return;
+    }
   }, []);
 
   // write a function to call api and get headers and set them in state
@@ -90,7 +93,7 @@ export default function EducationBuilder(section: section) {
   const renderEducation = () => {
     const rows = [];
     for (let i = 0; i < educations.length; i++) {
-      rows.push(
+      rows.unshift(
         <InputEducation
           key={i}
           education={educations[i]}
@@ -101,7 +104,7 @@ export default function EducationBuilder(section: section) {
       );
     }
     if (isAddingEducation) {
-      rows.push(
+      rows.unshift(
         <InputEducation
           key="new"
           education={{ id: UUID(), institution: '', degree: '', location: '', from: '', to: '', description: '' }}
@@ -118,15 +121,17 @@ export default function EducationBuilder(section: section) {
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-2xl font-bold mb-4">{title}</h1>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => {
-              handleAddEducation();
-            }}
-          >
-            Add
-          </button>
+          <div className="section-title">
+            <h2 className="text-2xl font-bold mb-4">{title}</h2>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+              onClick={() => {
+                handleAddEducation();
+              }}
+            >
+              Add
+            </button>
+          </div>
           {/* <div>{renderTextInput()}</div> */}
           <div>{renderEducation()}</div>
         </div>

@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { sectionType, headerType } from '~/components/types';
+import { sectionType, headerType } from '~/components/Types';
 import { produce } from 'immer';
 import InputHeader from './InputHeader';
-import UUID from '../shared/UUID';
+import UUID from '../Shared/UUID';
 import useStore from '../../store/RepoLocalStorage';
 
 const title = 'Headers';
 
-// const header: headerType = {
-//   id: UUID(),
-//   name: 'John Doe',
-//   title: 'Software Engineer',
-//   pitch: 'I am a software engineer with 5 years of experience.',
-// };
+const header: headerType = {
+  id: UUID(),
+  name: 'John Doe',
+  title: 'Software Engineer',
+  pitch: 'I am a software engineer with 5 years of experience.',
+};
 
 export default function HeaderBuilder({ section }: { section: sectionType }) {
-  // const [headers, setHeaders] = React.useState<headerType[]>([header]);
-  // const { headers, updateHeaders } = useStore();
-  const [headers, updateHeaders] = useState<headerType[]>([]); // Add null check here();
+  const { headers, updateHeaders } = useStore();
+  // const [headers, updateHeaders] = useState<headerType[]>([header]); // Add null check here();
   const [isAddingHeader, setIsAddingHeader] = useState<boolean>(false);
 
   const handleAddHeader = () => {
@@ -25,7 +24,11 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
   };
 
   useEffect(() => {
-    handleGetHeaders();
+    // check if headers exist
+    if (headers.length === 0) {
+      handleGetHeaders();
+      return;
+    }
   }, []);
 
   // write a function to call api and get headers and set them in state
@@ -121,15 +124,16 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
     <div className="bg-gray-100 min-h-screen">
       <div className="container mx-auto px-6">
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h1 className="text-2xl font-bold mb-4">{title}</h1>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            onClick={() => {
-              handleAddHeader();
-            }}
-          >
-            Add
-          </button>
+          <div className="section-title">
+            <h2 className="text-2xl font-bold mb-4">{title}</h2>
+            <button
+              onClick={() => {
+                handleAddHeader();
+              }}
+            >
+              Add
+            </button>
+          </div>
           <div>{renderHeaders()}</div>
         </div>
       </div>
