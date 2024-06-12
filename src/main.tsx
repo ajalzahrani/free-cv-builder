@@ -8,6 +8,12 @@ import App from './App';
 // const root = createRott.createRoot(document.getElementById('root') as HTMLElement);
 // root.render(<App />);
 
+// for testing
+// import SelectorMulti from './components/NewDrafts/SelectorMulti';
+// const App = () => {
+//   return <SelectorMulti />;
+// };
+
 createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <BrowserRouter>

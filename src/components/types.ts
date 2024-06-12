@@ -52,6 +52,7 @@ export type experienceType = {
 
 export type educationType = {
   id: string;
+  title?: string;
   institution: string;
   degree: string;
   location: string;
@@ -113,30 +114,25 @@ export type section = {
   component?: React.FC<any>;
 };
 
-type skiltonCardType = {
-  id: string;
-  order: number;
-};
-
-export type draftSkiltonType = {
+export type draftSectionsType = {
   [key: string]: any; // Index Signature
-  header?: skiltonCardType;
-  contact?: skiltonCardType;
-  experiences?: skiltonCardType[];
-  educations?: skiltonCardType[];
-  certificates?: skiltonCardType[];
-  skills?: skiltonCardType[];
-  projects?: skiltonCardType[];
-  languages?: skiltonCardType[];
-  interests?: skiltonCardType[];
-  committees?: skiltonCardType[];
+  header?: string;
+  contact?: string;
+  experience?: string[];
+  education?: string[];
+  certificate?: string[];
+  skill?: string[];
+  project?: string[];
+  language?: string[];
+  interest?: string[];
+  committee?: string[];
 };
 
 export type draftType = {
   id: string;
   title: string;
   description: string;
-  draftSkilton: draftSkiltonType;
+  draftSections: draftSectionsType;
 };
 
 export type userType = {

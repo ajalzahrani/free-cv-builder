@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import useDraftsStore from '../../store/draftStore';
+import useDraftsStore from '../../store/useDraftStore';
 import { produce } from 'immer';
 import { draftType } from '../Types';
 import UUID from '../Shared/UUID';

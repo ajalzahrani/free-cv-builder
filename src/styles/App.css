@@ -28,6 +28,7 @@
 
 .draft-container button {
 padding: 0.3rem;
+margin-top: 0.5rem;
 }
 
 .auth-container {
@@ -67,6 +68,10 @@ padding: 0.3rem;
     margin-bottom: 2rem;
 }
 
+.section-container button {
+margin-top: 0.5rem;
+}
+
 .section-buttons {
     display: flex;
     flex-direction: column;
@@ -78,6 +83,7 @@ padding: 0.3rem;
 
 .section-buttons button {
     width: 100%;
+    margin-top: 0.1rem;
 }
 
 .builders {
@@ -126,6 +132,29 @@ padding: 0.3rem;
     justify-content: space-between;
     flex-direction: row;
     align-items: center;
+}
+
+.custom-select {
+    font-size: 20px;
+    /* Adjust the size as needed */
+    /* Add any other styles you want for the select element */
+}
+
+.draft-card {
+    border-radius: 10px;
+    /* background-color: rgba(0, 0, 0, 0.3); */
+    border: #61dafb 1px solid;
+    /* padding: 1rem; */
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+    padding-bottom: 0.9rem;
+    box-shadow: none;
+    /* border: 2px solid rgba(0, 0, 0, 0); */
+    /* outline: 0px; */
+    width: 100%;
+    margin: 0px 0px 20px;
+    text-decoration: none;
+    transition: border-color 0.2s ease 0s;
 }
 
 .app-header {
