@@ -56,9 +56,7 @@ margin-top: 0.5rem;
     }
 }
 
-.logout-button {
-    margin-left: auto;
-}
+
 
 
 .section-container {
@@ -76,14 +74,80 @@ margin-top: 0.5rem;
     display: flex;
     flex-direction: column;
     position: fixed;
-    /* right: 2rem; */
-    left: 2rem;
-    bottom: 2rem;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 1rem;
+    /* background: #f8f9fa; */
+    /* Optional: background color for better visibility */
 }
 
 .section-buttons button {
     width: 100%;
     margin-top: 0.1rem;
+}
+
+.section-dropdown {
+    display: none;
+    /* position: fixed; */
+    /* left: 50%; */
+    /* top: 4.8rem; */
+    /* Adjust this value based on the height of your navbar */
+    /* transform: translateX(-50%); */
+    z-index: 10;
+    /* background: #f8f9fa; */
+    /* Optional: background color for better visibility */
+    /* padding: 0.5rem; */
+    /* Optional: padding for better appearance */
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    /* Optional: add shadow for better visibility */
+}
+
+.section-dropdown select {
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 1241px) {
+    .section-buttons {
+        display: none;
+    }
+
+    .section-container {
+        flex-direction: column;
+        align-items: center;
+        margin-left: 0;
+        width: 100%;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .section-dropdown {
+        display: block;
+        /* display: flex; */
+        align-items: center;
+        /* justify-content: space-between; */
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+        /* margin-left: 50px; */
+        margin-right: 0;
+        /* padding: 1rem; */
+        background-color: rgba(0, 0, 0, 0.4);
+        /* border-radius: 10px; */
+
+    }
+
+    .builders {
+        min-width: auto;
+    }
+
+    .draft-container{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
 
 .builders {

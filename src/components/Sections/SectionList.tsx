@@ -32,7 +32,6 @@ export default function SectionList() {
   };
 
   const renderBuilder = (title: string) => {
-    // make switch statement amond buklders
     switch (title) {
       case 'Header':
         return (
@@ -118,28 +117,45 @@ export default function SectionList() {
   };
 
   return (
-    <div>
-      {/* <h1>Sections</h1> */}
-      <div className="section-container">
-        <div className="section-buttons">
-          <button
-            onClick={() => {
-              // save data to local storage
-              alert('Not implemented yet');
-            }}
-          >
-            Upload
-          </button>
-          {sections.map((section) => (
-            <div key={section.title}>
-              <button className="section-button" onClick={() => handleSectionClick(section)}>
-                {section.title}
-              </button>
-            </div>
-          ))}
-        </div>
-        {selectedSection && <div className="builders">{renderBuilder(selectedSection.title)}</div>}
+    <div className="section-container">
+      <div className="section-buttons">
+        <button
+          onClick={() => {
+            alert('Not implemented yet');
+          }}
+        >
+          Upload
+        </button>
+        {sections.map((section) => (
+          <div key={section.title}>
+            <button className="section-button" onClick={() => handleSectionClick(section)}>
+              {section.title}
+            </button>
+          </div>
+        ))}
       </div>
+
+      <div className="section-dropdown">
+        {/* <div style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'column', alignItems: 'center' }}> */}
+        <select
+          onChange={(e) => {
+            const selectedTitle = e.target.value;
+            const selected = sections.find((section) => section.title === selectedTitle);
+            if (selected) {
+              setSelectedSection(selected);
+            }
+          }}
+          value={selectedSection?.title || ''}
+        >
+          {sections.map((section) => (
+            <option key={section.title} value={section.title}>
+              {section.title}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {selectedSection && <div className="builders">{renderBuilder(selectedSection.title)}</div>}
     </div>
   );
 }
