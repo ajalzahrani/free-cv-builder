@@ -1,6 +1,7 @@
 import './styles/app.css';
 import { Routes, Route, useNavigate, Link } from 'react-router-dom';
 import useAuthStore from '~/store/authStore';
+import Navbar from './components/Navbar';
 
 // Auth
 import RequireAuth from './components/Auth/RequireAuth';
@@ -64,7 +65,7 @@ function App() {
 
   return (
     <div className="App">
-      <nav id="navbar">
+      {/* <nav id="navbar">
         <ul>
           <li>
             <Link to="/">Home</Link>
@@ -90,7 +91,9 @@ function App() {
             </li>
           ) : null}
         </ul>
-      </nav>
+      </nav> */}
+
+      <Navbar />
 
       <div className={'container'}>
         <Routes>

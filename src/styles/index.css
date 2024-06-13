@@ -17,7 +17,10 @@ body {
     background-color: dodgerblue;
 }
 
+/* Base styles for the navbar */
+/* Base styles for the navbar */
 nav {
+    display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem 2rem;
@@ -26,6 +29,7 @@ nav {
     font-size: 22px;
     color: #fff;
     flex-direction: row;
+    position: relative;
 }
 
 nav ul {
@@ -33,7 +37,11 @@ nav ul {
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
-    list-style: none; 
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    /* Ensures ul takes available space */
 }
 
 nav li {
@@ -42,10 +50,58 @@ nav li {
 
 nav a {
     text-decoration: none;
+    color: #fff;
 }
 
 nav a:hover {
     text-decoration: underline;
+}
+
+.logout-button {
+    font-size: 18px;
+    margin-left: auto;
+}
+
+/* Styles for the burger menu */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.burger-bar {
+    width: 25px;
+    height: 3px;
+    margin: 4px 0;
+    background-color: #fff;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    nav ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        /* Adjust this based on the height of your navbar */
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.9);
+        font-size: 20px;
+    }
+
+    nav ul.show {
+        display: flex;
+    }
+
+    .burger-menu {
+        display: flex;
+    }
+
+    .logout-button {
+        font-size: 18px;
+        margin: 0;
+    }
 }
 
 nav img {
