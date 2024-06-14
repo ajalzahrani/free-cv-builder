@@ -4,7 +4,6 @@ import { produce } from 'immer';
 import InputSkill from './InputSkill';
 import UUID from '../Shared/UUID';
 import useStore from '../../store/RepoLocalStorage';
-import { callCreate, callUpdate, callDelete, callFindAll } from '../../api/api-sections';
 
 const title = 'Skills';
 
@@ -27,8 +26,8 @@ export default function SkillBuilder({ section }: { section: sectionType }) {
   }, []);
 
   const handleGetSkills_v2 = async () => {
-    const data = await callFindAll('http://localhost:3000/api/cv/skills', section);
-    updateSkills(data);
+    // const data = await callFindAll('http://localhost:3000/api/cv/skills', section);
+    // updateSkills(data);
   };
 
   // write a function to call api and get headers and set them in state
