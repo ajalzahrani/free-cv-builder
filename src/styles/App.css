@@ -60,7 +60,7 @@ margin-top: 0.5rem;
 
 
 .section-container {
-    display: flex;
+    /* display: flex; */
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 2rem;
@@ -107,7 +107,21 @@ margin-top: 0.5rem;
     padding: 0.5rem;
     font-size: 1rem;
 }
-
+@media (max-height: 768px) {
+    .section-buttons {
+            display: none;
+        }
+    .section-dropdown {
+            display: block;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            margin-bottom: 1rem;
+            margin-top: 1rem;
+            margin-right: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+}
 /* Media query for mobile devices */
 @media (max-width: 1241px) {
     .section-buttons {

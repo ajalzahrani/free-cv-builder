@@ -65,34 +65,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* <nav id="navbar">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/sections">Sections</Link>
-          </li>
-          <li>
-            <Link to="/drafts">Drafts</Link>
-          </li>
-          <li>
-            <Link to="/email">Email</Link>
-          </li>
-          <li>
-            <Link to="/cover-letter">Cover Letter</Link>
-          </li>
-          <li>
-            <Link to="/linkpage">Link page</Link>
-          </li>
-          {auth?.user ? (
-            <li className="logout-button">
-              <button onClick={handleLogout}>Logout</button>
-            </li>
-          ) : null}
-        </ul>
-      </nav> */}
-
       <Navbar />
 
       <div className={'container'}>
