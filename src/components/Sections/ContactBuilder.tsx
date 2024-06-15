@@ -3,9 +3,13 @@ import { sectionType, contactType } from '~/components/Types';
 import { produce } from 'immer';
 import InputContact from './InputContact';
 import UUID from '../Shared/UUID';
-import useStore from '../../store/RepoLocalStorage';
+import { useQuery, useMutation, useQueryClient, QueryClient } from '@tanstack/react-query';
+import { deleteData, fetchData, postData, updateData } from '../../api/api-sections';
+import { toast } from 'react-toastify';
 
 const title = 'Contacts';
+const getUrl = '/cv/contacts';
+const manUrl = '/cv/contact';
 
 const contact: contactType = {
   id: UUID(),
@@ -21,77 +25,85 @@ const contact: contactType = {
 };
 
 export default function ContactBuilder({ section }: { section: sectionType }) {
-  // const [contacts, updateContacts] = React.useState<contactType[]>([contact]);
-  const { contacts, updateContacts } = useStore();
+  const {
+    data: contacts = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['contacts'],
+    queryFn: () => fetchData(getUrl, { userId: 1 }),
+    staleTime: 60000, // 1 minute
+  });
+
   const [isAddingContact, setIsAddingContact] = React.useState<boolean>(false);
 
-  const handleAddContact = () => {
-    setIsAddingContact(true);
-  };
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (contacts.length === 0) {
-      handleGetContacts();
-      return;
-    }
-  }, []);
-
-  // write a function to call api and get headers and set them in state
-  const handleGetContacts = async () => {
-    const response = await fetch('http://localhost:3000/contacts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: 1 }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-
-      updateContacts(data);
-    } else {
-      // Handle login failure
-      const errorData = await response.json();
-      console.error('API call failed: ', errorData);
-      alert('Retrieve data failed. Please check again.');
-    }
-  };
-
-  const updateContact = (contact: contactType) => {
-    const index = contacts.findIndex((ct) => ct.id === contact.id);
-    if (index !== -1) {
-      // Update existing contact
-      const newData = produce(contacts, (draft) => {
-        draft[index] = contact;
-      });
-      updateContacts(newData);
-    } else {
-      // Add new contact
-      const newData = produce(contacts, (draft) => {
-        draft.push(contact);
-      });
-      updateContacts(newData);
-    }
-  };
-
-  const handleSaveContact = (contact: contactType) => {
-    updateContact(contact);
+  const handleMutationSuccess = (message: string) => {
+    toast.success(message);
+    queryClient.invalidateQueries({ queryKey: ['contacts'] });
     setIsAddingContact(false);
   };
 
-  const handleCancelContact = () => {
-    setIsAddingContact(false);
+  const handleMutationError = (error: any) => {
+    toast.error(error.response.data.error.message, { position: 'top-left' });
+    console.error(error.response.data.error);
   };
 
-  const handleDeleteContact = (id: string) => {
-    const newData = produce(contacts, (draft) => {
-      const index = draft.findIndex((ct) => ct.id === id);
-      if (index !== -1) draft.splice(index, 1);
-      else handleCancelContact();
-    });
-    updateContacts(newData);
-  };
+  const mutationCreate = useMutation({
+    mutationFn: (contact: contactType) => postData(manUrl, { ...contact, id: null, userId: 1 }),
+    onMutate: async (newContact) => {
+      await queryClient.cancelQueries({ queryKey: ['contacts'] }); // Correct usage
+      const previousHeaders = queryClient.getQueryData<contactType[]>(['contacts']);
+      queryClient.setQueryData(['contacts'], (old: contactType[] = []) => [...old, newContact]);
+      return { previousHeaders };
+    },
+    onError: (error, newContact, context) => {
+      if (context?.previousHeaders) {
+        queryClient.setQueryData(['contacts'], context.previousHeaders);
+      }
+      handleMutationError(error);
+    },
+    onSuccess: () => handleMutationSuccess('Contact created successfully!'),
+  });
+
+  const mutationUpdate = useMutation({
+    mutationFn: (header: contactType) => updateData(manUrl, { ...header, id: parseInt(header.id), userId: 1 }),
+    onMutate: async (updatedHeader) => {
+      await queryClient.cancelQueries({ queryKey: ['contacts'] });
+      const previousHeaders = queryClient.getQueryData<contactType[]>(['contacts']);
+      queryClient.setQueryData(['contacts'], (old: contactType[] = []) =>
+        old.map((header) => (header.id === updatedHeader.id ? updatedHeader : header)),
+      );
+      return { previousHeaders };
+    },
+    onError: (error, updatedHeader, context) => {
+      if (context?.previousHeaders) {
+        queryClient.setQueryData(['contacts'], context.previousHeaders);
+      }
+      handleMutationError(error);
+    },
+    onSuccess: () => handleMutationSuccess('Contact updated successfully!'),
+  });
+
+  const mutationDelete = useMutation({
+    mutationFn: (headerId: string) => deleteData(manUrl, { id: parseInt(headerId), userId: 1 }),
+    onMutate: async (headerId) => {
+      await queryClient.cancelQueries({ queryKey: ['contacts'] });
+      const previousHeaders = queryClient.getQueryData<contactType[]>(['contacts']);
+      queryClient.setQueryData(['contacts'], (old: contactType[] = []) =>
+        old.filter((header) => header.id !== headerId),
+      );
+      return { previousHeaders };
+    },
+    onError: (error, headerId, context) => {
+      if (context?.previousHeaders) {
+        queryClient.setQueryData(['contacts'], context.previousHeaders);
+      }
+      handleMutationError(error);
+    },
+    onSuccess: () => handleMutationSuccess('Contact deleted successfully!'),
+  });
 
   const renderContacts = () => {
     const rows = [];
@@ -99,10 +111,10 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
       rows.unshift(
         <InputContact
           key={i}
-          contact={contacts[i]}
-          onUpdateContact={(updatedContact: contactType) => updateContact(updatedContact)}
-          onCancel={() => handleCancelContact()}
-          onDeleteContact={(id: string) => handleDeleteContact(id)}
+          contact={contacts[i] as unknown as contactType}
+          onUpdateContact={(updatedContact: contactType) => mutationUpdate.mutate(updatedContact)}
+          onCancel={() => setIsAddingContact(false)}
+          onDeleteContact={(id: string) => mutationDelete.mutate(id)}
         />,
       );
     }
@@ -122,9 +134,9 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
             linkedin: '',
             github: '',
           }}
-          onUpdateContact={(newContact: contactType) => handleSaveContact(newContact)}
+          onUpdateContact={(newContact: contactType) => mutationCreate.mutate(newContact)}
           onCancel={() => setIsAddingContact(false)}
-          onDeleteContact={(id: string) => handleDeleteContact(id)}
+          onDeleteContact={(id: string) => mutationDelete.mutate(id)}
         />,
       );
     }
@@ -140,12 +152,13 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
               onClick={() => {
-                handleAddContact();
+                setIsAddingContact(true);
               }}
             >
               Add
             </button>
           </div>
+          <div>{isLoading ? <div>Loading ...</div> : isError ? <div>Error</div> : null}</div>
           <div>{renderContacts()}</div>
         </div>
       </div>
