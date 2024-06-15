@@ -42,59 +42,24 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
           <label className="block font-bold mt-2 mb-2" htmlFor="title">
             Title
           </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={updatedContact.title}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          <input type="text" id="title" name="title" value={updatedContact.title} onChange={handleInputChange} />
           <label className="block font-bold mt-2 mb-2" htmlFor="email">
             Email
           </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={updatedContact.email}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          <input type="text" id="email" name="email" value={updatedContact.email} onChange={handleInputChange} />
           <label className="block font-bold mt-2 mb-2" htmlFor="phone">
             Phone
           </label>
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={updatedContact.phone}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          <input type="text" id="phone" name="phone" value={updatedContact.phone} onChange={handleInputChange} />
           <label className="block font-bold mt-2 mb-2" htmlFor="website">
             Website
           </label>
-          <input
-            type="text"
-            id="website"
-            name="website"
-            value={updatedContact.website}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
+          <input type="text" id="website" name="website" value={updatedContact.website} onChange={handleInputChange} />
           <label className="block font-bold mt-2 mb-2" htmlFor="address">
             Address
           </label>
-          <input
-            type="text"
-            id="address"
-            name="address"
-            value={updatedContact.address}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <div className="flex justify-between">
+          <input type="text" id="address" name="address" value={updatedContact.address} onChange={handleInputChange} />
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div className="w-full">
               <label className="block font-bold mt-2 mb-2" htmlFor="linkedin">
                 Linkedin
@@ -105,7 +70,6 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
                 name="linkedin"
                 value={updatedContact.linkedin}
                 onChange={handleInputChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
             <div className="w-full">
@@ -122,7 +86,7 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
               />
             </div>
           </div>
-          <div className="flex justify-between">
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div className="w-full">
               <label className="block font-bold mt-2 mb-2" htmlFor="facebook">
                 Facebook
@@ -133,7 +97,6 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, o
                 name="facebook"
                 value={updatedContact.facebook}
                 onChange={handleInputChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               />
             </div>
             <div className="w-full">
