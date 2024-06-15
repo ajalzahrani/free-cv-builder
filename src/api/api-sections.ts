@@ -14,7 +14,7 @@ export const postData = <T>(url: string, data: T): Promise<T> => {
 };
 
 export const updateData = <T>(url: string, data: T): Promise<T> => {
-  return axios.put(url, data).then((res) => res.data);
+  return axios.put(url, omitId(data)).then((res) => res.data);
 };
 
 export const deleteData = <T>(url: string, data: T): Promise<T> => {
