@@ -5,8 +5,12 @@ export const fetchData = <T>(url: string, data: T): Promise<T[]> => {
   return axios.post(url, data).then((res) => res.data);
 };
 
+// Function to omit the 'id' field from the data object
+const omitId = ({ id, ...rest }) => rest;
+
 export const postData = <T>(url: string, data: T): Promise<T> => {
-  return axios.post(url, data).then((res) => res.data);
+  return axios.post(url, omitId(data)).then((res) => res.data);
+  // return axios.post(url, data).then((res) => res.data);
 };
 
 export const updateData = <T>(url: string, data: T): Promise<T> => {
