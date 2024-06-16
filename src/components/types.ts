@@ -12,18 +12,18 @@ export type sectionType =
 // | selectedCardType;
 
 type selectedCardType = {
-  id: string;
+  id: number;
 };
 
 export type headerType = {
-  id: string;
+  id: number;
   name: string;
   title: string;
   pitch: string;
 };
 
 export type contactType = {
-  id: string;
+  id: number;
   title: string;
   email: string;
   phone: string;
@@ -40,7 +40,7 @@ export type experinceTasksType = {
 };
 
 export type experienceType = {
-  id: string;
+  id: number;
   title: string;
   company: string;
   location: string;
@@ -51,7 +51,7 @@ export type experienceType = {
 };
 
 export type educationType = {
-  id: string;
+  id: number;
   title?: string;
   institution: string;
   degree: string;
@@ -62,7 +62,7 @@ export type educationType = {
 };
 
 export type certificateType = {
-  id: string;
+  id: number;
   title: string;
   description: string;
   company: string;
@@ -72,12 +72,12 @@ export type certificateType = {
 };
 
 export type skillType = {
-  id: string;
+  id: number;
   title: string;
 };
 
 export type projectType = {
-  id: string;
+  id: number;
   title: string;
   from: string;
   to: string;
@@ -86,7 +86,7 @@ export type projectType = {
 };
 
 export type committeeType = {
-  id: string;
+  id: number;
   title: string;
   role: string;
   date: string;
@@ -94,13 +94,13 @@ export type committeeType = {
 };
 
 export type languageType = {
-  id: string;
+  id: number;
   title: string;
   description: string;
 };
 
 export type interestType = {
-  id: string;
+  id: number;
   title: string;
   description: string;
 };
@@ -129,7 +129,7 @@ export type draftSectionsType = {
 };
 
 export type draftType = {
-  id: string;
+  id: number;
   title: string;
   description: string;
   draftSections: draftSectionsType;
@@ -149,7 +149,7 @@ export type authType = {
 
 // Email template
 export type emailFormType = {
-  id: string;
+  id: number;
   title: string;
   description: string;
   name: string;
@@ -159,7 +159,7 @@ export type emailFormType = {
 };
 
 export type emailDraftType = {
-  id: string;
+  id: number;
   title: string;
   message: string;
 };
