@@ -1,107 +1,106 @@
 import React from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { headerType } from '~/components/Types';
 
+const headerSchema = z.object({
+  id: z.number().optional(),
+  name: z.string().min(1, 'Name is required'),
+  title: z.string().min(1, 'Title is required'),
+  pitch: z.string().optional(),
+});
+
 type InputHeaderProps = {
-  header: headerType;
-  onUpdateHeader: (updatedHeader: headerType) => void;
-  onCancel: () => void;
-  onDeleteHeader: (id: string) => void;
+  header: Partial<headerType>; // Allow header to be partial for both create and update
+  onSaveHeader: (header: headerType) => void; // Callback to save header
+  onCancel: () => void; // Callback to cancel editing
+  onDeleteHeader?: (id: number) => void; // Optional callback to delete header
 };
 
-export default function InputHeader({ header, onUpdateHeader, onCancel, onDeleteHeader }: InputHeaderProps) {
-  const [isEditing, setIsEditing] = React.useState<boolean>(header.name.length === 0 ? true : false);
+export default function InputHeader({ header, onSaveHeader, onCancel, onDeleteHeader }: InputHeaderProps) {
+  const isCreating = !header.id; // Check if id exists to determine if creating new header
+  const [isEditing, setIsEditing] = React.useState<boolean>(
+    header.title ? (header.title.length === 0 ? true : false) : true,
+  );
 
-  const [updatedHeader, setUpdatedHeader] = React.useState<headerType>(header);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<headerType>({
+    resolver: zodResolver(headerSchema),
+    defaultValues: header as headerType, // Convert to headerType for defaultValues
+  });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setUpdatedHeader((prevHeader: any) => ({
-      ...prevHeader,
-      [name]: value,
-    }));
+  const handleSaveHeader = (data: headerType) => {
+    console.log('onUpdate data: ', data);
+    onSaveHeader(data); // Pass the complete header object to the onSaveHeader function
+    setIsEditing(false); // Exit editing mode
   };
 
-  const handleUpdateHeader = () => {
-    onUpdateHeader(updatedHeader);
-    setIsEditing(false);
-  };
-
-  const handleDeleteSkill = () => {
-    if (onDeleteHeader) {
-      onDeleteHeader(header.id);
+  const handleDeleteHeader = () => {
+    if (onDeleteHeader && header.id) {
+      onDeleteHeader(header.id); // Call onDeleteHeader with header id if provided
     }
   };
 
-  const handleCancelHeader = () => {
-    setIsEditing(false);
-    onCancel();
+  const handleCancel = () => {
+    setIsEditing(false); // Exit editing mode
+    reset(header as headerType); // Reset form to initial values
+    onCancel(); // Call onCancel callback
   };
 
   return (
     <div className="builders-element">
       <div className="section-title">
         <h3 className="text-2xl font-bold">{header.name}</h3>
-
-        {!isEditing && <button onClick={() => setIsEditing(true)}>Edit</button>}
+        {!isEditing ? (
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        ) : (
+          <button onClick={handleCancel}>Cancel</button>
+        )}
       </div>
       {isEditing ? (
-        <div className="builders-input">
-          <label className="block font-bold mt-2 mb-2" htmlFor="name">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
+        <form
+          className="builders-input"
+          onSubmit={handleSubmit(handleSaveHeader, (errors) => console.log('error on submit: ', errors))}
+        >
+          <input type="hidden" name="id" value={header.id || ''} />
+
+          <label htmlFor="name">Name</label>
+          <Controller
             name="name"
-            value={updatedHeader.name}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="name" {...field} />}
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="title">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
+          {errors.name && <span>{errors.name.message}</span>}
+
+          <label htmlFor="title">Title</label>
+          <Controller
             name="title"
-            value={updatedHeader.title}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="title" {...field} />}
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="pitch">
-            Pitch
-          </label>
-          <textarea
-            id="pitch"
-            name="pitch"
-            value={updatedHeader.pitch}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <div className="flex justify-end mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateHeader}
-            >
-              Save
-            </button>
-            <button
-              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={() => handleDeleteSkill()}
-            >
-              Delete
-            </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelHeader()}>
-              Cancel
-            </button>
+          {errors.title && <span>{errors.title.message}</span>}
+
+          <label htmlFor="pitch">Pitch</label>
+          <Controller name="pitch" control={control} render={({ field }) => <textarea id="pitch" {...field} />} />
+
+          <div>
+            <button type="submit">{isCreating ? 'Create' : 'Update'}</button>
+            {!isCreating && (
+              <button type="button" onClick={handleDeleteHeader}>
+                Delete
+              </button>
+            )}
           </div>
-        </div>
+        </form>
       ) : (
         <div className="">
-          {/* <p className="text-red-700">ENTRY ID: {header.id}</p> */}
-          {/* <h2 className="text-2xl font-bold">{header.name}</h2> */}
-          <h3 className="text-lg font-bold">{header.title}</h3>
-          <p className="text-gray-700">{header.pitch}</p>
+          <h3>{header.title}</h3>
+          <p>{header.pitch}</p>
         </div>
       )}
     </div>
