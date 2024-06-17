@@ -1,141 +1,174 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { contactType } from '~/components/Types';
 
+const contactSchema = z.object({
+  id: z.number().optional(),
+  title: z.string().min(1, 'Title is required'),
+  email: z.string().min(1, 'Email is required'),
+  phone: z.string().min(1, 'Phone is required'),
+  website: z.string().optional(),
+  address: z.string().optional(),
+  github: z.string().optional(),
+  linkedin: z.string().optional(),
+  twitter: z.string().optional(),
+  facebook: z.string().optional(),
+});
+
 type InputContactProps = {
-  contact: contactType;
-  onUpdateContact: (updatedContact: contactType) => void;
+  contact: Partial<contactType>;
+  onSaveContact: (updatedContact: contactType) => void;
   onCancel: () => void;
-  onDeleteContact: (id: string) => void;
+  onDeleteContact?: (id: number) => void;
 };
 
-const InputContact: React.FC<InputContactProps> = ({ contact, onUpdateContact, onCancel, onDeleteContact }) => {
-  const [isEditing, setIsEditing] = useState<boolean>(contact.title.length === 0 ? true : false);
+const InputContact: React.FC<InputContactProps> = ({ contact, onSaveContact, onCancel, onDeleteContact }) => {
+  const isCreating = !contact.id; // Check if id exists to determine if creating new contact
+  const [isEditing, setIsEditing] = React.useState<boolean>(
+    contact.title ? (contact.title.length === 0 ? true : false) : true,
+  );
 
-  const [updatedContact, setUpdatedContact] = useState<contactType>(contact);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<contactType>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: contact as contactType, // Convert to contactType for defaultValues
+  });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setUpdatedContact((prevContact: any) => ({
-      ...prevContact,
-      [name]: value,
-    }));
+  useEffect(() => {
+    // Reset form values when header changes
+    reset(contact as contactType);
+  }, [contact, reset]);
+
+  const handleSaveContact = (data: contactType) => {
+    console.log('onUpdate data: ', data);
+    onSaveContact(data); // Pass the complete header object to the onSaveContact function
+    setIsEditing(false); // Exit editing mode
   };
 
-  const handleUpdateContact = () => {
-    onUpdateContact(updatedContact);
-    setIsEditing(false);
+  const handleDeleteContact = () => {
+    if (onDeleteContact && contact.id) {
+      onDeleteContact(contact.id); // Call onDeleteContact with contact id if provided
+    }
   };
 
-  const handleCancelContact = () => {
-    setIsEditing(false);
-    onCancel();
+  const handleCancel = () => {
+    setIsEditing(false); // Exit editing mode
+    reset(contact as contactType); // Reset form to initial values
+    onCancel(); // Call onCancel callback
   };
 
   return (
     <div className="builders-element">
       <div className="section-title">
-        <h3 className="text-lg font-bold">{contact.title}</h3>
-        {!isEditing && <button onClick={() => setIsEditing(true)}>Edit</button>}
+        <h3>{contact.title}</h3>
+        {!isEditing ? (
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        ) : (
+          <button onClick={handleCancel}>Cancel</button>
+        )}
       </div>
       {isEditing ? (
-        <div className="builders-input">
-          <label className="block font-bold mt-2 mb-2" htmlFor="title">
-            Title
-          </label>
-          <input type="text" id="title" name="title" value={updatedContact.title} onChange={handleInputChange} />
-          <label className="block font-bold mt-2 mb-2" htmlFor="email">
-            Email
-          </label>
-          <input type="text" id="email" name="email" value={updatedContact.email} onChange={handleInputChange} />
-          <label className="block font-bold mt-2 mb-2" htmlFor="phone">
-            Phone
-          </label>
-          <input type="text" id="phone" name="phone" value={updatedContact.phone} onChange={handleInputChange} />
-          <label className="block font-bold mt-2 mb-2" htmlFor="website">
-            Website
-          </label>
-          <input type="text" id="website" name="website" value={updatedContact.website} onChange={handleInputChange} />
-          <label className="block font-bold mt-2 mb-2" htmlFor="address">
-            Address
-          </label>
-          <input type="text" id="address" name="address" value={updatedContact.address} onChange={handleInputChange} />
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <form
+          className="builders-input"
+          onSubmit={handleSubmit(handleSaveContact, (errors) => console.log('error on submit: ', errors))}
+        >
+          <input type="hidden" name="id" value={contact.id || ''} />
+
+          <label htmlFor="title">Title</label>
+          <Controller
+            name="title"
+            control={control}
+            render={({ field }) => <input type="text" id="title" {...field} />}
+          />
+          {errors.title && <span>{errors.title.message}</span>}
+
+          <label htmlFor="title">Email</label>
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => <input type="text" id="email" {...field} />}
+          />
+          {errors.email && <span>{errors.email.message}</span>}
+
+          <label htmlFor="phone">Phone</label>
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => <input type="text" id="phone" {...field} />}
+          />
+          {errors.phone && <span>{errors.phone.message}</span>}
+
+          <label htmlFor="website">Website</label>
+          <Controller
+            name="website"
+            control={control}
+            render={({ field }) => <input type="text" id="website" {...field} />}
+          />
+          {errors.website && <span>{errors.website.message}</span>}
+
+          <label htmlFor="address">Address</label>
+          <Controller
+            name="address"
+            control={control}
+            render={({ field }) => <input type="text" id="address" {...field} />}
+          />
+          {errors.address && <span>{errors.address.message}</span>}
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
             <div className="w-full">
-              <label className="block font-bold mt-2 mb-2" htmlFor="linkedin">
-                Linkedin
-              </label>
-              <input
-                type="text"
-                id="linkedin"
+              <label htmlFor="linkedin">LinkedIn</label>
+              <Controller
                 name="linkedin"
-                value={updatedContact.linkedin}
-                onChange={handleInputChange}
+                control={control}
+                render={({ field }) => <input type="text" id="linkedin" {...field} />}
               />
             </div>
             <div className="w-full">
-              <label className="block font-bold mt-2 mb-2 ml-2" htmlFor="twitter">
-                twitter
-              </label>
-              <input
-                type="text"
-                id="twitter"
+              <label htmlFor="twitter">Twitter</label>
+              <Controller
                 name="twitter"
-                value={updatedContact.twitter}
-                onChange={handleInputChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 ml-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                control={control}
+                render={({ field }) => <input type="text" id="twitter" {...field} />}
               />
             </div>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
             <div className="w-full">
-              <label className="block font-bold mt-2 mb-2" htmlFor="facebook">
-                Facebook
-              </label>
-              <input
-                type="text"
-                id="facebook"
+              <label htmlFor="facebook">Facebook</label>
+              <Controller
                 name="facebook"
-                value={updatedContact.facebook}
-                onChange={handleInputChange}
+                control={control}
+                render={({ field }) => <input type="text" id="facebook" {...field} />}
               />
             </div>
             <div className="w-full">
-              <label className="block font-bold mt-2 mb-2 ml-2" htmlFor="github">
-                Github
-              </label>
-              <input
-                type="text"
-                id="github"
+              <label htmlFor="github">Github</label>
+              <Controller
                 name="github"
-                value={updatedContact.github}
-                onChange={handleInputChange}
-                className="shadow appearance-none border rounded w-full ml-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                control={control}
+                render={({ field }) => <input type="text" id="github" {...field} />}
               />
             </div>
           </div>
-          <div className="flex justify-end mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateContact}
-            >
-              Save
-            </button>
-            <button
-              className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={() => onDeleteContact(contact.id)}
-            >
-              Delete
-            </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelContact()}>
-              Cancel
-            </button>
+          <div>
+            <div>
+              <button type="submit">{isCreating ? 'Create' : 'Update'}</button>
+              {!isCreating && (
+                <button type="button" onClick={handleDeleteContact}>
+                  Delete
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        </form>
       ) : (
         <div className="">
-          {/* <p className="text-red-700">ENTERY ID: {experience.id}</p> */}
-
-          {/* <p className="text-gray-700">{contact.name}</p> */}
           <p className="text-gray-700">{contact.email}</p>
           <p className="text-gray-700">
             {contact.phone} - {contact.website}

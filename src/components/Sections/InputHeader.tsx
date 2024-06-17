@@ -60,7 +60,7 @@ export default function InputHeader({ header, onSaveHeader, onCancel, onDeleteHe
   return (
     <div className="builders-element">
       <div className="section-title">
-        <h3 className="text-2xl font-bold">{header.name}</h3>
+        <h3>{header.name}</h3>
         {!isEditing ? (
           <button onClick={() => setIsEditing(true)}>Edit</button>
         ) : (
