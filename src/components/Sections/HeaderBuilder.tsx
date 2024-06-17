@@ -104,6 +104,24 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
         />,
       );
     }
+
+    if (isAddingHeader) {
+      rows.unshift(
+        <InputHeader
+          header={{} as headerType}
+          onSaveHeader={(newHeader: headerType) => mutationCreate.mutate(newHeader)}
+          onCancel={() => setIsAddingHeader(false)}
+        />,
+      );
+    }
+
+    if (isLoading) {
+      rows.unshift(<div>Loading...</div>);
+    }
+
+    if (isError) {
+      rows.unshift(<div>Error</div>);
+    }
     return rows;
   };
 
@@ -113,13 +131,7 @@ export default function HeaderBuilder({ section }: { section: sectionType }) {
         <h2>{title}</h2>
         <button onClick={() => setIsAddingHeader(true)}>Add Header</button>
       </div>
-      {isAddingHeader && (
-        <InputHeader
-          header={{} as headerType}
-          onSaveHeader={(newHeader: headerType) => mutationCreate.mutate(newHeader)}
-          onCancel={() => setIsAddingHeader(false)}
-        />
-      )}
+
       {renderHeaders()}
 
       <ToastContainer />

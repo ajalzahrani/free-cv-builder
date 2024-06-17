@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,6 +33,11 @@ export default function InputHeader({ header, onSaveHeader, onCancel, onDeleteHe
     resolver: zodResolver(headerSchema),
     defaultValues: header as headerType, // Convert to headerType for defaultValues
   });
+
+  useEffect(() => {
+    // Reset form values when header changes
+    reset(header as headerType);
+  }, [header, reset]);
 
   const handleSaveHeader = (data: headerType) => {
     console.log('onUpdate data: ', data);
