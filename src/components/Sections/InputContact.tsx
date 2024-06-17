@@ -7,7 +7,7 @@ import { contactType } from '~/components/Types';
 const contactSchema = z.object({
   id: z.number().optional(),
   title: z.string().min(1, 'Title is required'),
-  email: z.string().min(1, 'Email is required'),
+  email: z.string().email('Invalid email').min(1, 'Email is required'),
   phone: z.string().min(1, 'Phone is required'),
   website: z.string().optional(),
   address: z.string().optional(),

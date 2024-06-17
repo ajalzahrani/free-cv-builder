@@ -37,7 +37,7 @@ export default function SectionList() {
         return (
           <HeaderBuilder
             section={{
-              id: '',
+              id: 0,
               title: '',
               company: '',
               location: '',
@@ -52,7 +52,7 @@ export default function SectionList() {
         return (
           <ContactBuilder
             section={{
-              id: '',
+              id: 0,
               name: '',
               title: '',
               pitch: '',
@@ -69,7 +69,7 @@ export default function SectionList() {
         return (
           <ProjectBuilder
             section={{
-              id: '',
+              id: 0,
               name: '',
               title: '',
               pitch: '',
@@ -80,7 +80,7 @@ export default function SectionList() {
         return (
           <SkillBuilder
             section={{
-              id: '',
+              id: 0,
               name: '',
               title: '',
               pitch: '',
@@ -93,7 +93,7 @@ export default function SectionList() {
         return (
           <LanguageBuilder
             section={{
-              id: '',
+              id: 0,
               name: '',
               title: '',
               pitch: '',
@@ -104,7 +104,7 @@ export default function SectionList() {
         return (
           <CommitteeBuilder
             section={{
-              id: '',
+              id: 0,
               name: '',
               title: '',
               pitch: '',

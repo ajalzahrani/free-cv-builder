@@ -49,58 +49,58 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
   };
 
   const mutationCreate = useMutation({
-    mutationFn: (header: Omit<contactType, 'id'>) => postData(manUrl, header),
-    onMutate: async (newHeader) => {
-      await queryClient.cancelQueries({ queryKey: ['headers'] });
-      const previousHeaders = queryClient.getQueryData<contactType[]>(['headers']);
-      queryClient.setQueryData(['headers'], (old: contactType[] = []) => [...old, { ...newHeader }]);
-      return { previousHeaders };
+    mutationFn: (contact: Omit<contactType, 'id'>) => postData(manUrl, contact),
+    onMutate: async (newContact) => {
+      await queryClient.cancelQueries({ queryKey: ['contacts'] });
+      const previousContacts = queryClient.getQueryData<contactType[]>(['contacts']);
+      queryClient.setQueryData(['contacts'], (old: contactType[] = []) => [...old, { ...newContact }]);
+      return { previousContacts };
     },
-    onError: (error, newHeader, context) => {
-      if (context?.previousHeaders) {
-        queryClient.setQueryData(['headers'], context.previousHeaders);
+    onError: (error, newContact, context) => {
+      if (context?.previousContacts) {
+        queryClient.setQueryData(['contacts'], context.previousContacts);
       }
       handleMutationError(error);
     },
-    onSuccess: () => handleMutationSuccess('Header created successfully!'),
+    onSuccess: () => handleMutationSuccess('contact created successfully!'),
   });
 
   const mutationUpdate = useMutation({
-    mutationFn: (header: contactType) => updateData(manUrl, header),
-    onMutate: async (updatedHeader) => {
-      await queryClient.cancelQueries({ queryKey: ['headers'] });
-      const previousHeaders = queryClient.getQueryData<contactType[]>(['headers']);
-      queryClient.setQueryData(['headers'], (old: contactType[] = []) =>
-        old.map((header) => (header.id === updatedHeader.id ? updatedHeader : header)),
+    mutationFn: (contact: contactType) => updateData(manUrl, contact),
+    onMutate: async (updatedContact) => {
+      await queryClient.cancelQueries({ queryKey: ['contacts'] });
+      const previousContacts = queryClient.getQueryData<contactType[]>(['contacts']);
+      queryClient.setQueryData(['contacts'], (old: contactType[] = []) =>
+        old.map((contact) => (contact.id === updatedContact.id ? updatedContact : contact)),
       );
-      return { previousHeaders };
+      return { previousContacts };
     },
-    onError: (error, updatedHeader, context) => {
-      if (context?.previousHeaders) {
-        queryClient.setQueryData(['headers'], context.previousHeaders);
+    onError: (error, updatedContact, context) => {
+      if (context?.previousContacts) {
+        queryClient.setQueryData(['contacts'], context.previousContacts);
       }
       handleMutationError(error);
     },
-    onSuccess: () => handleMutationSuccess('Header updated successfully!'),
+    onSuccess: () => handleMutationSuccess('contact updated successfully!'),
   });
 
   const mutationDelete = useMutation({
-    mutationFn: (headerId: number) => deleteData(manUrl, { id: headerId }),
-    onMutate: async (headerId) => {
-      await queryClient.cancelQueries({ queryKey: ['headers'] });
-      const previousHeaders = queryClient.getQueryData<contactType[]>(['headers']);
-      queryClient.setQueryData(['headers'], (old: contactType[] = []) =>
-        old.filter((header) => header.id !== headerId),
+    mutationFn: (contactId: number) => deleteData(manUrl, { id: contactId }),
+    onMutate: async (contactId) => {
+      await queryClient.cancelQueries({ queryKey: ['contacts'] });
+      const previousContacts = queryClient.getQueryData<contactType[]>(['contacts']);
+      queryClient.setQueryData(['contacts'], (old: contactType[] = []) =>
+        old.filter((contact) => contact.id !== contactId),
       );
-      return { previousHeaders };
+      return { previousContacts };
     },
-    onError: (error, headerId, context) => {
-      if (context?.previousHeaders) {
-        queryClient.setQueryData(['headers'], context.previousHeaders);
+    onError: (error, contactId, context) => {
+      if (context?.previousContacts) {
+        queryClient.setQueryData(['contacts'], context.previousContacts);
       }
       handleMutationError(error);
     },
-    onSuccess: () => handleMutationSuccess('Header deleted successfully!'),
+    onSuccess: () => handleMutationSuccess('contact deleted successfully!'),
   });
 
   const renderContacts = () => {
@@ -138,7 +138,7 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
   };
 
   // return (
-  //   <div className="header-builder">
+  //   <div className="contact-builder">
   //     <div className="container mx-auto px-6">
   //       <div className="bg-white rounded-lg shadow-lg p-6">
   //         <div className="section-title">
@@ -160,7 +160,7 @@ export default function ContactBuilder({ section }: { section: sectionType }) {
   // );
 
   return (
-    <div className="header-builder">
+    <div className="contact-builder">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2>{title}</h2>
         <button onClick={() => setIsAddingContact(true)}>Add Contact</button>
