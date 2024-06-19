@@ -1,139 +1,135 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { projectType } from '~/components/Types';
 
+export const projectSchema = z.object({
+  id: z.number().optional(),
+  title: z.string(),
+  from: z.string().optional(),
+  to: z.string().optional(),
+  description: z.string().optional(),
+  link: z.string().optional(),
+});
+
 type InputProjectProps = {
-  project: projectType;
-  onUpdateProject: (updatedProject: projectType) => void;
+  item: Partial<projectType>;
+  onSave: (item: projectType) => void;
   onCancel: () => void;
-  onDeleteProject: (id: string) => void;
+  onDelete?: (id: number) => void;
 };
 
-export default function InputProject({ project, onUpdateProject, onCancel, onDeleteProject }: InputProjectProps) {
-  const [isEditing, setIsEditing] = React.useState<boolean>(project.title.length === 0 ? true : false);
+const InputProject: React.FC<InputProjectProps> = ({ item, onSave, onCancel, onDelete }) => {
+  const isCreating = !item.id; // Check if id exists to determine if creating new item
+  const [isEditing, setIsEditing] = React.useState<boolean>(
+    item.title ? (item.title.length === 0 ? true : false) : true,
+  );
 
-  const [updatedProject, setUpdatedProject] = React.useState<projectType>(project);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<projectType>({
+    resolver: zodResolver(projectSchema),
+    defaultValues: item as projectType, // Convert to projectType for defaultValues
+  });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setUpdatedProject((prevProject: any) => ({
-      ...prevProject,
-      [name]: value,
-    }));
+  useEffect(() => {
+    // Reset form values when header changes
+    reset(item as projectType);
+  }, [item, reset]);
+
+  const handleOnSave = (data: projectType) => {
+    console.log('onUpdate data: ', data);
+    onSave(data); // Pass the complete header object to the onSave function
+    setIsEditing(false); // Exit editing mode
   };
 
-  const handleUpdateProject = () => {
-    onUpdateProject(updatedProject);
-    setIsEditing(false);
+  const handleOnDelete = () => {
+    if (onDelete && item.id) {
+      onDelete(item.id); // Call onDelete with item id if provided
+    }
   };
 
-  const handleCancelProject = () => {
-    setIsEditing(false);
-    onCancel();
+  const handleOnCancel = () => {
+    setIsEditing(false); // Exit editing mode
+    reset(item as projectType); // Reset form to initial values
+    onCancel(); // Call onCancel callback
   };
 
   return (
     <div className="builders-element">
       <div className="section-title">
-        <h3 className="text-lg font-bold">{project.title}</h3>
-        {!isEditing && (
-          <button
-            className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
-            onClick={() => setIsEditing(true)}
-          >
-            Edit
-          </button>
+        <h3>{item.title}</h3>
+        {!isEditing ? (
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        ) : (
+          <button onClick={handleOnCancel}>Cancel</button>
         )}
       </div>
       {isEditing ? (
-        <div className="mt-2">
-          <label className="block font-bold mt-2 mb-2" htmlFor="title">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
+        <form
+          className="builders-input"
+          onSubmit={handleSubmit(handleOnSave, (errors) => console.log('error on submit: ', errors))}
+        >
+          <input type="hidden" name="id" value={item.id || ''} />
+
+          <label htmlFor="title">Title</label>
+          <Controller
             name="title"
-            value={updatedProject.title}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="title" {...field} />}
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="description">
-            Description
-          </label>
-          <textarea
-            id="description"
+          {errors.title && <span>{errors.title.message}</span>}
+
+          <label htmlFor="description">Description</label>
+          <Controller
             name="description"
-            value={updatedProject.description}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="description" {...field} />}
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="link">
-            Link
-          </label>
-          <input
-            type="text"
-            id="link"
+
+          <label htmlFor="link">Link</label>
+          <Controller
             name="link"
-            value={updatedProject.link}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="link" {...field} />}
           />
           <div className="flex justify-between">
-            <div className="w-full">
-              <label className="block font-bold mt-2 mb-2" htmlFor="from">
-                From
-              </label>
-              <input
-                type="text"
-                id="from"
-                name="from"
-                value={updatedProject.from}
-                onChange={handleInputChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="w-full">
-              <label className="block font-bold ml-2 mt-2 mb-2" htmlFor="to">
-                To
-              </label>
-              <input
-                type="text"
-                id="to"
-                name="to"
-                value={updatedProject.to}
-                onChange={handleInputChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ml-2"
-              />
+            <label htmlFor="from">From</label>
+            <Controller
+              name="from"
+              control={control}
+              render={({ field }) => <input type="text" id="from" {...field} />}
+            />
+
+            <label htmlFor="to">To</label>
+            <Controller name="to" control={control} render={({ field }) => <input type="text" id="to" {...field} />} />
+          </div>
+          <div>
+            <div>
+              <button type="submit">{isCreating ? 'Create' : 'Update'}</button>
+              {!isCreating && (
+                <button type="button" onClick={handleOnDelete}>
+                  Delete
+                </button>
+              )}
             </div>
           </div>
-          <div className="flex justify-end mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateProject}
-            >
-              Save
-            </button>
-            <button
-              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={() => onDeleteProject(project.id)}
-            >
-              Delete
-            </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={handleCancelProject}>
-              Cancel
-            </button>
-          </div>
-        </div>
+        </form>
       ) : (
-        <div className="mt-2">
-          {/* <p className="text-red-700">ENTRY ID: {project.id}</p> */}
-          <p className="text-gray-700">{project.description}</p>
-          <p className="text-gray-700">{project.link}</p>
+        <div className="">
+          <p className="text-gray-700">{item.description}</p>
+          <p className="text-gray-700">{item.link}</p>
           <p className="text-gray-700">
-            {project.from} - {project.to}
+            {item.from} - {item.to}
           </p>
         </div>
       )}
     </div>
   );
-}
+};
+
+export default InputProject;

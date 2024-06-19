@@ -19,7 +19,7 @@ const contactSchema = z.object({
 
 type InputContactProps = {
   item: Partial<contactType>;
-  onSave: (updatedContact: contactType) => void;
+  onSave: (item: contactType) => void;
   onCancel: () => void;
   onDelete?: (id: number) => void;
 };
@@ -45,19 +45,19 @@ const InputContact: React.FC<InputContactProps> = ({ item, onSave, onCancel, onD
     reset(item as contactType);
   }, [item, reset]);
 
-  const handleSaveContact = (data: contactType) => {
+  const handleOnSave = (data: contactType) => {
     console.log('onUpdate data: ', data);
     onSave(data); // Pass the complete header object to the onSave function
     setIsEditing(false); // Exit editing mode
   };
 
-  const handleDeleteContact = () => {
+  const handleOnDelete = () => {
     if (onDelete && item.id) {
       onDelete(item.id); // Call onDelete with item id if provided
     }
   };
 
-  const handleCancel = () => {
+  const handleOnCancel = () => {
     setIsEditing(false); // Exit editing mode
     reset(item as contactType); // Reset form to initial values
     onCancel(); // Call onCancel callback
@@ -70,13 +70,13 @@ const InputContact: React.FC<InputContactProps> = ({ item, onSave, onCancel, onD
         {!isEditing ? (
           <button onClick={() => setIsEditing(true)}>Edit</button>
         ) : (
-          <button onClick={handleCancel}>Cancel</button>
+          <button onClick={handleOnCancel}>Cancel</button>
         )}
       </div>
       {isEditing ? (
         <form
           className="builders-input"
-          onSubmit={handleSubmit(handleSaveContact, (errors) => console.log('error on submit: ', errors))}
+          onSubmit={handleSubmit(handleOnSave, (errors) => console.log('error on submit: ', errors))}
         >
           <input type="hidden" name="id" value={item.id || ''} />
 
@@ -160,7 +160,7 @@ const InputContact: React.FC<InputContactProps> = ({ item, onSave, onCancel, onD
             <div>
               <button type="submit">{isCreating ? 'Create' : 'Update'}</button>
               {!isCreating && (
-                <button type="button" onClick={handleDeleteContact}>
+                <button type="button" onClick={handleOnDelete}>
                   Delete
                 </button>
               )}

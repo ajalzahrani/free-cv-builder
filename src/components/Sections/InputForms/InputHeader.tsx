@@ -42,19 +42,19 @@ export default function InputHeader({ item, onSave, onCancel, onDelete }: InputH
     reset(item as headerType);
   }, [item, reset]);
 
-  const handleSaveHeader = (data: headerType) => {
+  const handleOnSave = (data: headerType) => {
     console.log('onUpdate data: ', data);
     onSave(data); // Pass the complete item object to the onSave function
     setIsEditing(false); // Exit editing mode
   };
 
-  const handleDeleteHeader = () => {
+  const handleOnDelete = () => {
     if (onDelete && item.id) {
       onDelete(item.id); // Call onDelete with item id if provided
     }
   };
 
-  const handleCancel = () => {
+  const handleOnCancel = () => {
     setIsEditing(false); // Exit editing mode
     reset(item as headerType); // Reset form to initial values
     onCancel(); // Call onCancel callback
@@ -67,13 +67,13 @@ export default function InputHeader({ item, onSave, onCancel, onDelete }: InputH
         {!isEditing ? (
           <button onClick={() => setIsEditing(true)}>Edit</button>
         ) : (
-          <button onClick={handleCancel}>Cancel</button>
+          <button onClick={handleOnCancel}>Cancel</button>
         )}
       </div>
       {isEditing ? (
         <form
           className="builders-input"
-          onSubmit={handleSubmit(handleSaveHeader, (errors) => console.log('error on submit: ', errors))}
+          onSubmit={handleSubmit(handleOnSave, (errors) => console.log('error on submit: ', errors))}
         >
           <input type="hidden" name="id" value={item.id || ''} />
 
@@ -99,7 +99,7 @@ export default function InputHeader({ item, onSave, onCancel, onDelete }: InputH
           <div>
             <button type="submit">{isCreating ? 'Create' : 'Update'}</button>
             {!isCreating && (
-              <button type="button" onClick={handleDeleteHeader}>
+              <button type="button" onClick={handleOnDelete}>
                 Delete
               </button>
             )}

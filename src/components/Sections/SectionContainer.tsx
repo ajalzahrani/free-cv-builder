@@ -25,48 +25,48 @@ const sections: PassableInputComponentType[] = [
     manUrl: '/cv/contact',
     InputComponent: InputContact,
   },
-  // {
-  //   title: 'Experience',
-  //   getUrl: '/cv/experiences',
-  //   manUrl: '/cv/experience',
-  //   InputComponent: InputExperience, // Assume you have this component
-  // },
-  // {
-  //   title: 'Education',
-  //   getUrl: '/cv/educations',
-  //   manUrl: '/cv/education',
-  //   InputComponent: InputEducation, // Assume you have this component
-  // },
-  // {
-  //   title: 'Certificate',
-  //   getUrl: '/cv/certificates',
-  //   manUrl: '/cv/certificate',
-  //   InputComponent: InputCertificate, // Assume you have this component
-  // },
-  // {
-  //   title: 'Projects',
-  //   getUrl: '/cv/projects',
-  //   manUrl: '/cv/project',
-  //   InputComponent: InputProject, // Assume you have this component
-  // },
-  // {
-  //   title: 'Skills',
-  //   getUrl: '/cv/skills',
-  //   manUrl: '/cv/skill',
-  //   InputComponent: InputSkill, // Assume you have this component
-  // },
-  // {
-  //   title: 'Interests',
-  //   getUrl: '/cv/interests',
-  //   manUrl: '/cv/interest',
-  //   InputComponent: InputInterest, // Assume you have this component
-  // },
-  // {
-  //   title: 'Languages',
-  //   getUrl: '/cv/languages',
-  //   manUrl: '/cv/language',
-  //   InputComponent: InputLanguage, // Assume you have this component
-  // },
+  {
+    title: 'Experience',
+    getUrl: '/cv/experiences',
+    manUrl: '/cv/experience',
+    InputComponent: InputExperience, // Assume you have this component
+  },
+  {
+    title: 'Education',
+    getUrl: '/cv/educations',
+    manUrl: '/cv/education',
+    InputComponent: InputEducation, // Assume you have this component
+  },
+  {
+    title: 'Certificate',
+    getUrl: '/cv/certificates',
+    manUrl: '/cv/certificate',
+    InputComponent: InputCertificate, // Assume you have this component
+  },
+  {
+    title: 'Projects',
+    getUrl: '/cv/projects',
+    manUrl: '/cv/project',
+    InputComponent: InputProject, // Assume you have this component
+  },
+  {
+    title: 'Skills',
+    getUrl: '/cv/skills',
+    manUrl: '/cv/skill',
+    InputComponent: InputSkill, // Assume you have this component
+  },
+  {
+    title: 'Interests',
+    getUrl: '/cv/interrests',
+    manUrl: '/cv/interrest',
+    InputComponent: InputInterest, // Assume you have this component
+  },
+  {
+    title: 'Languages',
+    getUrl: '/cv/languages',
+    manUrl: '/cv/language',
+    InputComponent: InputLanguage, // Assume you have this component
+  },
   // {
   //   title: 'Committees',
   //   getUrl: '/cv/committees',

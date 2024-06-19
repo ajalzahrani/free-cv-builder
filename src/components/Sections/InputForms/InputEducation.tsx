@@ -1,135 +1,137 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { educationType } from '~/components/Types';
 
+export const educationSchema = z.object({
+  id: z.number().optional(),
+  institution: z.string(),
+  degree: z.string(),
+  locaation: z.string().optional(),
+  from: z.string().optional(),
+  to: z.string().optional(),
+  description: z.string().optional(),
+});
+
 type InputEducationProps = {
-  education: educationType;
-  onUpdateEducation: (updatedEducation: educationType) => void;
+  item: Partial<educationType>;
+  onSave: (item: educationType) => void;
   onCancel: () => void;
-  onDeleteEducation: (id: string) => void;
+  onDelete?: (id: number) => void;
 };
 
-export default function InputEducation({
-  education,
-  onUpdateEducation,
-  onCancel,
-  onDeleteEducation,
-}: InputEducationProps) {
-  const [isEditing, setIsEditing] = React.useState<boolean>(education.institution.length === 0 ? true : false);
+const InputEducation: React.FC<InputEducationProps> = ({ item, onSave, onCancel, onDelete }) => {
+  const isCreating = !item.id; // Check if id exists to determine if creating new item
+  const [isEditing, setIsEditing] = React.useState<boolean>(
+    item.degree ? (item.degree.length === 0 ? true : false) : true,
+  );
 
-  const [updatedEducation, setUpdatedEducation] = React.useState<educationType>(education);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<educationType>({
+    resolver: zodResolver(educationSchema),
+    defaultValues: item as educationType, // Convert to educationType for defaultValues
+  });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setUpdatedEducation((prevEducation: any) => ({
-      ...prevEducation,
-      [name]: value,
-    }));
+  useEffect(() => {
+    // Reset form values when header changes
+    reset(item as educationType);
+  }, [item, reset]);
+
+  const handleOnSave = (data: educationType) => {
+    console.log('onUpdate data: ', data);
+    onSave(data); // Pass the complete header object to the onSave function
+    setIsEditing(false); // Exit editing mode
   };
 
-  const handleUpdateEducation = () => {
-    onUpdateEducation(updatedEducation);
-    setIsEditing(false);
+  const handleOnDelete = () => {
+    if (onDelete && item.id) {
+      onDelete(item.id); // Call onDelete with item id if provided
+    }
   };
 
-  const handleCancelEducation = () => {
-    setIsEditing(false);
-    onCancel();
+  const handleOnCancel = () => {
+    setIsEditing(false); // Exit editing mode
+    reset(item as educationType); // Reset form to initial values
+    onCancel(); // Call onCancel callback
   };
 
   return (
     <div className="builders-element">
       <div className="section-title">
-        <h3 className="text-lg font-bold">{education.institution}</h3>
-        {!isEditing && <button onClick={() => setIsEditing(true)}>Edit</button>}
+        <h3>{item.degree}</h3>
+        {!isEditing ? (
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        ) : (
+          <button onClick={handleOnCancel}>Cancel</button>
+        )}
       </div>
       {isEditing ? (
-        <div className="builders-input">
-          <label className="block font-bold mt-2 mb-2" htmlFor="institution">
-            Institution
-          </label>
-          <input
-            type="text"
-            id="institution"
+        <form
+          className="builders-input"
+          onSubmit={handleSubmit(handleOnSave, (errors) => console.log('error on submit: ', errors))}
+        >
+          <label htmlFor="institution">Institution</label>
+          <Controller
             name="institution"
-            value={updatedEducation.institution}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="institution" {...field} />}
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="degree">
-            Degree
-          </label>
-          <input
-            type="text"
-            id="degree"
+          {errors.institution && <span>{errors.institution.message}</span>}
+
+          <label htmlFor="degree">Degree</label>
+          <Controller
             name="degree"
-            value={updatedEducation.degree}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="degree" {...field} />}
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="from">
-            From
-          </label>
-          <input
-            type="text"
-            id="from"
+          {errors.degree && <span>{errors.degree.message}</span>}
+
+          <label htmlFor="from">From</label>
+          <Controller
             name="from"
-            value={updatedEducation.from}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <label className="block font-bold mt-2 mb-2" htmlFor="to">
-            To
-          </label>
-          <input
-            type="text"
-            id="to"
-            name="to"
-            value={updatedEducation.to}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          />
-          <label className="block font-bold mt-2 mb-2" htmlFor="to">
-            Description
-          </label>
-          <input
-            type="text"
-            id="description"
-            name="description"
-            value={updatedEducation.description}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="from" {...field} />}
           />
 
-          <div className="flex justify-end mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateEducation}
-            >
-              Save
-            </button>
-            <button
-              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={() => onDeleteEducation(education.id)}
-            >
-              Delete
-            </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={handleCancelEducation}>
-              Cancel
-            </button>
+          <label htmlFor="to">To</label>
+          <Controller name="to" control={control} render={({ field }) => <input type="text" id="to" {...field} />} />
+
+          <label htmlFor="description">Description</label>
+          <Controller
+            name="description"
+            control={control}
+            render={({ field }) => <input type="text" id="description" {...field} />}
+          />
+
+          <div>
+            <div>
+              <button type="submit">{isCreating ? 'Create' : 'Update'}</button>
+              {!isCreating && (
+                <button type="button" onClick={handleOnDelete}>
+                  Delete
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        </form>
       ) : (
-        <div className="mt-2">
-          {/* <p className="text-red-700">ENTERY ID: {education.id}</p> */}
-          <p className="text-gray-700">{education.institution}</p>
-          <p className="text-gray-700">{education.degree}</p>
-          <p className="text-gray-700">{education.location}</p>
+        <div className="">
+          <p className="text-gray-700">{item.institution}</p>
+          <p className="text-gray-700">{item.degree}</p>
+          <p className="text-gray-700">{item.location}</p>
           <p className="text-gray-700">
-            {education.from} - {education.to}
+            {item.from} - {item.to}
           </p>
-          <p className="text-gray-700">{education.description}</p>
+          <p className="text-gray-700">{item.description}</p>
         </div>
       )}
     </div>
   );
-}
+};
+
+export default InputEducation;

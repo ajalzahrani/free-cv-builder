@@ -1,79 +1,101 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { skillType } from '~/components/Types';
 
+export const skillSchema = z.object({
+  id: z.number().optional(),
+  title: z.string(),
+});
+
 type InputSkillProps = {
-  skill: skillType;
-  onUpdateSkill: (updatedSkill: skillType) => void;
+  item: Partial<skillType>;
+  onSave: (item: skillType) => void;
   onCancel: () => void;
-  onDeleteSkill: (id: string) => void;
+  onDelete?: (id: number) => void;
 };
 
-export default function InputSkill({ skill, onUpdateSkill, onCancel, onDeleteSkill }: InputSkillProps) {
-  const [isEditing, setIsEditing] = React.useState<boolean>(skill.title.length === 0 ? true : false);
+const InputSkill: React.FC<InputSkillProps> = ({ item, onSave, onCancel, onDelete }) => {
+  const isCreating = !item.id; // Check if id exists to determine if creating new item
+  const [isEditing, setIsEditing] = React.useState<boolean>(
+    item.title ? (item.title.length === 0 ? true : false) : true,
+  );
 
-  const [updatedSkill, setUpdatedSkill] = React.useState<skillType>(skill);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<skillType>({
+    resolver: zodResolver(skillSchema),
+    defaultValues: item as skillType, // Convert to skillType for defaultValues
+  });
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-    setUpdatedSkill((prevSkill: any) => ({
-      ...prevSkill,
-      [name]: value,
-    }));
+  useEffect(() => {
+    // Reset form values when header changes
+    reset(item as skillType);
+  }, [item, reset]);
+
+  const handleOnSave = (data: skillType) => {
+    console.log('onUpdate data: ', data);
+    onSave(data); // Pass the complete header object to the onSave function
+    setIsEditing(false); // Exit editing mode
   };
 
-  const handleUpdateSkill = () => {
-    onUpdateSkill(updatedSkill);
-    setIsEditing(false);
+  const handleOnDelete = () => {
+    if (onDelete && item.id) {
+      onDelete(item.id); // Call onDelete with item id if provided
+    }
   };
 
-  const handleCancelSkill = () => {
-    setIsEditing(false);
-    onCancel();
+  const handleOnCancel = () => {
+    setIsEditing(false); // Exit editing mode
+    reset(item as skillType); // Reset form to initial values
+    onCancel(); // Call onCancel callback
   };
 
   return (
     <div className="builders-element">
       <div className="section-title">
-        <h3 className="text-lg font-bold">{skill.title}</h3>
-        {!isEditing && <button onClick={() => setIsEditing(true)}>Edit</button>}
+        <h3>{item.title}</h3>
+        {!isEditing ? (
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        ) : (
+          <button onClick={handleOnCancel}>Cancel</button>
+        )}
       </div>
       {isEditing ? (
-        <div className="builders-input">
-          <label className="block font-bold mt-2 mb-2" htmlFor="title">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
+        <form
+          className="builders-input"
+          onSubmit={handleSubmit(handleOnSave, (errors) => console.log('error on submit: ', errors))}
+        >
+          <input type="hidden" name="id" value={item.id || ''} />
+
+          <label htmlFor="title">Title</label>
+          <Controller
             name="title"
-            value={updatedSkill.title}
-            onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="title" {...field} />}
           />
-          <div className="flex justify-end mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={handleUpdateSkill}
-            >
-              Save
-            </button>
-            <button
-              className="bg-red-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2"
-              onClick={() => onDeleteSkill(skill.id)}
-            >
-              Delete
-            </button>
-            <button className="text-gray-500 hover:text-gray-700" onClick={() => handleCancelSkill()}>
-              Cancel
-            </button>
+          {errors.title && <span>{errors.title.message}</span>}
+
+          <div>
+            <div>
+              <button type="submit">{isCreating ? 'Create' : 'Update'}</button>
+              {!isCreating && (
+                <button type="button" onClick={handleOnDelete}>
+                  Delete
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        </form>
       ) : (
-        <div className="mt-2">
-          {/* <p className="text-red-700">ENTRY ID: {skill.id}</p> */}
-          {/* <p className="text-gray-700">{skill.title}</p> */}
-        </div>
+        <div className="">{/* <p className="text-gray-700">{item.title}</p> */}</div>
       )}
     </div>
   );
-}
+};
+
+export default InputSkill;
