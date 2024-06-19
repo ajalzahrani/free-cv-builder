@@ -12,12 +12,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // const root = createRott.createRoot(document.getElementById('root') as HTMLElement);
 // root.render(<App />);
 
-// for testing
-// import SelectorMulti from './components/NewDrafts/SelectorMulti';
-// const App = () => {
-//   return <SelectorMulti />;
-// };
-
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 10000 } },
