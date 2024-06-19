@@ -12,17 +12,16 @@ const headerSchema = z.object({
 });
 
 type InputHeaderProps = {
-  header: Partial<headerType>; // Allow header to be partial for both create and update
-  onSaveHeader: (header: headerType) => void; // Callback to save header
+  item: Partial<headerType>; // Allow item to be partial for both create and update
+  onSave: (item: headerType) => void; // Callback to save item
   onCancel: () => void; // Callback to cancel editing
-  onDeleteHeader?: (id: number) => void; // Optional callback to delete header
+  onDelete?: (id: number) => void; // Optional callback to delete item
 };
 
-export default function InputHeader({ header, onSaveHeader, onCancel, onDeleteHeader }: InputHeaderProps) {
-  const isCreating = !header.id; // Check if id exists to determine if creating new header
-  const [isEditing, setIsEditing] = React.useState<boolean>(
-    header.title ? (header.title.length === 0 ? true : false) : true,
-  );
+export default function InputHeader({ item, onSave, onCancel, onDelete }: InputHeaderProps) {
+  const isCreating = !item?.id; // Check if id exists to determine if creating new item
+  const [isEditing, setIsEditing] = React.useState<boolean>();
+  // item.title ? (item.title.length === 0 ? true : false) : true,
 
   const {
     control,
@@ -31,36 +30,40 @@ export default function InputHeader({ header, onSaveHeader, onCancel, onDeleteHe
     reset,
   } = useForm<headerType>({
     resolver: zodResolver(headerSchema),
-    defaultValues: header as headerType, // Convert to headerType for defaultValues
+    defaultValues: item as headerType, // Convert to headerType for defaultValues
   });
 
   useEffect(() => {
-    // Reset form values when header changes
-    reset(header as headerType);
-  }, [header, reset]);
+    console.log('item: ', item);
+  }, []);
+
+  useEffect(() => {
+    // Reset form values when item changes
+    reset(item as headerType);
+  }, [item, reset]);
 
   const handleSaveHeader = (data: headerType) => {
     console.log('onUpdate data: ', data);
-    onSaveHeader(data); // Pass the complete header object to the onSaveHeader function
+    onSave(data); // Pass the complete item object to the onSave function
     setIsEditing(false); // Exit editing mode
   };
 
   const handleDeleteHeader = () => {
-    if (onDeleteHeader && header.id) {
-      onDeleteHeader(header.id); // Call onDeleteHeader with header id if provided
+    if (onDelete && item.id) {
+      onDelete(item.id); // Call onDelete with item id if provided
     }
   };
 
   const handleCancel = () => {
     setIsEditing(false); // Exit editing mode
-    reset(header as headerType); // Reset form to initial values
+    reset(item as headerType); // Reset form to initial values
     onCancel(); // Call onCancel callback
   };
 
   return (
     <div className="builders-element">
       <div className="section-title">
-        <h3>{header.name}</h3>
+        <h3>{item.name}</h3>
         {!isEditing ? (
           <button onClick={() => setIsEditing(true)}>Edit</button>
         ) : (
@@ -72,7 +75,7 @@ export default function InputHeader({ header, onSaveHeader, onCancel, onDeleteHe
           className="builders-input"
           onSubmit={handleSubmit(handleSaveHeader, (errors) => console.log('error on submit: ', errors))}
         >
-          <input type="hidden" name="id" value={header.id || ''} />
+          <input type="hidden" name="id" value={item.id || ''} />
 
           <label htmlFor="name">Name</label>
           <Controller
@@ -104,8 +107,8 @@ export default function InputHeader({ header, onSaveHeader, onCancel, onDeleteHe
         </form>
       ) : (
         <div className="">
-          <h3>{header.title}</h3>
-          <p>{header.pitch}</p>
+          <h3>{item.title}</h3>
+          <p>{item.pitch}</p>
         </div>
       )}
     </div>

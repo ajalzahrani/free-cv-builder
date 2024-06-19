@@ -1,6 +1,6 @@
 import React from 'react';
 import p from '~/store/Predefined';
-import { committeeType } from '../Types';
+import { committeeType } from '../../Types';
 
 type props = {
   committes: committeeType[];

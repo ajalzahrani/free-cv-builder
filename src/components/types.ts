@@ -114,6 +114,19 @@ export type section = {
   component?: React.FC<any>;
 };
 
+type InputComponentType = {
+  item: any;
+  onSave: (item: any) => void;
+  onCancel: () => void;
+  onDelete?: (id: number) => void;
+};
+export type PassableInputComponentType = {
+  title: string;
+  getUrl: string;
+  manUrl: string;
+  InputComponent: React.FC<InputComponentType>;
+};
+
 export type draftSectionsType = {
   [key: string]: any; // Index Signature
   header?: string;

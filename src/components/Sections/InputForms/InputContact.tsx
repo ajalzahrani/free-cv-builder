@@ -18,16 +18,16 @@ const contactSchema = z.object({
 });
 
 type InputContactProps = {
-  contact: Partial<contactType>;
-  onSaveContact: (updatedContact: contactType) => void;
+  item: Partial<contactType>;
+  onSave: (updatedContact: contactType) => void;
   onCancel: () => void;
-  onDeleteContact?: (id: number) => void;
+  onDelete?: (id: number) => void;
 };
 
-const InputContact: React.FC<InputContactProps> = ({ contact, onSaveContact, onCancel, onDeleteContact }) => {
-  const isCreating = !contact.id; // Check if id exists to determine if creating new contact
+const InputContact: React.FC<InputContactProps> = ({ item, onSave, onCancel, onDelete }) => {
+  const isCreating = !item.id; // Check if id exists to determine if creating new item
   const [isEditing, setIsEditing] = React.useState<boolean>(
-    contact.title ? (contact.title.length === 0 ? true : false) : true,
+    item.title ? (item.title.length === 0 ? true : false) : true,
   );
 
   const {
@@ -37,36 +37,36 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onSaveContact, onC
     reset,
   } = useForm<contactType>({
     resolver: zodResolver(contactSchema),
-    defaultValues: contact as contactType, // Convert to contactType for defaultValues
+    defaultValues: item as contactType, // Convert to contactType for defaultValues
   });
 
   useEffect(() => {
     // Reset form values when header changes
-    reset(contact as contactType);
-  }, [contact, reset]);
+    reset(item as contactType);
+  }, [item, reset]);
 
   const handleSaveContact = (data: contactType) => {
     console.log('onUpdate data: ', data);
-    onSaveContact(data); // Pass the complete header object to the onSaveContact function
+    onSave(data); // Pass the complete header object to the onSave function
     setIsEditing(false); // Exit editing mode
   };
 
   const handleDeleteContact = () => {
-    if (onDeleteContact && contact.id) {
-      onDeleteContact(contact.id); // Call onDeleteContact with contact id if provided
+    if (onDelete && item.id) {
+      onDelete(item.id); // Call onDelete with item id if provided
     }
   };
 
   const handleCancel = () => {
     setIsEditing(false); // Exit editing mode
-    reset(contact as contactType); // Reset form to initial values
+    reset(item as contactType); // Reset form to initial values
     onCancel(); // Call onCancel callback
   };
 
   return (
     <div className="builders-element">
       <div className="section-title">
-        <h3>{contact.title}</h3>
+        <h3>{item.title}</h3>
         {!isEditing ? (
           <button onClick={() => setIsEditing(true)}>Edit</button>
         ) : (
@@ -78,7 +78,7 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onSaveContact, onC
           className="builders-input"
           onSubmit={handleSubmit(handleSaveContact, (errors) => console.log('error on submit: ', errors))}
         >
-          <input type="hidden" name="id" value={contact.id || ''} />
+          <input type="hidden" name="id" value={item.id || ''} />
 
           <label htmlFor="title">Title</label>
           <Controller
@@ -169,15 +169,15 @@ const InputContact: React.FC<InputContactProps> = ({ contact, onSaveContact, onC
         </form>
       ) : (
         <div className="">
-          <p className="text-gray-700">{contact.email}</p>
+          <p className="text-gray-700">{item.email}</p>
           <p className="text-gray-700">
-            {contact.phone} - {contact.website}
+            {item.phone} - {item.website}
           </p>
-          <p className="text-gray-700">{contact.address}</p>
-          <p className="text-gray-700">{contact.twitter}</p>
-          <p className="text-gray-700">{contact.facebook}</p>
-          <p className="text-gray-700">{contact.linkedin}</p>
-          <p className="text-gray-700">{contact.github}</p>
+          <p className="text-gray-700">{item.address}</p>
+          <p className="text-gray-700">{item.twitter}</p>
+          <p className="text-gray-700">{item.facebook}</p>
+          <p className="text-gray-700">{item.linkedin}</p>
+          <p className="text-gray-700">{item.github}</p>
         </div>
       )}
     </div>

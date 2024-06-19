@@ -1,6 +1,6 @@
 import React from 'react';
 import p from '~/store/Predefined';
-import { projectType } from '../Types';
+import { projectType } from '../../Types';
 
 type props = {
   projects: projectType[];

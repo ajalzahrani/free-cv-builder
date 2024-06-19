@@ -1,6 +1,6 @@
 import React from 'react';
 import p from '~/store/Predefined';
-import { experienceType } from '../Types';
+import { experienceType } from '../../Types';
 
 type props = {
   experience: experienceType[];

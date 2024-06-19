@@ -1,6 +1,5 @@
 import './styles/app.css';
-import { Routes, Route, useNavigate, Link } from 'react-router-dom';
-import useAuthStore from '~/store/authStore';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 
 // Auth
@@ -17,7 +16,7 @@ import Missing from './components/Auth/Missing';
 import Unauthorized from './components/Auth/Unauthorized';
 
 // CV Builder
-import SectionList from './components/Sections/SectionList';
+import SectionContainer from './components/Sections/SectionContainer';
 import DraftBuilder from './components/NewDrafts/DraftsBuilder';
 import EmailFormBuilder from './components/Emails/EmailBuilder';
 import CoverLetterBulder from './components/CoverLetters/CoverLetterBuilder';
@@ -30,39 +29,6 @@ const ROLES = {
 };
 
 function App() {
-  const hideNavBar = location.pathname === '/scene';
-
-  const { resetAuth, auth } = useAuthStore();
-  const navigate = useNavigate();
-
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    const response = await fetch('http://localhost:3000/api/auth/logout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: auth?.user.id }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      // Save the token or handle the response as needed
-      // Redirect to the home page
-      resetAuth();
-      navigate('/login');
-    } else {
-      // Handle login failure
-      // get response message
-
-      // const responsekk = await response.text();
-      // alert(response.status + ' ' + response.statusText + ' ' + responsekk);
-      resetAuth();
-      navigate('/login');
-      // alert('Login failed. Please check your credentials.');
-    }
-  };
-
   return (
     <div className="App">
       <Navbar />
@@ -82,7 +48,7 @@ function App() {
             </Route>
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
-              <Route path="sections" element={<SectionList />} />
+              <Route path="sections" element={<SectionContainer />} />
             </Route>
 
             <Route element={<RequireAuth allowedRoles={[ROLES.Editor]} />}>
