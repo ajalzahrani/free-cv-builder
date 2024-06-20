@@ -1,17 +1,24 @@
 import React, { useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { experienceType, experinceTasksType } from '~/components/Types';
+import { experienceType } from '~/components/Types';
 
 export const experienceSchema = z.object({
   id: z.number().optional(),
   title: z.string(),
-  company: z.string(),
+  company: z.string().optional(),
   location: z.string().optional(),
-  from: z.string(),
-  to: z.string(),
+  from: z.string().optional(),
+  to: z.string().optional(),
   description: z.string().optional(),
+  experinceTasks: z
+    .array(
+      z.object({
+        description: z.string(),
+      }),
+    )
+    .optional(),
 });
 
 type ExperienceProps = {
@@ -37,13 +44,18 @@ const InputExperience: React.FC<ExperienceProps> = ({ item, onSave, onCancel, on
     defaultValues: item as experienceType, // Convert to experienceType for defaultValues
   });
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'experinceTasks',
+  });
+
   useEffect(() => {
     // Reset form values when header changes
     reset(item as experienceType);
   }, [item, reset]);
 
   const handleOnSave = (data: experienceType) => {
-    console.log('onUpdate data: ', data);
+    console.log('onExperienceSave data: ', data);
     onSave(data); // Pass the complete header object to the onSave function
     setIsEditing(false); // Exit editing mode
   };
@@ -100,7 +112,7 @@ const InputExperience: React.FC<ExperienceProps> = ({ item, onSave, onCancel, on
             render={({ field }) => <input type="text" id="location" {...field} />}
           />
 
-          <div className="flex justify-between">
+          <div>
             <label htmlFor="from">From</label>
             <Controller
               name="from"
@@ -119,40 +131,43 @@ const InputExperience: React.FC<ExperienceProps> = ({ item, onSave, onCancel, on
             render={({ field }) => <input type="text" id="description" {...field} />}
           />
 
-          {/* <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2 mt-2">Task</label>
-            {tasks?.map((item, index) => (
-              <div key={index} className="flex items-center mb-2">
-                <input
-                  className="border rounded-lg py-2 px-3 w-full mr-2"
-                  type="text"
-                  placeholder="Task"
-                  value={item.description}
-                  onChange={(e) => {
-                    const newTask = [...tasks];
-                    newTask[index].description = e.target.value;
-                    setTasks(newTask);
-                  }}
+          <div className="section-title" style={{ marginTop: '10px' }}>
+            <h2>Task</h2>
+            <button type="button" onClick={() => append({ description: '' })}>
+              Add Task
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', marginTop: '10px' }}>
+            {fields.map((field, index) => (
+              <div
+                key={field.id}
+                style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '10px' }}
+              >
+                <Controller
+                  name={`experinceTasks.${index}.description`}
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="text"
+                      {...field}
+                      style={{
+                        flexGrow: 1,
+                        marginRight: '10px',
+                        padding: '8px',
+                        borderRadius: '4px',
+                        border: '1px solid #ccc',
+                      }}
+                    />
+                  )}
                 />
-                <button
-                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => handleDeleteTask(index)}
-                >
+
+                <button type="button" onClick={() => remove(index)}>
                   X
                 </button>
               </div>
             ))}
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => {
-                const newTask = [...tasks];
-                newTask.push({ description: '' });
-                setTasks(newTask);
-              }}
-            >
-              Add Task
-            </button>
-          </div> */}
+          </div>
 
           <div>
             <div>
@@ -166,19 +181,17 @@ const InputExperience: React.FC<ExperienceProps> = ({ item, onSave, onCancel, on
           </div>
         </form>
       ) : (
-        <div className="">
-          <p className="text-gray-700">{item.company}</p>
-          <p className="text-gray-700">{item.location}</p>
-          <p className="text-gray-700">
+        <div className="section-container">
+          <p>{item.company}</p>
+          <p>{item.location}</p>
+          <p>
             {item.from} - {item.to}
           </p>
-          <p className="text-gray-700">{item.description}</p>
-          {/* <p className="text-gray-700 font-bold">Tasks</p> */}
-          {/* {tasks?.map((task, index) => (
-            <div key={index} className="flex items-center mb-2">
-              <div className="bg-gray-200 rounded-lg py-2 px-3 w-full mr-2">{task.description}</div>
-            </div>
-          ))} */}
+          <p>{item.description}</p>
+          <div style={{ marginTop: '10px' }}>
+            <h3>Tasks</h3>
+            <ul>{item.experinceTasks?.map((task, index) => <li key={index}>{task.description}</li>)}</ul>
+          </div>
         </div>
       )}
     </div>

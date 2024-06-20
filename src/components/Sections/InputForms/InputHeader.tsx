@@ -34,10 +34,6 @@ export default function InputHeader({ item, onSave, onCancel, onDelete }: InputH
   });
 
   useEffect(() => {
-    console.log('item: ', item);
-  }, []);
-
-  useEffect(() => {
     // Reset form values when item changes
     reset(item as headerType);
   }, [item, reset]);
