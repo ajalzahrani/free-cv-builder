@@ -1,160 +1,272 @@
 import React, { useEffect } from 'react';
-import { draftType, draftSectionsType } from '~/components/Types';
-import useDraftsStore from '~/store/useDraftStore';
-import Draft from './Draft';
+import { useForm, Controller } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { draftType } from '~/components/Types';
+import Select, { StylesConfig } from 'react-select';
+import useDraftOptionsStore from '~/store/useDraftOptionsStore';
+
+const draftSectionsSchema = z.object({
+  header: z.number().optional(),
+  contact: z.number().optional(),
+  experience: z.array(z.number()).optional(),
+  education: z.array(z.number()).optional(),
+  project: z.array(z.number()).optional(),
+  certificate: z.array(z.number()).optional(),
+  skill: z.array(z.number()).optional(),
+  interest: z.array(z.number()).optional(),
+  language: z.array(z.number()).optional(),
+});
+
+const draftSchema = z.object({
+  id: z.number().optional(),
+  title: z.string(),
+  description: z.string().optional(),
+  draftSections: draftSectionsSchema,
+});
+
+interface optionType {
+  color(color: any): unknown;
+  readonly label: string;
+  readonly value: string;
+}
 
 type InputDraftProps = {
-  draft: draftType;
-  // onUpdateDraft: (updatedDraft: draftType) => void;
-  onDeleteDraft: (id: string) => void;
-  onShowTemplate: (id: draftType['id']) => void;
+  item: Partial<draftType>;
+  options: any;
+  onSave: (item: draftType) => void;
+  onCancel: () => void;
+  onDelete?: (id: number) => void;
 };
 
-export default function InputDraft({ draft, onDeleteDraft, onShowTemplate }: InputDraftProps) {
-  const { updateDraftTitle, updateDraftDescription, saveDrafts } = useDraftsStore();
-  const [isEditing, setIsEditing] = React.useState<boolean>(draft.title.length === 0 ? true : false);
-  const [draftTitle, setDraftTitle] = React.useState<string>(draft.title);
-  const [draftDescription, setDraftDescription] = React.useState<string>(draft.description);
+function getOptions(options: any) {
+  const res: optionType[] = [];
+  options.forEach((item: any) => {
+    res.push({ label: item.title, value: item.id, color: () => '#f0f0f0' });
+  });
+  return res;
+}
 
-  const handleUpdateDraftTitle = (e: any) => {
-    const value = e.target.value;
-    setDraftTitle(value);
+export default function InputDraft({ item, options, onSave, onDelete, onCancel }: InputDraftProps) {
+  const isCreating = !item.id;
+  const [isEditing, setIsEditing] = React.useState<boolean>(
+    item.title ? (item.title.length === 0 ? true : false) : true,
+  );
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<draftType>({
+    resolver: zodResolver(draftSchema),
+    defaultValues: item as draftType,
+  });
+
+  useEffect(() => {
+    console.info('draft options: ', options);
+  }, []);
+
+  useEffect(() => {
+    reset(item as draftType);
+  }, [item, reset]);
+
+  const colourStyles: StylesConfig<optionType, true> = {
+    control: (styles) => ({ ...styles, backgroundColor: 'white' }),
+    option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      return {
+        ...styles,
+        backgroundColor: isDisabled ? data.color : undefined,
+        color: isDisabled ? '#ccc' : 'black',
+        cursor: isDisabled ? 'not-allowed' : 'default',
+        ':active': {
+          ...styles[':active'],
+          backgroundColor: !isDisabled ? (isSelected ? data.color : 'yellow') : undefined,
+        },
+      };
+    },
   };
 
-  const handleUpdateDraftDescripiton = (e: any) => {
-    const value = e.target.value;
-    setDraftDescription(value);
-  };
-
-  const handleSaveDraft = () => {
-    updateDraftTitle(draft.id, draftTitle);
-    updateDraftDescription(draft.id, draftDescription);
-    saveDrafts();
+  const handleOnSave = (data: draftType) => {
+    console.log('onUpdate data: ', data);
+    onSave(data);
     setIsEditing(false);
   };
 
-  const handleCancelDraft = () => {
+  const handleOnDelete = () => {
+    if (onDelete && item.id) {
+      onDelete(item.id);
+    }
+  };
+
+  const handleOnCancel = () => {
     setIsEditing(false);
+    reset(item as draftType);
+    onCancel();
   };
 
   return (
     <div className="builders-element">
       <div className="section-title">
-        <h3 className="text-lg font-bold">{draft.title}</h3>
-        <div>
-          {!isEditing && (
-            <div>
-              <button
-                className="text-blue-500 hover:text-blue-700 mr-2 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
-                onClick={() => onShowTemplate(draft.id)}
-              >
-                Show
-              </button>
-
-              <button
-                className="text-blue-500 hover:text-blue-700 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
-                onClick={() => setIsEditing(true)}
-              >
-                Edit
-              </button>
-            </div>
-          )}
-        </div>
+        <h3>{item.title}</h3>
+        {!isEditing ? (
+          <button onClick={() => setIsEditing(true)}>Edit</button>
+        ) : (
+          <button onClick={handleOnCancel}>Cancel</button>
+        )}
       </div>
       {isEditing ? (
-        <div className="builders-input">
-          <label className="block font-bold mt-2 mb-2" htmlFor="institution">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
+        <form
+          className="builders-input"
+          onSubmit={handleSubmit(handleOnSave, (errors) => console.log('error on submit: ', errors))}
+        >
+          <input type="hidden" name="id" value={item.id || ''} />
+          <label htmlFor="title">Title</label>
+          <Controller
             name="title"
-            value={draftTitle}
-            onChange={handleUpdateDraftTitle}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="title" {...field} />}
           />
-          <label className="block font-bold mt-2 mb-2" htmlFor="to">
-            Description
-          </label>
-          <input
-            type="text"
-            id="description"
+          {errors.title && <span>{errors.title.message}</span>}
+          <label htmlFor="description">Description</label>
+          <Controller
             name="description"
-            value={draftDescription}
-            onChange={handleUpdateDraftDescripiton}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            control={control}
+            render={({ field }) => <input type="text" id="description" {...field} />}
           />
-          <div className="flex justify-end mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
-              onClick={() => {
-                handleSaveDraft();
-                console.log(draft);
-              }}
-            >
-              Save
-            </button>
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-              onClick={() => onDeleteDraft(draft.id)}
-            >
-              Delete
-            </button>
-            <button className="text-gray-500 hover:text-gray-700 py-2 px-4" onClick={handleCancelDraft}>
-              Cancel
-            </button>
-            <button
-              className="text-blue-500 hover:text-blue-700 mr-2 py-1 px-3 rounded bg-blue-100 hover:bg-blue-200 transition-colors duration-200"
-              onClick={() => onShowTemplate(draft.id)}
-            >
-              Show Draft Preview
-            </button>
-          </div>
+          <label htmlFor="header">Header</label>
+          <Controller
+            name="header"
+            control={control}
+            render={({ field }) => <Select {...field} options={getOptions(options.headers)} styles={colourStyles} />}
+          />
 
-          {/* #######################################################*/}
-          {/* #######################################################*/}
-          {/* DraftSection Cards */}
-          <div style={{ marginTop: '20px' }}>{<Draft draftId={draft.id} draftSections={draft.draftSections} />}</div>
-          {/* #######################################################*/}
-          {/* #######################################################*/}
+          <label htmlFor="contact">Contact</label>
+          <Controller
+            name="contact"
+            control={control}
+            render={({ field }) => <Select {...field} options={getOptions(options.contacts)} styles={colourStyles} />}
+          />
 
-          <div className="flex justify-end mt-4">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
-              onClick={() => {
-                handleSaveDraft();
-              }}
-            >
-              Save
-            </button>
-            <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4 mr-4"
-              onClick={() => {
-                // print draft
-                // setDialgoData(draft);
-                // setShowDialog(true);
-                console.log(draft);
-              }}
-            >
-              Print
-            </button>
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4"
-              onClick={() => onDeleteDraft(draft.id)}
-            >
-              Delete
-            </button>
-            <button className="text-gray-500 hover:text-gray-700 py-2 px-4" onClick={handleCancelDraft}>
-              Cancel
-            </button>
+          <label htmlFor="experience">Experinece</label>
+          <Controller
+            name="experience"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                styles={colourStyles}
+                closeMenuOnSelect={false}
+                isMulti
+                options={getOptions(options.experiences)}
+              />
+            )}
+          />
+
+          <label htmlFor="eduction">Education</label>
+          <Controller
+            name="education"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                closeMenuOnSelect={false}
+                isMulti
+                options={getOptions(options.education)}
+                styles={colourStyles}
+              />
+            )}
+          />
+
+          <label htmlFor="certification">Certifications</label>
+          <Controller
+            name="certification"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                closeMenuOnSelect={false}
+                isMulti
+                options={getOptions(options.certificates)}
+                styles={colourStyles}
+              />
+            )}
+          />
+
+          <label htmlFor="skill">Skills</label>
+          <Controller
+            name="skill"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                closeMenuOnSelect={false}
+                isMulti
+                options={getOptions(options.skills)}
+                styles={colourStyles}
+              />
+            )}
+          />
+
+          <label htmlFor="project">Projects</label>
+          <Controller
+            name="project"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                closeMenuOnSelect={false}
+                isMulti
+                options={getOptions(options.projects)}
+                styles={colourStyles}
+              />
+            )}
+          />
+
+          <label htmlFor="language">Languages</label>
+          <Controller
+            name="language"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                closeMenuOnSelect={false}
+                isMulti
+                options={getOptions(options.languages)}
+                styles={colourStyles}
+              />
+            )}
+          />
+
+          <label htmlFor="interrest">Interrests</label>
+          <Controller
+            name="interrest"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                closeMenuOnSelect={false}
+                isMulti
+                options={getOptions(options.interrests)}
+                styles={colourStyles}
+              />
+            )}
+          />
+
+          <div>
+            <div>
+              <button type="submit">{isCreating ? 'Create' : 'Update'}</button>
+              {!isCreating && (
+                <button type="button" onClick={handleOnDelete}>
+                  Delete
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        </form>
       ) : (
-        <div className="mt-2">
-          {/* <p className="text-red-700">ENTERY ID: {draft.id}</p> */}
-          {/* <p className="text-gray-700">{draft.title}</p> */}
-          <p className="text-gray-700">{draft.description}</p>
+        <div className="">
+          <p className="text-gray-700">{item.description}</p>
         </div>
       )}
     </div>
