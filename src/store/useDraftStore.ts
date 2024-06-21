@@ -8,11 +8,11 @@ type StoreState = {
 type StoreActions = {
   saveDrafts: () => void;
   addDraft: (newDraft: draftType) => void;
-  updateDraftTitle: (draftId: string, title: string) => void;
-  updateDraftDescription: (draftId: string, description: string) => void;
-  addDraftSectionElement3: (draftId: string, section: string, draftSectionElementId: string) => void;
-  addDraftSectionElement4: (draftId: string, section: string, draftSectionElementId: string) => void;
-  removeDraftSectionElement: (draftId: string, section: string, draftSectionElementId: string) => void;
+  updateDraftTitle: (draftId: number, title: string) => void;
+  updateDraftDescription: (draftId: number, description: string) => void;
+  addDraftSectionElement3: (draftId: number, section: string, draftSectionElementId: string) => void;
+  addDraftSectionElement4: (draftId: number, section: string, draftSectionElementId: string) => void;
+  removeDraftSectionElement: (draftId: number, section: string, draftSectionElementId: string) => void;
   deleteDraft: (id: string) => void;
 };
 
@@ -32,7 +32,7 @@ const useDraftsStore = create<StoreState & StoreActions>((set, get) => {
         drafts: [...state.drafts, newDraft],
       }));
     },
-    updateDraftTitle: (draftId: string, title: string) => {
+    updateDraftTitle: (draftId: number, title: string) => {
       set((state) => {
         const updatedDrafts = state.drafts.map((draft) => {
           if (draft.id === draftId) {
@@ -45,7 +45,7 @@ const useDraftsStore = create<StoreState & StoreActions>((set, get) => {
         };
       });
     },
-    updateDraftDescription: (draftId: string, description: string) => {
+    updateDraftDescription: (draftId: number, description: string) => {
       set((state) => {
         const updatedDrafts = state.drafts.map((draft) => {
           if (draft.id === draftId) {
@@ -58,7 +58,7 @@ const useDraftsStore = create<StoreState & StoreActions>((set, get) => {
         };
       });
     },
-    addDraftSectionElement3: (draftId: string, section: keyof draftSectionsType, draftSectionElementId: string) => {
+    addDraftSectionElement3: (draftId: number, section: keyof draftSectionsType, draftSectionElementId: string) => {
       console.log('draftId: ', draftId, ',section: ', section, ',draftSectionElementId: ', draftSectionElementId);
       set((state) => {
         const updatedDrafts = state.drafts.map((draft: draftType) => {
@@ -99,7 +99,7 @@ const useDraftsStore = create<StoreState & StoreActions>((set, get) => {
         };
       });
     },
-    addDraftSectionElement4: (draftId: string, section: string, draftSectionElementId: string) => {
+    addDraftSectionElement4: (draftId: number, section: string, draftSectionElementId: string) => {
       console.log('draftId: ', draftId, ', section: ', section, ', draftSectionElementId: ', draftSectionElementId);
 
       set((state) => {
@@ -147,7 +147,7 @@ const useDraftsStore = create<StoreState & StoreActions>((set, get) => {
       });
     },
 
-    removeDraftSectionElement: (draftId: string, section: keyof draftSectionsType, draftSectionElementId: string) => {
+    removeDraftSectionElement: (draftId: number, section: keyof draftSectionsType, draftSectionElementId: string) => {
       set((state) => {
         const updatedDrafts = state.drafts.map((draft: draftType) => {
           if (draft.id === draftId) {
@@ -177,7 +177,7 @@ const useDraftsStore = create<StoreState & StoreActions>((set, get) => {
         };
       });
     },
-    deleteDraft: (id: string) => {
+    deleteDraft: (id: number) => {
       set((state) => ({
         drafts: state.drafts.filter((d) => d.id !== id),
       }));
