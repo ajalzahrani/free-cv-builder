@@ -12,16 +12,17 @@ const headerSchema = z.object({
 });
 
 type InputHeaderProps = {
-  item: Partial<headerType>; // Allow item to be partial for both create and update
-  onSave: (item: headerType) => void; // Callback to save item
-  onCancel: () => void; // Callback to cancel editing
-  onDelete?: (id: number) => void; // Optional callback to delete item
+  item: Partial<headerType>;
+  onSave: (item: headerType) => void;
+  onCancel: () => void;
+  onDelete?: (id: number) => void;
 };
 
 export default function InputHeader({ item, onSave, onCancel, onDelete }: InputHeaderProps) {
-  const isCreating = !item?.id; // Check if id exists to determine if creating new item
-  const [isEditing, setIsEditing] = React.useState<boolean>();
-  // item.title ? (item.title.length === 0 ? true : false) : true,
+  const isCreating = !item?.id;
+  const [isEditing, setIsEditing] = React.useState<boolean>(
+    item.title ? (item.title.length === 0 ? true : false) : true,
+  );
 
   const {
     control,
@@ -30,30 +31,28 @@ export default function InputHeader({ item, onSave, onCancel, onDelete }: InputH
     reset,
   } = useForm<headerType>({
     resolver: zodResolver(headerSchema),
-    defaultValues: item as headerType, // Convert to headerType for defaultValues
+    defaultValues: item as headerType,
   });
 
   useEffect(() => {
-    // Reset form values when item changes
     reset(item as headerType);
   }, [item, reset]);
 
   const handleOnSave = (data: headerType) => {
-    console.log('onUpdate data: ', data);
-    onSave(data); // Pass the complete item object to the onSave function
-    setIsEditing(false); // Exit editing mode
+    onSave(data);
+    setIsEditing(false);
   };
 
   const handleOnDelete = () => {
     if (onDelete && item.id) {
-      onDelete(item.id); // Call onDelete with item id if provided
+      onDelete(item.id);
     }
   };
 
   const handleOnCancel = () => {
-    setIsEditing(false); // Exit editing mode
-    reset(item as headerType); // Reset form to initial values
-    onCancel(); // Call onCancel callback
+    setIsEditing(false);
+    reset(item as headerType);
+    onCancel();
   };
 
   return (

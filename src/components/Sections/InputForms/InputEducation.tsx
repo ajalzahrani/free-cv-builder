@@ -3,7 +3,6 @@ import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { educationType } from '~/components/Types';
-
 export const educationSchema = z.object({
   id: z.number().optional(),
   institution: z.string(),
