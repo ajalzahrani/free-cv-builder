@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Select, { PropsValue, StylesConfig } from 'react-select';
 import { draftType } from '~/components/Types';
-import Select, { StylesConfig } from 'react-select';
 import useDraftOptionsStore from '~/store/useDraftOptionsStore';
 
 const draftSectionsSchema = z.object({
@@ -26,9 +26,9 @@ const draftSchema = z.object({
 });
 
 interface optionType {
-  color(color: any): unknown;
+  color?: string;
   readonly label: string;
-  readonly value: string;
+  readonly value: number;
 }
 
 type InputDraftProps = {
@@ -39,13 +39,12 @@ type InputDraftProps = {
   onDelete?: (id: number) => void;
 };
 
-function getOptions(options: any) {
-  const res: optionType[] = [];
-  options.forEach((item: any) => {
-    res.push({ label: item.title, value: item.id, color: () => '#f0f0f0' });
-  });
-  return res;
-}
+const getOptions = (options: any): optionType[] => {
+  return options.map((item: any) => ({
+    label: item.title,
+    value: item.id,
+  }));
+};
 
 export default function InputDraft({ item, options, onSave, onDelete, onCancel }: InputDraftProps) {
   const isCreating = !item.id;
@@ -64,31 +63,28 @@ export default function InputDraft({ item, options, onSave, onDelete, onCancel }
   });
 
   useEffect(() => {
-    console.info('draft options: ', options);
-  }, []);
-
-  useEffect(() => {
     reset(item as draftType);
   }, [item, reset]);
 
   const colourStyles: StylesConfig<optionType, true> = {
     control: (styles) => ({ ...styles, backgroundColor: 'white' }),
     option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+      const backgroundColor = isDisabled ? (data.color as any) : undefined;
       return {
         ...styles,
-        backgroundColor: isDisabled ? data.color : undefined,
+        backgroundColor,
         color: isDisabled ? '#ccc' : 'black',
         cursor: isDisabled ? 'not-allowed' : 'default',
         ':active': {
           ...styles[':active'],
-          backgroundColor: !isDisabled ? (isSelected ? data.color : 'yellow') : undefined,
+          backgroundColor: !isDisabled && isSelected ? data.color : undefined,
         },
       };
     },
   };
 
   const handleOnSave = (data: draftType) => {
-    console.log('onUpdate data: ', data);
+    console.log('Draft onSave data: ', data);
     onSave(data);
     setIsEditing(false);
   };
@@ -136,21 +132,39 @@ export default function InputDraft({ item, options, onSave, onDelete, onCancel }
           />
           <label htmlFor="header">Header</label>
           <Controller
-            name="header"
+            name="draftSections.header"
             control={control}
-            render={({ field }) => <Select {...field} options={getOptions(options.headers)} styles={colourStyles} />}
+            render={({ field }) => (
+              <Select
+                {...field}
+                styles={colourStyles}
+                defaultValue={getOptions(options.headers)[1]}
+                options={getOptions(options.headers)}
+                value={getOptions(options.headers).find((option) => option.value === field.value) || null}
+                onChange={(option) => field.onChange(option ? option.value : null)}
+              />
+            )}
           />
 
           <label htmlFor="contact">Contact</label>
           <Controller
-            name="contact"
+            name="draftSections.contact"
             control={control}
-            render={({ field }) => <Select {...field} options={getOptions(options.contacts)} styles={colourStyles} />}
+            render={({ field }) => (
+              <Select
+                {...field}
+                defaultValue={getOptions(options.contacts)[0]}
+                styles={colourStyles}
+                options={getOptions(options.contacts)}
+                value={getOptions(options.contacts).find((option) => option.value === field.value) || null}
+                onChange={(option) => field.onChange(option ? option.value : null)}
+              />
+            )}
           />
 
-          <label htmlFor="experience">Experinece</label>
+          <label htmlFor="experience">Experience</label>
           <Controller
-            name="experience"
+            name="draftSections.experience"
             control={control}
             render={({ field }) => (
               <Select
@@ -159,99 +173,129 @@ export default function InputDraft({ item, options, onSave, onDelete, onCancel }
                 closeMenuOnSelect={false}
                 isMulti
                 options={getOptions(options.experiences)}
+                value={getOptions(options.experiences).filter((option) => field.value?.includes(option.value)) || []}
+                onChange={(selectedOptions) =>
+                  field.onChange(selectedOptions ? selectedOptions.map((option: optionType) => option.value) : [])
+                }
               />
             )}
           />
 
-          <label htmlFor="eduction">Education</label>
+          <label htmlFor="education">Education</label>
           <Controller
-            name="education"
+            name="draftSections.education"
             control={control}
             render={({ field }) => (
               <Select
                 {...field}
+                styles={colourStyles}
                 closeMenuOnSelect={false}
                 isMulti
                 options={getOptions(options.education)}
-                styles={colourStyles}
+                value={getOptions(options.education).filter((option) => field.value?.includes(option.value)) || []}
+                onChange={(selectedOptions) =>
+                  field.onChange(selectedOptions ? selectedOptions.map((option: optionType) => option.value) : [])
+                }
               />
             )}
           />
 
-          <label htmlFor="certification">Certifications</label>
+          <label htmlFor="certificate">Certificate</label>
           <Controller
-            name="certification"
+            name="draftSections.certificate"
             control={control}
             render={({ field }) => (
               <Select
                 {...field}
+                styles={colourStyles}
                 closeMenuOnSelect={false}
                 isMulti
                 options={getOptions(options.certificates)}
-                styles={colourStyles}
+                value={getOptions(options.certificates).filter((option) => field.value?.includes(option.value)) || []}
+                onChange={(selectedOptions) =>
+                  field.onChange(selectedOptions ? selectedOptions.map((option: optionType) => option.value) : [])
+                }
               />
             )}
           />
 
-          <label htmlFor="skill">Skills</label>
+          <label htmlFor="skill">Skill</label>
           <Controller
-            name="skill"
+            name="draftSections.skill"
             control={control}
             render={({ field }) => (
               <Select
                 {...field}
+                styles={colourStyles}
                 closeMenuOnSelect={false}
                 isMulti
                 options={getOptions(options.skills)}
-                styles={colourStyles}
+                value={getOptions(options.skills).filter((option) => field.value?.includes(option.value)) || []}
+                onChange={(selectedOptions) =>
+                  field.onChange(selectedOptions ? selectedOptions.map((option: optionType) => option.value) : [])
+                }
               />
             )}
           />
 
-          <label htmlFor="project">Projects</label>
+          <label htmlFor="project">Project</label>
           <Controller
-            name="project"
+            name="draftSections.project"
             control={control}
             render={({ field }) => (
               <Select
                 {...field}
+                styles={colourStyles}
                 closeMenuOnSelect={false}
                 isMulti
                 options={getOptions(options.projects)}
-                styles={colourStyles}
+                value={getOptions(options.projects).filter((option) => field.value?.includes(option.value)) || []}
+                onChange={(selectedOptions) =>
+                  field.onChange(selectedOptions ? selectedOptions.map((option: optionType) => option.value) : [])
+                }
               />
             )}
           />
 
-          <label htmlFor="language">Languages</label>
+          <label htmlFor="interest">Interrest</label>
           <Controller
-            name="language"
+            name="draftSections.interest"
             control={control}
             render={({ field }) => (
               <Select
                 {...field}
-                closeMenuOnSelect={false}
-                isMulti
-                options={getOptions(options.languages)}
                 styles={colourStyles}
-              />
-            )}
-          />
-
-          <label htmlFor="interrest">Interrests</label>
-          <Controller
-            name="interrest"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
                 closeMenuOnSelect={false}
                 isMulti
                 options={getOptions(options.interrests)}
-                styles={colourStyles}
+                value={getOptions(options.interrests).filter((option) => field.value?.includes(option.value)) || []}
+                onChange={(selectedOptions) =>
+                  field.onChange(selectedOptions ? selectedOptions.map((option: optionType) => option.value) : [])
+                }
               />
             )}
           />
+
+          <label htmlFor="language">Language</label>
+          <Controller
+            name="draftSections.language"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                styles={colourStyles}
+                closeMenuOnSelect={false}
+                isMulti
+                options={getOptions(options.languages)}
+                value={getOptions(options.languages).filter((option) => field.value?.includes(option.value)) || []}
+                onChange={(selectedOptions) =>
+                  field.onChange(selectedOptions ? selectedOptions.map((option: optionType) => option.value) : [])
+                }
+              />
+            )}
+          />
+
+          {/* Repeat similar blocks for other sections like education, project, certificate, skill, interest, and language... */}
 
           <div>
             <div>

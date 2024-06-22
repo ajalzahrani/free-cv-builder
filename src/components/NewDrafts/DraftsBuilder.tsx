@@ -10,10 +10,14 @@ import { produce } from 'immer';
 import useDraftsStore from '../../store/useDraftStore';
 // import Template from './Templete';
 
+const getUrl = '/cv/drafts';
+const getUrlSections = '/cv/draft-sections';
+const manUrl = '/cv/draft';
+
 const DraftBuilder = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ['drafts'],
-    queryFn: () => fetchData('/cv/drafts'),
+    queryFn: () => fetchData(getUrl),
     staleTime: 60000,
   });
 
@@ -23,8 +27,8 @@ const DraftBuilder = () => {
     isError: isErrorOptions,
   } = useQuery({
     queryKey: ['draft-sections'],
-    queryFn: () => fetchData('/cv/draft-sections'),
-    staleTime: 60000,
+    queryFn: () => fetchData(getUrlSections),
+    // staleTime: 60000,
   });
 
   const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -42,7 +46,7 @@ const DraftBuilder = () => {
   };
 
   const mutationCreate = useMutation({
-    mutationFn: (newItem: Omit<draftType, 'id'>) => postData('manUrl', newItem),
+    mutationFn: (newItem: Omit<draftType, 'id'>) => postData(manUrl, newItem),
     onMutate: async (newItem) => {
       await queryClient.cancelQueries({ queryKey: ['drafts'] });
       const previousData = queryClient.getQueryData<draftType[]>(['drafts']);
@@ -59,7 +63,7 @@ const DraftBuilder = () => {
   });
 
   const mutationUpdate = useMutation({
-    mutationFn: (updatedItem: draftType) => updateData('manUrl', updatedItem),
+    mutationFn: (updatedItem: draftType) => updateData(manUrl, updatedItem),
     onMutate: async (updatedItem) => {
       await queryClient.cancelQueries({ queryKey: ['drafts'] });
       const previousData = queryClient.getQueryData<draftType[]>(['drafts']);
@@ -78,7 +82,7 @@ const DraftBuilder = () => {
   });
 
   const mutationDelete = useMutation({
-    mutationFn: (id: number) => deleteData('manUrl', { id }),
+    mutationFn: (id: number) => deleteData(manUrl, { id }),
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: ['drafts'] });
       const previousData = queryClient.getQueryData<draftType[]>(['drafts']);
@@ -133,7 +137,7 @@ const DraftBuilder = () => {
   };
 
   return (
-    <div className="section-builder">
+    <div className="draft-container">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2>Drafts</h2>
         <button onClick={() => setIsAdding(true)}>Add New Draft</button>
