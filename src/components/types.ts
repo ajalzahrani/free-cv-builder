@@ -128,17 +128,17 @@ export type PassableInputComponentType = {
 };
 
 export type draftSectionsType = {
-  [key: string]: any; // Index Signature
-  header?: string;
-  contact?: string;
-  experience?: string[];
-  education?: string[];
-  certificate?: string[];
-  skill?: string[];
-  project?: string[];
-  language?: string[];
-  interest?: string[];
-  committee?: string[];
+  [key: number]: any; // Index Signature
+  header?: number;
+  contact?: number;
+  experience?: number[];
+  education?: number[];
+  certificate?: number[];
+  skill?: number[];
+  project?: number[];
+  language?: number[];
+  interrest?: number[];
+  committee?: number[];
 };
 
 export type draftType = {
