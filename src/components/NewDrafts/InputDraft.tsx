@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Select, { StylesConfig } from 'react-select';
 import { draftType } from '~/components/Types';
+import Template from '../Drafts/Templete';
 
 const draftSectionsSchema = z.object({
   header: z.number().optional(),
@@ -43,6 +44,7 @@ export default function InputDraft({ item, options, onSave, onDelete, onCancel }
   const [isEditing, setIsEditing] = React.useState<boolean>(
     item.title ? (item.title.length === 0 ? true : false) : true,
   );
+  const [isPreview, setIsPreview] = React.useState<boolean>(false);
 
   const {
     control,
@@ -97,10 +99,14 @@ export default function InputDraft({ item, options, onSave, onDelete, onCancel }
 
   return (
     <div className="builders-element">
+      {isPreview && <Template onClose={() => setIsPreview(false)} draft={{} as draftType} />}
       <div className="section-title">
         <h3>{item.title}</h3>
         {!isEditing ? (
-          <button onClick={() => setIsEditing(true)}>Edit</button>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <button onClick={() => setIsEditing(true)}>Edit</button>
+            <button onClick={() => setIsPreview(true)}>Preview</button>
+          </div>
         ) : (
           <button onClick={handleOnCancel}>Cancel</button>
         )}
